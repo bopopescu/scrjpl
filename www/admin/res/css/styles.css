@@ -1,3 +1,8 @@
+@font-face {
+	font-family: "Quicksand";
+	src: url("../font/Quicksand_Normal.ttf") format("truetype");
+}
+
 
 a {
 	color: #428bca;
@@ -14,7 +19,8 @@ html {height: 100%;}
 
 .topbar {
 	background-color: #19191b;
-	height: 55px;
+	font-family: 'Quicksand';
+	height: 65px;
 }
 
 .topbar-title {
@@ -22,8 +28,8 @@ html {height: 100%;}
 	background-origin: padding-box;
 	box-sizing: border-box;
 	color: #e4e4e4;
-	font-size: 25px;
-	height: 50px;
+	font-size: 35px;
+	height: 100%;
 	padding: 15px 0px 15px 0px;
 	text-align: center;
 }

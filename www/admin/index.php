@@ -11,12 +11,12 @@
     <meta name="author" content="Brian">
 
     <link rel="stylesheet" href="res/css/styles.css">
-
+    <link rel="stylesheet" href="res/css/font.css">
 </head>
 
 <body>
     <nav class="topbar">
-        <div class="topbar-title">Projet JOG 2.0</div>
+        <div class="topbar-title">DART Manager</div>
     </nav>
     <ul class="navbar">
         <li>
