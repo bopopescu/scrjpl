@@ -3,6 +3,15 @@
 	src: url("../font/Quicksand_Normal.ttf") format("truetype");
 }
 
+@font-face {
+	font-family: FontAwesome;
+	src: url("../font/fontawesome.ttf") format("truetype"),
+		 url("../font/fontawesome.otf") format("otf"),
+		 url("../font/fontawesome.eot") format("eot"),
+		 url("../font/fontawesome.svg") format("svg"),
+		 url("../font/fontawesome.woff") format("woff");
+}
+
 
 a {
 	color: #428bca;
@@ -10,6 +19,7 @@ a {
 }
 
 body {
+	background-color: #dcdcdc;
 	font-family: 'Helvetica Neue', Helvetica, Verdana;
 	height: 100%;
 	margin: 0;
@@ -38,6 +48,7 @@ html {height: 100%;}
 	background-color: #19191b;
 	border-top: 1px solid #000;
 	height: 100%;
+	float: left;
 	list-style-image: none;
 	list-style-type: none;
 	margin: 0px;
@@ -69,8 +80,81 @@ html {height: 100%;}
 }
 
 .navbar-icon {
+	font-family: FontAwesome;
+	font-style: normal;
 	padding-right: 10px;
 }
 
-.navbar-icon-dashboard::before {content: url(../img/dashboard-icon.png)}
-.navbar-icon-doc::before {content: url(../img/doc-icon.png)}
+.navbar-icon-dashboard::before {content: "\f0e4"}
+.navbar-icon-network::before {content: "\f121"}
+.navbar-icon-doc::before {content: "\f0f6"}
+.navbar-icon-logout::before {content: "\f011"}
+
+.panel {
+	box-sizing: border-box;
+	float: left;
+	padding: 20px;
+	height: 200px;
+	width: 50%;
+}
+
+.panel>div.panel-container {
+	border-style: solid;
+	border-radius: 10px;
+	border-width: 1px;
+	padding: 0px;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+.panel-top {height: 65%;}
+.panel-bottom {
+	color: #0f0f0f;
+	height: 35%;
+	padding: 20px
+}
+
+.panel-detail-icon::before {
+	float: right;
+	font-family: FontAwesome;
+	font-style: normal;
+	content: "\f0a9";
+}
+
+.panel-top-icon::before {
+	color: #FFF;
+	float: left;
+	font-family: FontAwesome;
+	font-size: 80px;
+	font-style: normal;
+	position: relative;
+	top: 7px;
+	left: 15px
+}
+
+.panel-blue>div.panel-container {border-color: #427cd7;}
+.panel-blue>div.panel-container>div.panel-top {background-color: #427cd7;}
+.panel-blue>div.panel-container>div.panel-top>i.panel-top-icon::before {content: "\f164";}
+.panel-blue>div.panel-container>a>div.panel-bottom>i.panel-detail-icon {color: #427cd7;}
+
+.panel-red>div.panel-container {border-color: #b93a3a;}
+.panel-red>div.panel-container>div.panel-top {background-color: #b93a3a;}
+.panel-red>div.panel-container>div.panel-top>i.panel-top-icon::before {content: "\f0c0";}
+.panel-red>div.panel-container>a>div.panel-bottom>i.panel-detail-icon {color: #b93a3a;}
+
+.panel-green>div.panel-container {border-color: #3b9845;}
+.panel-green>div.panel-container>div.panel-top {background-color: #3b9845;}
+.panel-green>div.panel-container>div.panel-top>i.panel-top-icon::before {content: "\f0c5";}
+.panel-green>div.panel-container>a>div.panel-bottom>i.panel-detail-icon {color: #3b9845;}
+
+.panel-yellow>div.panel-container {border-color: #c3ca07;}
+.panel-yellow>div.panel-container>div.panel-top {background-color: #c3ca07;}
+.panel-yellow>div.panel-container>div.panel-top>i.panel-top-icon::before {content: "\f0ae";}
+.panel-yellow>div.panel-container>a>div.panel-bottom>i.panel-detail-icon {color: #c3ca07;}
+
+.wrapper {
+	height: fill;
+	margin-left: 200px;
+	width: fill;
+}
