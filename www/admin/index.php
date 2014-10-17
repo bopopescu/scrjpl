@@ -15,17 +15,17 @@
 
 <body>
     <nav class="topbar">
-        <div class="topbar-title">Bienvenue sur le DART Manager</div>
+        <div class="topbar-title">Bienvenue sur le DAARRT Manager</div>
     </nav>
     <ul class="navbar">
         <li>
             <a href="index.php"><i class="navbar-icon navbar-icon-dashboard"></i>Dashboard</a>
         </li>
         <li>
-            <a href="index.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
+            <a href="manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
         </li>
         <li>
-            <a href="docu.php"><i class="navbar-icon navbar-icon-doc"></i>Documentation</a>
+            <a href="documentation.php"><i class="navbar-icon navbar-icon-doc"></i>Documentation</a>
         </li>
         <li>
             <a href="logout.php"><i class="navbar-icon navbar-icon-logout"></i>Déconnexion</a>
@@ -36,6 +36,8 @@
             <div class="panel-container">
                 <div class="panel-top">
                     <i class="panel-top-icon"></i>
+                    <div class="panel-title-number">9</div>
+                    <span class="panel-title-text">DAARRT sont actuellement en cours d'utilisation</span>
                 </div>
                 <a href="detail.php">
                     <div class="panel-bottom">Détails<i class="panel-detail-icon"></i></div>
@@ -46,6 +48,8 @@
             <div class="panel-container">
                 <div class="panel-top">
                     <i class="panel-top-icon"></i>
+                    <div class="panel-title-number">24</div>
+                    <span class="panel-title-text">Groupes travaillent actuellement</span>
                 </div>
                 <a href="detail.php">
                     <div class="panel-bottom">Détails<i class="panel-detail-icon"></i></div>
@@ -56,6 +60,8 @@
             <div class="panel-container">
                 <div class="panel-top">
                     <i class="panel-top-icon"></i>
+                    <div class="panel-title-number">42</div>
+                    <span class="panel-title-text">Documents sont consultables</span>
                 </div>
                 <a href="detail.php">
                     <div class="panel-bottom">Détails<i class="panel-detail-icon"></i></div>
@@ -66,6 +72,8 @@
             <div class="panel-container">
                 <div class="panel-top">
                     <i class="panel-top-icon"></i>
+                    <div class="panel-title-number">16</div>
+                    <span class="panel-title-text">J'ai fait ça juste pour faire un truc symétrique</span>
                 </div>
                 <a href="detail.php">
                     <div class="panel-bottom">Détails<i class="panel-detail-icon"></i></div>
