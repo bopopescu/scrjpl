@@ -6,12 +6,11 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Panneau de contrôle</title>
-    <meta name="description" content="Panneau de contrôle des DAART">
+    <title>Documentation des DAARRT</title>
+    <meta name="description" content="Base de donnée d'information sur les DAARRT">
     <meta name="author" content="Brian">
 
     <link rel="stylesheet" href="res/css/styles.css">
-    <script language="javascript" src="res/js/infobox.js"></script>
 </head>
 
 <body>
@@ -33,16 +32,10 @@
         </li>
     </ul>
     <div class="wrapper">
-        <div id="infobox-zone">
-        </div>
-    </div>
+        <!-- <p class="section-title">Test :</p> -->
+        <input class="search-input" type="text" placeholder="Rechercher"/>
+        <hr />
 
+    </div>
 </body>
-<!-- Début de la partie de test -->
-<script language="javascript">
-    insertBox('1', "ceci est un message d'information", "info");
-    insertBox('2', "ceci est un message d'avertissement", "warning");
-    insertBox('3', "ceci est un message d'erreur", "error");
-</script>
-<!-- Fin de la partie de test -->
 </html>

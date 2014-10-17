@@ -25,12 +25,15 @@ function insertBox(id, message, type) {
     infobox.className = "infobox ";
     switch (type) {
         case "error":
+            message = "<b>Erreur : </b>" + message;
             infobox.className += "infobox-error";
             break;
         case "warning":
+            message = "<b>Attention : </b>" + message;
             infobox.className += "infobox-warning";
             break;
         default:
+            message = "<b>Information : </b>" + message;
             infobox.className += "infobox-info";
     }
 

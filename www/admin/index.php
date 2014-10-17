@@ -7,7 +7,7 @@
     <meta charset="utf-8">
 
     <title>Panneau de contrôle</title>
-    <meta name="description" content="Panneau de contrôle des JOG">
+    <meta name="description" content="Panneau de contrôle des DAARRT">
     <meta name="author" content="Brian">
 
     <link rel="stylesheet" href="res/css/styles.css">
@@ -15,7 +15,7 @@
 
 <body>
     <nav class="topbar">
-        <div class="topbar-title">Bienvenue sur le DAARRT Manager</div>
+        <div class="topbar-title">DAARRT Manager</div>
     </nav>
     <ul class="navbar">
         <li>

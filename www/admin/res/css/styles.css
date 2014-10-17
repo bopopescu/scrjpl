@@ -20,6 +20,7 @@ a {
 
 body {
 	background-color: #dcdcdc;
+	color: #19191b;
 	font-family: 'Helvetica Neue', Helvetica, Verdana;
 	height: 100%;
 	margin: 0;
@@ -30,6 +31,17 @@ html {height: 100%;}
 i {
 	font-family: FontAwesome;
 	font-style: normal;
+}
+
+.section-title {
+	font-size: 25px;
+	margin: 20px 20px;
+}
+
+.search-input {
+	display: block;
+	font-size: 25px;
+	margin : 10px auto;
 }
 
 /*
@@ -46,9 +58,9 @@ i {
 	background-origin: padding-box;
 	box-sizing: border-box;
 	color: #e4e4e4;
-	font-size: 35px;
+	font-size: 40px;
 	height: 100%;
-	padding: 15px 0px 15px 0px;
+	padding: 10px 0px 15px 0px;
 	text-align: center;
 }
 
