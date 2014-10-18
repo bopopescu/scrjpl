@@ -12,9 +12,10 @@
 
     <link rel="stylesheet" href="res/css/styles.css">
     <script language="javascript" src="res/js/infobox.js"></script>
+    <script language="javascript" src="res/js/daarrtBox.js"></script>
 </head>
 
-<body>
+<body onload="setSizeBoxWrapper()" onresize="setSizeBoxWrapper()">
     <nav class="topbar">
         <div class="topbar-title">DAARRT Manager</div>
     </nav>
@@ -26,6 +27,9 @@
             <a href="manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
         </li>
         <li>
+            <a href="td.php"><i class="navbar-icon navbar-icon-td"></i>Gestion des TD</a>
+        </li>
+        <li>
             <a href="documentation.php"><i class="navbar-icon navbar-icon-doc"></i>Documentation</a>
         </li>
         <li>
@@ -34,6 +38,19 @@
     </ul>
     <div class="wrapper">
         <div id="infobox-zone">
+        </div>
+
+        <div id="daarrt-zone">
+            <div class="daart-zone-wrapper">
+                <div class="daart-box">
+                    <i class="daarrt-box-title-icon"></i>
+                    DAARRT 1
+                    <div class="daarrt-box-options"></div>
+                </div>
+                <div class="daart-box"><i class="daarrt-box-title-icon"></i>DAARRT 2</div>
+                <div class="daart-box"><i class="daarrt-box-title-icon"></i>DAARRT 3</div>
+                <hr class="daart-zone-clear" />
+            </div>
         </div>
     </div>
 

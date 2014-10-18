@@ -25,6 +25,9 @@
             <a href="manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
         </li>
         <li>
+            <a href="td.php"><i class="navbar-icon navbar-icon-td"></i>Gestion des TD</a>
+        </li>
+        <li>
             <a href="documentation.php"><i class="navbar-icon navbar-icon-doc"></i>Documentation</a>
         </li>
         <li>
@@ -40,7 +43,7 @@
                     <span class="panel-title-text">DAARRT sont actuellement en cours d'utilisation</span>
                 </div>
                 <a href="detail.php">
-                    <div class="panel-bottom">Détails<i class="panel-detail-icon"></i></div>
+                    <div class="panel-bottom">Voir détails<i class="panel-detail-icon"></i></div>
                 </a>
             </div>
         </div>
@@ -52,7 +55,7 @@
                     <span class="panel-title-text">Groupes travaillent actuellement</span>
                 </div>
                 <a href="detail.php">
-                    <div class="panel-bottom">Détails<i class="panel-detail-icon"></i></div>
+                    <div class="panel-bottom">Voir détails<i class="panel-detail-icon"></i></div>
                 </a>
             </div>
         </div>
@@ -64,7 +67,7 @@
                     <span class="panel-title-text">Documents sont consultables</span>
                 </div>
                 <a href="detail.php">
-                    <div class="panel-bottom">Détails<i class="panel-detail-icon"></i></div>
+                    <div class="panel-bottom">Voir détails<i class="panel-detail-icon"></i></div>
                 </a>
             </div>
         </div>
@@ -76,7 +79,7 @@
                     <span class="panel-title-text">J'ai fait ça juste pour faire un truc symétrique</span>
                 </div>
                 <a href="detail.php">
-                    <div class="panel-bottom">Détails<i class="panel-detail-icon"></i></div>
+                    <div class="panel-bottom">Voir détails<i class="panel-detail-icon"></i></div>
                 </a>
             </div>
         </div>
