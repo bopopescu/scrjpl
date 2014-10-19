@@ -1,0 +1,13 @@
+.td-box-options {font-size: 13px;}
+i.td-box-title-icon::before { content: "\f085"; }
+i.td-box-icon-eno::before {content: "\f15c";}
+i.td-box-icon-res::before {content: "\f1c6";}
+i.td-box-icon-cor::before {content: "\f1c9";}
+
+.td-box-red-icon {
+    color: #D9534F;
+}
+
+.td-box-green-icon {
+    color: #5cb85c;
+}

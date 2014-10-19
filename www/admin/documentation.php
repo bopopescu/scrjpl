@@ -39,7 +39,7 @@
     <div class="wrapper">
         <div id="search-form">
             <input class="search-input" type="text" placeholder="Rechercher"/>
-            <a href="javascript:search()"><i class="search-icon"></i></a>
+            <a href="javascript:search(this)"><i class="search-icon"></i></a>
             <a href="javascript:showSearchOptions()"><i class="search-icon-settings"></i></a>
 
             <p id="search-options-title" class="section-title">Options de recherche :</p>

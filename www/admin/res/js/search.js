@@ -10,3 +10,12 @@ function showSearchOptions() {
     else
         wrapper.style.height = "45px";
 }
+
+function search() {
+    var icon = document.getElementsByClassName("search-icon")[0];
+    icon.className = "search-icon-spinner";
+
+    setTimeout(function() {icon.className = "search-icon";}, 2000);
+
+
+}

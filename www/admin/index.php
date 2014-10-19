@@ -40,7 +40,7 @@
                 <div class="panel-top">
                     <i class="panel-top-icon"></i>
                     <div class="panel-title-number">9</div>
-                    <span class="panel-title-text">DAARRT sont actuellement en cours d'utilisation</span>
+                    <span class="panel-title-text">DAARRT en cours d'utilisation</span>
                 </div>
                 <a href="detail.php">
                     <div class="panel-bottom">Voir détails<i class="panel-detail-icon"></i></div>

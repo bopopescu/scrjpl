@@ -7,15 +7,16 @@
     <meta charset="utf-8">
 
     <title>Panneau de contrôle</title>
-    <meta name="description" content="Panneau de contrôle des DAART">
+    <meta name="description" content="Gestion des TD">
     <meta name="author" content="Brian">
 
     <link rel="stylesheet" href="res/css/styles.css">
+    <link rel="stylesheet" href="res/css/td.css">
     <script language="javascript" src="res/js/infobox.js"></script>
     <script language="javascript" src="res/js/itemBox.js"></script>
 </head>
 
-<body onload="setBoxWrapperSize(3, 0.31)" onresize="setBoxWrapperSize(3, 0.31)">
+<body onload="setBoxWrapperSize()" onresize="setBoxWrapperSize()">
     <nav class="topbar">
         <div class="topbar-title">DAARRT Manager</div>
     </nav>
@@ -48,14 +49,10 @@
 </body>
 <!-- Début de la partie de test -->
 <script language="javascript">
-    insertDaarrt(1, "1");
-    insertDaarrt(2, 4);
-    insertDaarrt(3, 1);
-    insertDaarrt(4, 3);
-    insertDaarrt(5, 2);
-    insertNewDaarrt(6, 1);
-    insertBox('2', "ceci est un message d'avertissement", "warning");
-    insertBox('3', "ceci est un message d'erreur", "error");
+    insertTd(1, "Initiation", 1, 0, 1);
+    insertTd(2, "Sujet du TD 2", 1, 1, 1);
+    insertTd(3, "Sujet du TD 3", 1, 1, 0);
+    insertTd(4, "Sujet du TD 4", 1, 1, 0);
 </script>
 <!-- Fin de la partie de test -->
 </html>

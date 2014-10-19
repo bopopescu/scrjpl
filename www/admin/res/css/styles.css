@@ -30,14 +30,17 @@ a {
 }
 
 body {
+	/*background: url('../img/background.png') repeat #dcdcdc;*/
 	background-color: #dcdcdc;
 	color: #19191b;
 	font-family: 'Helvetica Neue', Helvetica, Verdana;
 	height: 100%;
 	margin: 0;
+	overflow: hidden;
 }
 
-html {height: 100%;}
+html {height: 100%;
+overflow: hidden;}
 
 i {
 	font-family: FontAwesome;
@@ -46,14 +49,18 @@ i {
 
 p.section-title {
 	color: #2a2b2c;
-	font-size: 25px;
+	font-size: 30px;
 	margin: 20px;
 }
 
 .wrapper {
-	height: fill;
-	margin-left: 200px;
-	width: fill;
+    position:absolute;
+    top: 65px;
+    bottom: 0px;
+	left: 200px;
+	right: 0px;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 /*
@@ -135,7 +142,7 @@ p.section-title {
 	padding: 15px;
 	position: relative;
 	/*left: 0%;*/
-	overflow:hidden;
+	overflow: hidden;
 	transition: height 200ms linear,
 		padding 200ms linear,
 		margin 200ms linear;
@@ -225,6 +232,7 @@ p.section-title {
 }
 
 .panel-bottom {
+	background-color: #FFF;
 	height: 35%;
 	padding: 20px
 }
@@ -257,23 +265,26 @@ p.section-title {
 .panel-yellow>div.panel-container>a>div.panel-bottom>i.panel-detail-icon {color: #f0ad4e;}
 
 /*
- * daart-box definition
+ * item-box definition
  */
 
-/*#daarrt-zone {text-align: center;}*/
-/*.daart-zone-wrapper {margin: 0px auto;}*/
-.daart-zone-clear {
+/*.item-zone { overflow: hidden}*/
+.item-zone-wrapper {
+	position: relative;
+	left: 7px;
+}
+
+.item-zone-clear {
 	clear : both;
 	visibility : hidden;
 }
 
-.daart-box {
+.item-box {
 	box-sizing: border-box;
-	background-color: #FFF;
-	box-shadow: 2px 2px 5px 3px #c7c7c7;
+	background-color: #f0f0f0;
+	box-shadow: 0px 0px 5px 3px #c7c7c7;
+	color: #373737;
 	float: left;
-	font-size: 35px;
-	line-height: 50px;
 	margin: 10px 10px;
 	padding: 15px;
 	height: 130px;
@@ -281,12 +292,32 @@ p.section-title {
 	text-align: right;
 }
 
-i.daarrt-box-title-icon::before {
-	content: "\f17b";
+.item-box-title {
+	font-size: 35px;
+	line-height: 50px;
+}
+
+.item-box-subtitle {
+	font-size: 18px;
+	line-height: 18px;
+	color: #a8a8a8;
+}
+
+i.item-box-title-icon {
 	float: left;
 	font-size: 60px;
 }
 
-.daart-box-options {
-	
+.item-box-options {
+	position: relative;
+	top: 24px;
+	font-size: 16px;
 }
+
+.item-box-options, .item-box-options>a {color: #848484;}
+.item-box-options>a:hover {color: #428bca;}
+
+i.daarrt-box-title-icon::before { content: "\f17c"; }
+i.daarrt-box-icon-view::before {content: "\f030";}
+i.daarrt-box-icon-ssh::before {content: "\f108";}
+i.daarrt-box-icon-detail::before {content: "\f205";}
