@@ -1,7 +1,4 @@
-.td-box-options {
-    top: 8px;
-    font-size: 13px;
-}
+.td-box-options {font-size: 13px;}
 i.td-box-title-icon::before { content: "\f085"; }
 i.td-box-icon-eno::before {content: "\f15c";}
 i.td-box-icon-res::before {content: "\f1c6";}
@@ -13,17 +10,4 @@ i.td-box-icon-cor::before {content: "\f1c9";}
 
 .td-box-green-icon {
     color: #5cb85c;
-}
-
-#add-td-box {
-    text-align: center;
-}
-
-#add-td-box a {
-    color: #373737;
-    font-size: 95px;
-}
-
-#add-td-box i::before {
-    content: "\f067";
 }
