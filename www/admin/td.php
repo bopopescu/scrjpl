@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Panneau de contrôle</title>
+    <title>Gestion des TD</title>
     <meta name="description" content="Gestion des TD">
     <meta name="author" content="Brian">
 
@@ -50,9 +50,10 @@
 <!-- Début de la partie de test -->
 <script language="javascript">
     insertTd(1, "Initiation", 1, 0, 1);
-    insertTd(2, "Sujet du TD 2", 1, 1, 1);
-    insertTd(3, "Sujet du TD 3", 1, 1, 0);
-    insertTd(4, "Sujet du TD 4", 1, 1, 0);
+    setTimeout(function () {insertTd(2, "Sujet du TD 2", 1, 1, 1);}, 100);
+    setTimeout(function () {insertTd(3, "Sujet du TD 3", 1, 1, 0);}, 200);
+    setTimeout(function () {insertTd(4, "Sujet du TD 4", 1, 1, 0);}, 300);
+    setTimeout(insertAddTdItem, 400);
 </script>
 <!-- Fin de la partie de test -->
 </html>

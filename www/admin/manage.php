@@ -53,7 +53,7 @@
     insertDaarrt(3, 1);
     insertDaarrt(4, 3);
     insertDaarrt(5, 2);
-    insertNewDaarrt(6, 1);
+    setTimeout(function () {insertNewDaarrt(6, 0);}, 2000);
     insertBox('2', "ceci est un message d'avertissement", "warning");
     insertBox('3', "ceci est un message d'erreur", "error");
 </script>

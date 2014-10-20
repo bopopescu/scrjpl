@@ -74,6 +74,8 @@
         </div>
         <hr />
 
+        <div id="search_results"></div>
+
     </div>
 </body>
 </html>

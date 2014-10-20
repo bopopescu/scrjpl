@@ -28,11 +28,14 @@
 }
 
 .search-icon::before, .search-icon-spinner::before {
-    color: #19191b;
     position: absolute;
     right: 50px;
     top: 10px;
 }
+
+.search-icon, .search-icon-spinner::before {color: #19191b;}
+.search-icon:hover {color: #428bca;}
+
 
 .search-icon::before {
     font-size: 30px;
@@ -49,13 +52,15 @@
 }
 
 .search-icon-settings::before {
-    color: #19191b;
     content: "\f1de";
     font-size: 30px;
     position: absolute;
     right: 10px;
     top: 10px;
 }
+
+.search-icon-settings {color: #19191b;}
+.search-icon-settings:hover {color: #428bca;}
 
 #advanced-search-options {
     width: 100%;
@@ -65,3 +70,5 @@
 #advanced-search-options td {
     width: 25%;
 }
+
+#search_results {}

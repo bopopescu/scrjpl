@@ -30,6 +30,14 @@ function fireResize() {
     wrap.style.margin = "10px auto";
 }
 
+function showEditOptions(e) {
+    e.getElementsByClassName("item-box-edit")[0].style.opacity = "1";
+}
+
+function hideEditOptions(e) {
+    e.getElementsByClassName("item-box-edit")[0].style.opacity = "0";
+}
+
 function insertDaarrt(id, grp) {
     var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];;
     var daarrtBox = document.createElement('div');
@@ -41,7 +49,7 @@ function insertDaarrt(id, grp) {
     title.className = "item-box-title";
     subtitle.className = "item-box-subtitle";
 
-    subtitle.innerHTML += grp + ((grp == 1) ? " groupe" : " groupes");
+    subtitle.innerHTML += grp + ((grp <= 1) ? " groupe" : " groupes");
     title.innerHTML += "DAARRT " + id + "<br/>";
 
     var iTitle = document.createElement('i');
@@ -81,6 +89,7 @@ function insertDaarrt(id, grp) {
     daarrtBox.appendChild(options);
 
     wrapper.appendChild(daarrtBox);
+    fireResize();
 }
 
 function insertNewDaarrt(id, grp) {
@@ -88,12 +97,23 @@ function insertNewDaarrt(id, grp) {
     insertBox(id, "Le DAARRT " + id + " vient de se connecter", "info");
 }
 
+// TD
+
+var maxTdId = 0;
+
 function insertTd(id, sujet, eno, res, cor) {
+    maxTdId = Math.max(id, maxTdId);
+
     var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];;
     var tdBox = document.createElement('div');
     var options = document.createElement('div');
     var title = document.createElement('font');
     var subtitle = document.createElement('font');
+
+    tdBox.setAttribute("onmouseover", "showEditOptions(this)");
+    tdBox.setAttribute("onmouseout", "hideEditOptions(this)");
+
+    tdBox.id = id;
     tdBox.className = "item-box";
     options.className = "item-box-options td-box-options";
     title.className = "item-box-title";
@@ -102,6 +122,27 @@ function insertTd(id, sujet, eno, res, cor) {
     title.innerHTML += "TD " + id + "<br/>";
     subtitle.innerHTML += sujet;
 
+    // OPTIONS D'EDITION
+    var edit = document.createElement('div');
+    var aEdit = document.createElement('a');
+    var aDel = document.createElement('a');
+    var iEdit = document.createElement('i');
+    var iDel = document.createElement('i');
+
+    aEdit.setAttribute('onclick', 'editInPlace(' + id + ')');
+    aEdit.setAttribute("href", "#");
+    aDel.setAttribute("href", "#");
+
+    edit.className = "item-box-edit";
+    iEdit.className = "icon-modify"
+    iDel.className = "icon-delete"
+
+    aEdit.appendChild(iEdit);
+    aDel.appendChild(iDel);
+    edit.appendChild(aEdit);
+    edit.appendChild(aDel);
+
+    // OPTIONS UTILISATEUR
     var iTitle = document.createElement('i');
     var iEno = document.createElement('i');
     var iRes = document.createElement('i');
@@ -116,7 +157,7 @@ function insertTd(id, sujet, eno, res, cor) {
     var aRes = document.createElement('a');
     var aCor = document.createElement('a');
 
-    aEno.setAttribute('href', 'td/enonce.php?id=' + id);
+    aEno.setAttribute('href', '#');
     aRes.setAttribute('href', 'td/ressources.php?id=' + id);
     aCor.setAttribute('href', 'td/correction.php?id=' + id);
 
@@ -140,7 +181,55 @@ function insertTd(id, sujet, eno, res, cor) {
     tdBox.appendChild(iTitle);
     tdBox.appendChild(title);
     tdBox.appendChild(subtitle);
+
+    tdBox.appendChild(edit);
+
     tdBox.appendChild(options);
 
     wrapper.appendChild(tdBox);
+    fireResize();
+}
+
+function insertNewTd() {
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
+    wrapper.removeChild(wrapper.lastChild);
+    insertTd(++maxTdId, "Sujet du TD " + maxTdId, 0, 0, 0);
+    setTimeout(insertAddTdItem, 100);
+}
+
+function insertAddTdItem() {
+
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
+    var addTdBox = document.createElement('div');
+    var a = document.createElement('a');
+    var i = document.createElement('i');
+
+    a.setAttribute("href", "javascript:insertNewTd()");
+
+    addTdBox.id = "add-td-box";
+    addTdBox.className = "item-box";
+
+    a.appendChild(i);
+    addTdBox.appendChild(a);
+    wrapper.appendChild(addTdBox);
+    fireResize();
+}
+
+function editInPlace(id) {
+    var box = document.getElementById(id);
+    var title = box.getElementsByClassName("item-box-title")[0];
+    var subtitle = box.getElementsByClassName("item-box-subtitle")[0];
+    box.removeChild(title);
+
+    var inputTitle = document.createElement('input');
+    inputTitle.type = "text";
+    inputTitle.style.fontSize = "35px";
+    inputTitle.style.width = "100px";
+    inputTitle.value = title.innerText;
+    box.insertBefore(inputTitle, box.children[1]);
+    box.removeChild(title);
+
+    // box.appendChild(inputTitle);
+
+    // alert(title);
 }
