@@ -12,11 +12,11 @@
 		 url("../font/fontawesome.woff") format("woff");
 }
 
-@keyframes infobox_insert { from { left: 100%; } to { left: 0%; } }
-@-o-keyframes infobox_insert { from { left: 100%; } to { left: 0%; } }
-@-ms-keyframes infobox_insert { from { left: 100%; } to { left: 0%; } }
-@-moz-keyframes infobox_insert { from { left: 100%; } to { left: 0%; } }
-@-webkit-keyframes infobox_insert { from { left: 100%; } to { left: 0%; } }
+@keyframes element_insert { from { left: 100%; } to { left: 0%; } }
+@-o-keyframes element_insert { from { left: 100%; } to { left: 0%; } }
+@-ms-keyframes element_insert { from { left: 100%; } to { left: 0%; } }
+@-moz-keyframes element_insert { from { left: 100%; } to { left: 0%; } }
+@-webkit-keyframes element_insert { from { left: 100%; } to { left: 0%; } }
 
 @keyframes infobox_closing { from { left: 0%; } to { left: 100%; } }
 @-o-keyframes infobox_closing { from { left: 0%; } to { left: 100%; } }
@@ -147,11 +147,11 @@ p.section-title {
 		padding 200ms linear,
 		margin 200ms linear;
 
-	animation: infobox_insert 600ms forwards;
-	-o-animation: infobox_insert 600ms forwards;
-	-ms-animation: infobox_insert 600ms forwards;
-	-moz-animation: infobox_insert 600ms forwards;
-	-webkit-animation: infobox_insert 600ms forwards;
+	animation: element_insert 300ms forwards;
+	-o-animation: element_insert 300ms forwards;
+	-ms-animation: element_insert 300ms forwards;
+	-moz-animation: element_insert 300ms forwards;
+	-webkit-animation: element_insert 300ms forwards;
 }
 
 .infobox-closing {
@@ -265,7 +265,7 @@ p.section-title {
 .panel-yellow>div.panel-container>a>div.panel-bottom>i.panel-detail-icon {color: #f0ad4e;}
 
 /*
- * item-box definition
+ * ib definition
  */
 
 /*.item-zone { overflow: hidden}*/
@@ -279,7 +279,7 @@ p.section-title {
 	visibility : hidden;
 }
 
-.item-box {
+.ib {
 	box-sizing: border-box;
 	background-color: #f0f0f0;
 	box-shadow: 0px 0px 5px 3px #c7c7c7;
@@ -290,32 +290,69 @@ p.section-title {
 	height: 130px;
 	width: 31%;
 	text-align: right;
+	position: relative;
+	animation: element_insert 300ms forwards;
+	-o-animation: element_insert 300ms forwards;
+	-ms-animation: element_insert 300ms forwards;
+	-moz-animation: element_insert 300ms forwards;
+	-webkit-animation: element_insert 300ms forwards;
 }
 
-.item-box-title {
+.ib-title {
 	font-size: 35px;
 	line-height: 50px;
 }
 
-.item-box-subtitle {
+.ib-subtitle {
 	font-size: 18px;
 	line-height: 18px;
 	color: #a8a8a8;
 }
 
-i.item-box-title-icon {
+i.ib-title-icon {
 	float: left;
 	font-size: 60px;
 }
 
-.item-box-options {
+.ib-options {
 	position: relative;
 	top: 24px;
 	font-size: 16px;
 }
 
-.item-box-options, .item-box-options>a {color: #848484;}
-.item-box-options>a:hover {color: #428bca;}
+.ib-edit {
+	position: relative;
+	top: 5px;
+	opacity: 0;
+}
+
+.ib-edit-title, .ib-edit-subtitle {
+	text-align: right;
+}
+
+.ib-edit-title {
+	color: #373737;
+	position: relative;
+	top: -5px;
+	font-size: 30px;
+	margin-bottom: 2px;
+	width: 25%;
+}
+
+.ib-edit-subtitle {
+	color: #a8a8a8;
+	font-size: 18px;
+	width: 50%;
+}
+
+.ib-edit>a, .ib-options, .ib-options>a {color: #848484;}
+.ib-edit>a:hover {color: #262626;}
+.ib-edit>a>i {margin-left: 10px}
+.ib-edit>a>i.icon-save::before {content: "\f0c7";}
+.ib-edit>a>i.icon-modify::before {content: "\f040";}
+.ib-edit>a>i.icon-delete::before {content: "\f1f8";}
+
+.ib-options>a:hover {color: #428bca;}
 
 i.daarrt-box-title-icon::before { content: "\f17c"; }
 i.daarrt-box-icon-view::before {content: "\f030";}

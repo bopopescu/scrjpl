@@ -18,6 +18,8 @@ function search() {
     } catch(e) { return 0; }
 
     var wrap = document.getElementById("search_results");
+
+    // Nettoyage de la recherche précédente
     while (wrap.firstChild) { wrap.removeChild(wrap.firstChild)};
 
     setTimeout(function() {

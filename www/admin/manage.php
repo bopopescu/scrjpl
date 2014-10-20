@@ -48,12 +48,15 @@
 </body>
 <!-- Début de la partie de test -->
 <script language="javascript">
-    insertDaarrt(1, "1");
-    insertDaarrt(2, 4);
-    insertDaarrt(3, 1);
-    insertDaarrt(4, 3);
-    insertDaarrt(5, 2);
-    insertNewDaarrt(6, 1);
+    <?php
+        $elem = 4;
+        for ($i = 1 ; $i <= $elem ; $i++) {
+            echo "setTimeout(function () {
+                insertDaarrt({$i}, ".rand(0, 5).")}, ({$i}-1) * 100);\n";
+        }
+        $elem++;
+    echo "setTimeout(function () {insertNewDaarrt({$elem}, ".rand(0, 5).");}, 2000);";
+    ?>
     insertBox('2', "ceci est un message d'avertissement", "warning");
     insertBox('3', "ceci est un message d'erreur", "error");
 </script>

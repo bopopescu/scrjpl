@@ -49,11 +49,16 @@
 </body>
 <!-- Début de la partie de test -->
 <script language="javascript">
-    insertTd(1, "Initiation", 1, 0, 1);
-    setTimeout(function () {insertTd(2, "Sujet du TD 2", 1, 1, 1);}, 100);
-    setTimeout(function () {insertTd(3, "Sujet du TD 3", 1, 1, 0);}, 200);
-    setTimeout(function () {insertTd(4, "Sujet du TD 4", 1, 1, 0);}, 300);
-    setTimeout(insertAddTdItem, 400);
+    <?php
+
+    $elem = 4;
+    for ($i = 1 ; $i <= $elem ; $i++) {
+        echo "setTimeout(function () {
+            insertTd({$i}, \"Sujet du TD {$i}\", ".rand(0, 1).", ".rand(0, 1).", ".rand(0, 1).");
+        }, ({$i}-1) * 100);\n";
+    }
+    echo "setTimeout(insertAddTdItem, {$elem}*100);";
+    ?>
 </script>
 <!-- Fin de la partie de test -->
 </html>

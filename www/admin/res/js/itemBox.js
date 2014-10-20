@@ -9,7 +9,7 @@ function setBoxWrapperSize(nMax, pMin) {
 function fireResize() {
     var container = document.getElementsByClassName("item-zone")[0];
     var wrap = document.getElementsByClassName("item-zone-wrapper")[0];;
-    var boxes = document.getElementsByClassName("item-box");
+    var boxes = document.getElementsByClassName("ib");
     var box = window.getComputedStyle(boxes[0]);
 
     var n; var p;
@@ -31,11 +31,11 @@ function fireResize() {
 }
 
 function showEditOptions(e) {
-    e.getElementsByClassName("item-box-edit")[0].style.opacity = "1";
+    e.getElementsByClassName("ib-edit")[0].style.opacity = "1";
 }
 
 function hideEditOptions(e) {
-    e.getElementsByClassName("item-box-edit")[0].style.opacity = "0";
+    e.getElementsByClassName("ib-edit")[0].style.opacity = "0";
 }
 
 function insertDaarrt(id, grp) {
@@ -44,10 +44,10 @@ function insertDaarrt(id, grp) {
     var options = document.createElement('div');
     var title = document.createElement('font');
     var subtitle = document.createElement('font');
-    daarrtBox.className = "item-box";
-    options.className = "item-box-options";
-    title.className = "item-box-title";
-    subtitle.className = "item-box-subtitle";
+    daarrtBox.className = "ib";
+    options.className = "ib-options";
+    title.className = "ib-title";
+    subtitle.className = "ib-subtitle";
 
     subtitle.innerHTML += grp + ((grp <= 1) ? " groupe" : " groupes");
     title.innerHTML += "DAARRT " + id + "<br/>";
@@ -57,7 +57,7 @@ function insertDaarrt(id, grp) {
     var iConsole = document.createElement('i');
     var iDetail = document.createElement('i');
 
-    iTitle.className = "item-box-title-icon daarrt-box-title-icon";
+    iTitle.className = "ib-title-icon daarrt-box-title-icon";
     iView.className = "daarrt-box-icon-view";
     iConsole.className = "daarrt-box-icon-ssh";
     iDetail.className = "daarrt-box-icon-detail";
@@ -114,12 +114,12 @@ function insertTd(id, sujet, eno, res, cor) {
     tdBox.setAttribute("onmouseout", "hideEditOptions(this)");
 
     tdBox.id = id;
-    tdBox.className = "item-box";
-    options.className = "item-box-options td-box-options";
-    title.className = "item-box-title";
-    subtitle.className = "item-box-subtitle";
+    tdBox.className = "ib";
+    options.className = "ib-options td-box-options";
+    title.className = "ib-title";
+    subtitle.className = "ib-subtitle";
 
-    title.innerHTML += "TD " + id + "<br/>";
+    title.innerHTML += "TD " + id;
     subtitle.innerHTML += sujet;
 
     // OPTIONS D'EDITION
@@ -133,7 +133,7 @@ function insertTd(id, sujet, eno, res, cor) {
     aEdit.setAttribute("href", "#");
     aDel.setAttribute("href", "#");
 
-    edit.className = "item-box-edit";
+    edit.className = "ib-edit";
     iEdit.className = "icon-modify"
     iDel.className = "icon-delete"
 
@@ -148,7 +148,7 @@ function insertTd(id, sujet, eno, res, cor) {
     var iRes = document.createElement('i');
     var iCor = document.createElement('i');
 
-    iTitle.className = "item-box-title-icon td-box-title-icon";
+    iTitle.className = "ib-title-icon td-box-title-icon";
     iEno.className = "td-box-icon-eno";
     iRes.className = "td-box-icon-res";
     iCor.className = "td-box-icon-cor";
@@ -157,7 +157,7 @@ function insertTd(id, sujet, eno, res, cor) {
     var aRes = document.createElement('a');
     var aCor = document.createElement('a');
 
-    aEno.setAttribute('href', '#');
+    aEno.setAttribute('href', 'td/enonce.php?id=' + id);
     aRes.setAttribute('href', 'td/ressources.php?id=' + id);
     aCor.setAttribute('href', 'td/correction.php?id=' + id);
 
@@ -180,6 +180,7 @@ function insertTd(id, sujet, eno, res, cor) {
 
     tdBox.appendChild(iTitle);
     tdBox.appendChild(title);
+    tdBox.insertBefore(document.createElement('br'), tdBox.children[2]);
     tdBox.appendChild(subtitle);
 
     tdBox.appendChild(edit);
@@ -207,7 +208,7 @@ function insertAddTdItem() {
     a.setAttribute("href", "javascript:insertNewTd()");
 
     addTdBox.id = "add-td-box";
-    addTdBox.className = "item-box";
+    addTdBox.className = "ib";
 
     a.appendChild(i);
     addTdBox.appendChild(a);
@@ -217,29 +218,59 @@ function insertAddTdItem() {
 
 function editInPlace(id) {
     var box = document.getElementById(id);
-    var title = box.getElementsByClassName("item-box-title")[0];
-    var subtitle = box.getElementsByClassName("item-box-subtitle")[0];
-    box.removeChild(title);
+    var title = box.getElementsByClassName("ib-title")[0];
+    var subtitle = box.getElementsByClassName("ib-subtitle")[0];
 
     var inputTitle = document.createElement('input');
     inputTitle.type = "text";
-    inputTitle.style.fontSize = "35px";
-    inputTitle.style.width = "100px";
-    inputTitle.value = title.innerText;
+    inputTitle.value = title.innerHTML;
+    inputTitle.className = "ib-edit-title";
     box.insertBefore(inputTitle, box.children[1]);
-    box.insertBefore(document.createElement('br'), box.children[2]);
     box.removeChild(title);
 
     var inputSubtitle = document.createElement('input');
-    inputTitle.type = "text";
-    inputTitle.style.fontSize = "35px";
-    inputTitle.style.width = "100px";
-    inputTitle.value = title.innerText;
-    box.insertBefore(inputTitle, box.children[1]);
-    box.insertBefore(document.createElement('br'), box.children[2]);
-    box.removeChild(title);
+    inputSubtitle.type = "text";
+    inputSubtitle.value = subtitle.innerHTML;
+    inputSubtitle.className = "ib-edit-subtitle";
+    box.insertBefore(inputSubtitle, box.children[3]);
+    box.removeChild(subtitle);
 
-    // box.appendChild(inputTitle);
+    var editOptions = box.getElementsByClassName("ib-edit")[0];
+    editOptions.removeChild(editOptions.firstChild);
+    editOptions.firstChild.firstChild.className = "icon-save";
+    editOptions.firstChild.setAttribute("href", "javascript:saveInPlace(" + id + ")");
+}
 
-    // alert(title);
+function saveInPlace(id) {
+    var box = document.getElementById(id);
+    var inputTitle = box.getElementsByClassName("ib-edit-title")[0];
+    var inputSubtitle = box.getElementsByClassName("ib-edit-subtitle")[0];
+
+    var title = document.createElement('font');
+    title.innerHTML = inputTitle.value;
+    title.className = "ib-title";
+    box.insertBefore(title, box.children[1]);
+    box.removeChild(inputTitle);
+
+    var subtitle = document.createElement('font');
+    subtitle.innerHTML = inputSubtitle.value;
+    subtitle.className = "ib-subtitle";
+    box.insertBefore(subtitle, box.children[3]);
+    box.removeChild(inputSubtitle);
+
+    var editOptions = box.getElementsByClassName("ib-edit")[0];
+    var aDel = document.createElement('a');
+    var iDel = document.createElement('i');
+    aDel.setAttribute("href", "#");
+    iDel.className = "icon-delete"
+    aDel.appendChild(iDel);
+    editOptions.innerHTML = editOptions.innerHTML.replace('<br></br>', '');
+    editOptions.appendChild(aDel);
+    editOptions.firstChild.firstChild.className = "icon-modify";
+    editOptions.firstChild.setAttribute("href", "javascript:editInPlace(" + id + ")");
+
+
+    var iDel = document.createElement('i');
+    aDel.setAttribute("href", "#");
+    iDel.className = "icon-delete"
 }
