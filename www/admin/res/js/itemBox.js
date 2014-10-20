@@ -227,6 +227,16 @@ function editInPlace(id) {
     inputTitle.style.width = "100px";
     inputTitle.value = title.innerText;
     box.insertBefore(inputTitle, box.children[1]);
+    box.insertBefore(document.createElement('br'), box.children[2]);
+    box.removeChild(title);
+
+    var inputSubtitle = document.createElement('input');
+    inputTitle.type = "text";
+    inputTitle.style.fontSize = "35px";
+    inputTitle.style.width = "100px";
+    inputTitle.value = title.innerText;
+    box.insertBefore(inputTitle, box.children[1]);
+    box.insertBefore(document.createElement('br'), box.children[2]);
     box.removeChild(title);
 
     // box.appendChild(inputTitle);
