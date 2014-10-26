@@ -139,7 +139,7 @@ p.section-title {
 	border-radius: 7px;
 	color: #19191b;
 	margin: 20px;
-	padding: 15px;
+	padding: 14px;
 	position: relative;
 	/*left: 0%;*/
 	overflow: hidden;
@@ -160,6 +160,12 @@ p.section-title {
 	-ms-animation: infobox_closing 300ms forwards;
 	-moz-animation: infobox_closing 300ms forwards;
 	-webkit-animation: infobox_closing 300ms forwards;
+}
+
+.infobox-icon, .infobox-close-icon {
+	font-size: 18px;
+	position: relative;
+	top: 1px;
 }
 
 .infobox-icon {
@@ -265,10 +271,10 @@ p.section-title {
 .panel-yellow>div.panel-container>a>div.panel-bottom>i.panel-detail-icon {color: #f0ad4e;}
 
 /*
- * ib definition
+ * Item box definition
  */
 
-/*.item-zone { overflow: hidden}*/
+.item-zone { height: fill}
 .item-zone-wrapper {
 	position: relative;
 	left: 7px;
@@ -277,6 +283,7 @@ p.section-title {
 .item-zone-clear {
 	clear : both;
 	visibility : hidden;
+	height: 100%;
 }
 
 .ib {
@@ -300,7 +307,7 @@ p.section-title {
 
 .ib-title {
 	font-size: 35px;
-	line-height: 50px;
+	line-height: 45px;
 }
 
 .ib-subtitle {
@@ -336,7 +343,7 @@ i.ib-title-icon {
 	top: -5px;
 	font-size: 30px;
 	margin-bottom: 2px;
-	width: 25%;
+	width: 33%;
 }
 
 .ib-edit-subtitle {

@@ -7,6 +7,15 @@
     to {transform: rotate(359deg);}
 }
 
+#advanced-search-options {
+    width: 100%;
+    border-spacing: 0px;
+}
+
+#advanced-search-options td { width: 25%; }
+
+#search_results {}
+
 #search-form {
     box-sizing: border-box;
     height: 45px;
@@ -14,14 +23,9 @@
     padding: 10px 15px;
     position: relative;
     transition: height 300ms linear;
-    /*-o-transition: height 300ms linear;
-    -ms-transition: height 300ms linear;
-    -moz-transition: height 300ms linear;
-    -khtml-transition: height 300ms linear;
-    -webkit-transition: height 300ms linear;*/
 }
 
-.search-input {
+#search-input {
     display: block;
     font-size: 25px;
     margin : 0px auto 10px auto;
@@ -62,13 +66,16 @@
 .search-icon-settings {color: #19191b;}
 .search-icon-settings:hover {color: #428bca;}
 
-#advanced-search-options {
-    width: 100%;
-    border-spacing: 0px;
-}
+.search-result-wiki-icon::before { content: "\f19c"; }
+.search-result-datasheet-icon::before { content: "\f1c0"; }
+.search-result-tuto-icon::before { content: "\f19d"; }
 
-#advanced-search-options td {
-    width: 25%;
-}
+.search-result-icon-view::before { content: "\f06e"; }
+.search-result-icon-detail::before { content: "\f03a"; }
 
-#search_results {}
+
+#add_document {
+    height: 200px;
+    float: none;
+    margin: auto;
+}

@@ -1,6 +1,8 @@
+var maxInfoBoxID = 0;
 var resizeTimer = 0;
+var maxTdId = 0;
 
-function setBoxWrapperSize(nMax, pMin) {
+function setBoxWrapperSize() {
     if (resizeTimer)
         clearTimeout(resizeTimer);
     resizeTimer = setTimeout(fireResize, 200);
@@ -99,9 +101,7 @@ function insertNewDaarrt(id, grp) {
 
 // TD
 
-var maxTdId = 0;
-
-function insertTd(id, sujet, eno, res, cor) {
+function insertTd(id, titre, sujet, eno, res, cor) {
     maxTdId = Math.max(id, maxTdId);
 
     var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];;
@@ -119,7 +119,7 @@ function insertTd(id, sujet, eno, res, cor) {
     title.className = "ib-title";
     subtitle.className = "ib-subtitle";
 
-    title.innerHTML += "TD " + id;
+    title.innerHTML += titre;
     subtitle.innerHTML += sujet;
 
     // OPTIONS D'EDITION
@@ -131,6 +131,7 @@ function insertTd(id, sujet, eno, res, cor) {
 
     aEdit.setAttribute('onclick', 'editInPlace(' + id + ')');
     aEdit.setAttribute("href", "#");
+    aDel.setAttribute('onclick', 'deleteInPlace(' + id + ')');
     aDel.setAttribute("href", "#");
 
     edit.className = "ib-edit";
@@ -182,9 +183,7 @@ function insertTd(id, sujet, eno, res, cor) {
     tdBox.appendChild(title);
     tdBox.insertBefore(document.createElement('br'), tdBox.children[2]);
     tdBox.appendChild(subtitle);
-
     tdBox.appendChild(edit);
-
     tdBox.appendChild(options);
 
     wrapper.appendChild(tdBox);
@@ -194,7 +193,7 @@ function insertTd(id, sujet, eno, res, cor) {
 function insertNewTd() {
     var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
     wrapper.removeChild(wrapper.lastChild);
-    insertTd(++maxTdId, "Sujet du TD " + maxTdId, 0, 0, 0);
+    insertTd(++maxTdId, "TD " + maxTdId, "Sujet du TD " + maxTdId, 0, 0, 0);
     setTimeout(insertAddTdItem, 100);
 }
 
@@ -238,13 +237,29 @@ function editInPlace(id) {
     var editOptions = box.getElementsByClassName("ib-edit")[0];
     editOptions.removeChild(editOptions.firstChild);
     editOptions.firstChild.firstChild.className = "icon-save";
-    editOptions.firstChild.setAttribute("href", "javascript:saveInPlace(" + id + ")");
+    editOptions.firstChild.setAttribute("onclick", "saveInPlace(" + id + ")");
 }
 
 function saveInPlace(id) {
     var box = document.getElementById(id);
     var inputTitle = box.getElementsByClassName("ib-edit-title")[0];
     var inputSubtitle = box.getElementsByClassName("ib-edit-subtitle")[0];
+
+    var data = new FormData();
+
+	data.append('id', id);
+	data.append('title', inputTitle.value);
+	data.append('subtitle', inputSubtitle.value);
+
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'db/proceed.php?td=modify', true);
+	xhr.onload = function () {
+        if (this.responseText == "ERROR") {
+            insertBox(++maxInfoBoxID, "Impossible de mettre le TD à jour", "error");
+        }
+        else {return 0;}
+	};
+    xhr.send(data);
 
     var title = document.createElement('font');
     title.innerHTML = inputTitle.value;
@@ -261,16 +276,124 @@ function saveInPlace(id) {
     var editOptions = box.getElementsByClassName("ib-edit")[0];
     var aDel = document.createElement('a');
     var iDel = document.createElement('i');
-    aDel.setAttribute("href", "#");
-    iDel.className = "icon-delete"
+    aDel.setAttribute('onclick', 'deleteInPlace(' + id + ')');
+    aDel.setAttribute('href', '#');
+    iDel.className = "icon-delete";
     aDel.appendChild(iDel);
     editOptions.innerHTML = editOptions.innerHTML.replace('<br></br>', '');
     editOptions.appendChild(aDel);
     editOptions.firstChild.firstChild.className = "icon-modify";
-    editOptions.firstChild.setAttribute("href", "javascript:editInPlace(" + id + ")");
+    editOptions.firstChild.setAttribute("onclick", "editInPlace(" + id + ")");
+    editOptions.firstChild.setAttribute('href', '#');
+}
 
+function deleteInPlace(id) {
+    var data = new FormData();
+    data.append('id', id);
 
-    var iDel = document.createElement('i');
-    aDel.setAttribute("href", "#");
-    iDel.className = "icon-delete"
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'db/proceed.php?td=delete', true);
+    xhr.onload = function () {
+        if (this.responseText == "ERROR") {
+            insertBox(++maxInfoBoxID, "Impossible de supprimer le TD", "error");
+        }
+        else {return 0;}
+    };
+
+    var wrap = document.getElementsByClassName("item-zone-wrapper")[0];
+    var box = document.getElementById(id);
+
+    if (confirm("Êtes vous sur de vouloir supprimer \"" +
+    box.getElementsByClassName("ib-title")[0].innerHTML + "\" ?")) {
+        xhr.send(data);
+        wrap.removeChild(box);
+    }
+}
+
+/*
+ * RECHERCHE
+ */
+
+function insertSearchResult(result) {
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
+    var box = document.createElement('div');
+    var title = document.createElement('font');
+    var subtitle = document.createElement('font');
+    var options = document.createElement('div');
+
+    box.id = result.id;
+    box.className = "ib";
+    options.className = "ib-options";
+    title.className = "ib-title";
+    subtitle.className = "ib-subtitle";
+
+    title.innerHTML += result.title;
+    subtitle.innerHTML += result.subtitle;
+
+    // OPTIONS UTILISATEUR
+    var iTitle = document.createElement('i');
+    var iView = document.createElement('i');
+    var iDetail = document.createElement('i');
+
+    iTitle.className = "ib-title-icon ";
+    iView.className = "search-result-icon-view";
+    iDetail.className = "search-result-icon-detail";
+
+    var aView = document.createElement('a');
+    var aDetail = document.createElement('a');
+
+    aView.setAttribute("href", "#");
+    aDetail.setAttribute("href", "#");
+
+    switch (result.type) {
+        case "tuto":
+            iTitle.className += "search-result-tuto-icon";
+            iTitle.title = "Tutoriel";
+            break;
+        case "datasheet":
+            iTitle.className += "search-result-datasheet-icon";
+            iTitle.title = "Datasheet";
+            break;
+        case "wiki":
+            iTitle.className += "search-result-wiki-icon";
+            iTitle.title = "Wiki";
+            break;
+    }
+
+    aView.appendChild(iView);
+    aView.innerHTML += " Consulter";
+    aDetail.appendChild(iDetail);
+    aDetail.innerHTML += " Détails";
+
+    options.appendChild(aView);
+    options.innerHTML += " | ";
+    options.appendChild(aDetail);
+
+    box.appendChild(iTitle);
+    box.appendChild(title);
+    box.insertBefore(document.createElement('br'), box.children[2]);
+    box.appendChild(subtitle);
+
+    box.appendChild(options);
+
+    wrapper.appendChild(box);
+    fireResize();
+}
+
+function insertAddTdItem() {
+
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
+    var addTdBox = document.createElement('div');
+    var a = document.createElement('a');
+    var i = document.createElement('i');
+
+    a.setAttribute("href", "javascript:insertNewTd()");
+
+    addTdBox.id = "add-td-box";
+    addTdBox.className = "ib";
+
+    a.appendChild(i);
+    addTdBox.appendChild(a);
+    wrapper.appendChild(addTdBox);
+    fireResize();
 }

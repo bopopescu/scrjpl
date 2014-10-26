@@ -15,7 +15,7 @@
     <script language="javascript" src="res/js/itemBox.js"></script>
 </head>
 
-<body onload="setBoxWrapperSize(3, 0.31)" onresize="setBoxWrapperSize(3, 0.31)">
+<body onload="setBoxWrapperSize()" onresize="setBoxWrapperSize()">
     <nav class="topbar">
         <div class="topbar-title">DAARRT Manager</div>
     </nav>
@@ -37,8 +37,7 @@
         </li>
     </ul>
     <div class="wrapper">
-        <div id="infobox-zone">
-        </div>
+        <div id="infobox-zone"></div>
 
         <div class="item-zone">
             <div class="item-zone-wrapper"></div>

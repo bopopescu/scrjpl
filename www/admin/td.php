@@ -38,8 +38,7 @@
         </li>
     </ul>
     <div class="wrapper">
-        <div id="infobox-zone">
-        </div>
+        <div id="infobox-zone"></div>
 
         <div class="item-zone">
             <div class="item-zone-wrapper"></div>
@@ -50,14 +49,22 @@
 <!-- Début de la partie de test -->
 <script language="javascript">
     <?php
+        include 'db/connect.php';
+        $mysqli = connect();
 
-    $elem = 4;
-    for ($i = 1 ; $i <= $elem ; $i++) {
-        echo "setTimeout(function () {
-            insertTd({$i}, \"Sujet du TD {$i}\", ".rand(0, 1).", ".rand(0, 1).", ".rand(0, 1).");
-        }, ({$i}-1) * 100);\n";
-    }
-    echo "setTimeout(insertAddTdItem, {$elem}*100);";
+        $res = $mysqli->query("SELECT * FROM td ORDER BY id ASC");
+
+        $elem = 1;
+        while ($row = $res->fetch_assoc()) {
+            echo "setTimeout(function () {
+                insertTd(".$row['id'].", \"".$row['title']."\",
+                \"".$row['subtitle']."\", \"".$row['enonce']."\",
+                \"".$row['ressources']."\",
+                 \"".$row['correction']."\");
+            }, ({$elem}) * 100);\n";
+            $elem++;
+        }
+        echo "setTimeout(insertAddTdItem, {$elem}*100);";
     ?>
 </script>
 <!-- Fin de la partie de test -->
