@@ -1,13 +1,14 @@
-var maxInfoBoxID = 0;
 var resizeTimer = 0;
 var maxTdId = 0;
 
+// Bloque la fonction fireResize jusqu'a la fin du redimensionnement
 function setBoxWrapperSize() {
     if (resizeTimer)
         clearTimeout(resizeTimer);
     resizeTimer = setTimeout(fireResize, 200);
 }
 
+// Adapte les box en fonction de la taille de la fenêtre
 function fireResize() {
     var container = document.getElementsByClassName("item-zone")[0];
     var wrap = document.getElementsByClassName("item-zone-wrapper")[0];;
@@ -16,6 +17,10 @@ function fireResize() {
 
     var n; var p;
 
+    /* Choix des coeffs de redimensionnement
+     * n : nbr par colonne
+     * p : taille d'une box en %
+     */
     if (container.clientWidth < 480) { n = 1;p = 0.91; }
     else if (container.clientWidth < 605) { n = 1; p = 0.93; }
     else if (container.clientWidth < 780) { n = 2; p = 0.46; }
@@ -40,6 +45,7 @@ function hideEditOptions(e) {
     e.getElementsByClassName("ib-edit")[0].style.opacity = "0";
 }
 
+// Génère une box "DAARRT" avec les liens vers la console, webcam, etc, ...
 function insertDaarrt(id, grp) {
     var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];;
     var daarrtBox = document.createElement('div');
@@ -53,6 +59,8 @@ function insertDaarrt(id, grp) {
 
     subtitle.innerHTML += grp + ((grp <= 1) ? " groupe" : " groupes");
     title.innerHTML += "DAARRT " + id + "<br/>";
+
+    // OPTIONS DU DAARRT (console, webcam, ...)
 
     var iTitle = document.createElement('i');
     var iView = document.createElement('i');
@@ -71,6 +79,8 @@ function insertDaarrt(id, grp) {
     aView.setAttribute('href', 'daarrt/view.php?id=' + id);
     aConsole.setAttribute('href', 'daarrt/ssh.php?id=' + id);
     aDetail.setAttribute('href', 'daarrt/details.php?id=' + id);
+
+    // Assemblage des éléments de la box
 
     aView.appendChild(iView);
     aView.innerHTML += " Voir";
@@ -94,12 +104,15 @@ function insertDaarrt(id, grp) {
     fireResize();
 }
 
+// Ajoute une box DAARRT et création d'un message d'info signalant le nouveau DAARRT.
 function insertNewDaarrt(id, grp) {
     insertDaarrt(id, grp);
-    insertBox(id, "Le DAARRT " + id + " vient de se connecter", "info");
+    insertBox("Le DAARRT " + id + " vient de se connecter", "info");
 }
 
-// TD
+/*
+ * Fonction spécifiques au box de TD.
+ */
 
 function insertTd(id, titre, sujet, eno, res, cor) {
     maxTdId = Math.max(id, maxTdId);
@@ -255,7 +268,7 @@ function saveInPlace(id) {
 	xhr.open('POST', 'db/proceed.php?td=modify', true);
 	xhr.onload = function () {
         if (this.responseText == "ERROR") {
-            insertBox(++maxInfoBoxID, "Impossible de mettre le TD à jour", "error");
+            insertBox("Impossible de mettre le TD à jour", "error");
         }
         else {return 0;}
 	};
@@ -342,7 +355,8 @@ function insertSearchResult(result) {
     var aView = document.createElement('a');
     var aDetail = document.createElement('a');
 
-    aView.setAttribute("href", "#");
+    aView.setAttribute("href", result.path);
+    aView.setAttribute("target", "_blank");
     aDetail.setAttribute("href", "#");
 
     switch (result.type) {

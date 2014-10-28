@@ -60,48 +60,46 @@
                     </td>
                     <td>
                         <label for="td">
-                            <input name="td" id="td" type="checkbox"/>
-                            Inclure les TD
+                            <input name="tuto" id="tuto" type="checkbox" checked/>
+                            Inclure les tutoriels
                         </label>
-                    </td>
-                    <td>
-                    <label for="correction_td">
-                        <input name="correction_td" id="correction_td" type="checkbox"/>
-                        Inclure les corrections de TD
-                    </label>
                     </td>
                 </tr>
             </table>
         </div>
         <hr />
         <div id="search_results" class="item-zone">
-            <div class="item-zone-wrapper"></div>
+            <div class="item-zone-wrapper">
+
+            <div id="add_document" class="ib">
+                <form action="db/upload.php" method="POST" enctype="multipart/form-data">
+                    <label for="title">Titre :
+                        <input id="title" name="title" type="text"/>
+                    </label><br />
+
+                    <label for="subtitle">Sous-titre :
+                        <input id="subtitle" name="subtitle" type="text"/>
+                    </label><br />
+
+                    <label for="type">Type :
+                        <select id="type" name="type">
+                            <option>Datasheet</option>
+                            <option>Tutoriel</option>
+                            <option>Wiki</option>
+                        </select>
+                    </label><br />
+
+                    <label for="document">Fichier :
+                        <input id="document" name="document" type="file"/>
+                    </label><br />
+
+                    <button value="submit">Envoyer</button>
+                </form>
+            </div>
+
+            </div>
         </div>
-        <div id="add_document" class="ib">
-            <form action="db/upload.php" method="POST" enctype="multipart/form-data">
-                <label for="title">Titre :
-                    <input id="title" name="title" type="text"/>
-                </label><br />
 
-                <label for="subtitle">Sous-titre :
-                    <input id="subtitle" name="subtitle" type="text"/>
-                </label><br />
-
-                <label for="type">Type :
-                    <select id="type" name="type">
-                        <option>Datasheet</option>
-                        <option>Tutoriel</option>
-                        <option>Wiki</option>
-                    </select>
-                </label><br />
-
-                <label for="document">Fichier :
-                    <input id="document" name="document" type="file"/>
-                </label><br />
-
-                <button value="submit">Envoyer</button>
-            </form>
-        </div>
     </div>
 </body>
 </html>

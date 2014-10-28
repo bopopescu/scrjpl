@@ -15,21 +15,39 @@ function showSearchOptions() {
 
 function search() {
     var query = document.getElementById("search-input").value;
+    var wrap = document.getElementsByClassName("item-zone-wrapper")[0];
+    // Nettoyage de la recherche précédente
+    while (wrap.firstChild) { wrap.removeChild(wrap.firstChild) };
 
-    if (query != "") {
+    if (query.length == "") {
+        initSearchSpace();
+    }
+    else if (query.length < 3) {
+        var p = document.createElement('p');
+        p.innerText = "La recherche doit contenir au moins 3 caractères !";
+        p.style.fontSize = "30px";
+        p.style.color = "#c34747";
+        p.style.textAlign = "center";
+        wrap.appendChild(p);
+    }
+    else {
         // On implémente un verrou pour éviter une double requête
         if (lockSearch) return 1;
         else toggleLock();
 
+        // Onrécupère les options de recherche
+        var searchDatasheet = document.getElementById('datasheet').checked;
+        var searchWiki = document.getElementById('wiki').checked;
+        var searchTuto = document.getElementById('tuto').checked;
+
         var icon = document.getElementsByClassName("search-icon")[0];
         icon.className = "search-icon-spinner";
 
-        var wrap = document.getElementsByClassName("item-zone-wrapper")[0];
-        // Nettoyage de la recherche précédente
-        while (wrap.firstChild) { wrap.removeChild(wrap.firstChild) };
-
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'db/proceed.php?search=' + query, true);
+        xhr.open('GET', 'db/proceed.php?search=' + query
+                + "&datasheet=" + searchDatasheet
+                + "&wiki=" + searchWiki
+                + "&tuto=" + searchTuto, true);
         xhr.onload = function () {
             var result = JSON.parse(this.responseText);
             for (var i = 0 ; i < result.length ; i++) {

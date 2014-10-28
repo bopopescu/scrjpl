@@ -19,12 +19,32 @@
         }
     }
     elseif (@$_GET["search"] != "") {
+        // On échappe les caractères de la requête
         $search = mysql_real_escape_string($_GET["search"]);
-        $query = $db->query("SELECT * FROM documents WHERE title LIKE \"%{$search}%\"
-            OR subtitle LIKE \"%{$search}%\" OR tags LIKE \"%{$search}%\"
-            OR raw_data LIKE \"%{$search}%\"
-            ORDER BY title DESC;");
 
+        if ($_GET['datasheet'] == "true" && $_GET['wiki'] == "true" && $_GET['tuto'] == "true") {
+            $searchOptions = "";
+        }
+        else if ($_GET['datasheet'] == "false" && $_GET['wiki'] == "false" && $_GET['tuto'] == "false"){
+            $searchOptions = "";
+        }
+        else {
+            $searchOptions = " AND (";
+            $el = array();
+            if ($_GET['datasheet'] == "true")
+                array_push($el, "type='datasheet'");
+            if ($_GET['wiki'] == "true")
+                array_push($el, "type='wiki'");
+            if ($_GET['tuto'] == "true")
+                array_push($el, "type='tuto'");
+
+            $searchOptions = $searchOptions."".implode(" OR ", $el).")";
+        }
+
+
+        $query = $db->query("SELECT id, title, subtitle, type, path
+            FROM documents WHERE MATCH(title, subtitle, tags, raw_data)
+            AGAINST(\"$search\") {$searchOptions};");
         $result = array();
 
         while ($row = $query->fetch_assoc()) {

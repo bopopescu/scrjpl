@@ -56,8 +56,8 @@
         $elem++;
     echo "setTimeout(function () {insertNewDaarrt({$elem}, ".rand(0, 5).");}, 2000);";
     ?>
-    insertBox('2', "ceci est un message d'avertissement", "warning");
-    insertBox('3', "ceci est un message d'erreur", "error");
+    insertBox("ceci est un message d'avertissement", "warning");
+    insertBox("ceci est un message d'erreur", "error");
 </script>
 <!-- Fin de la partie de test -->
 </html>

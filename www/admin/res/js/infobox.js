@@ -1,3 +1,5 @@
+var maxInfoBoxID = 0;
+
 function closeBox(id) {
     document.getElementById(id).className += " infobox-closing";
     setTimeout(function() {
@@ -8,20 +10,21 @@ function closeBox(id) {
         infobox.style.padding = "0px";
         infobox.style.height = "0px";
         setTimeout(function() {wrapper.removeChild(infobox);}, 200);
+        if (id == maxInfoBoxID) --maxInfoBoxID;
     }, 300);
 }
 
-function insertBox(id, message, type) {
+function insertBox(message, type) {
     var wrapper = document.getElementById("infobox-zone");
     var infobox = document.createElement("div");
-    infobox.id = id;
+    infobox.id = ++maxInfoBoxID;
 
     var i = document.createElement("i");
     i.className = "infobox-icon";
 
     var a = document.createElement("a");
     var i2 = document.createElement("i");
-    a.setAttribute('href', 'javascript:closeBox(\"' + id + '\")');
+    a.setAttribute('href', 'javascript:closeBox(\"' + maxInfoBoxID + '\")');
     i2.className = "infobox-close-icon";
 
     infobox.className = "infobox ";
