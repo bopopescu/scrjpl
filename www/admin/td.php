@@ -50,9 +50,10 @@
 <script language="javascript">
     <?php
         include 'db/connect.php';
-        $mysqli = connect();
+        $db = connect();
 
-        $res = $mysqli->query("SELECT * FROM td ORDER BY id ASC");
+        $res = $db->query("SELECT * FROM td ORDER BY id ASC");
+        $db->close();
 
         $elem = 1;
         while ($row = $res->fetch_assoc()) {

@@ -10,7 +10,7 @@ from cStringIO import StringIO
 import os
 import sys
 
-def convert_pdf_to_txt(path):
+def pdf2txt(path):
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
     laparams = LAParams()
@@ -27,29 +27,48 @@ def convert_pdf_to_txt(path):
     return str
 
 def file2text(file_path):
-    if file_path[-4:] == ".doc":
+    ext = file_path.split('.')[-1]
+
+    if ext == "doc":
+        # Traitement des fichiers antérieurs à Word 2010
         os.chdir('antiword')
         cmd = ['antiword', file_path]
         p = Popen(cmd, stdout=PIPE)
         stdout, stderr = p.communicate()
         return stdout.decode('ascii', 'ignore')
-    elif file_path[-5:] == ".docx":
+
+    elif ext == "docx":
+        # Traitement des fichiers Word 2010 et +
         document = opendocx(file_path)
         paratextlist = getdocumenttext(document)
         newparatextlist = []
+
         for paratext in paratextlist:
             newparatextlist.append(paratext.encode("utf-8"))
+
         return '\n\n'.join(newparatextlist)
-    elif file_path[-4:] == ".odt":
+
+    elif ext == "odt":
+        # Traitement des fichiers OpenDocument Text
         cmd = ['odt2txt', file_path]
         p = Popen(cmd, stdout=PIPE)
         #stdout, stderr = p.communicate()
         r = [x.decode('iso-8859-1').encode('utf-8') for x in p.stdout.readlines()]
         return ''.join(r)
-    elif file_path[-4:] == ".pdf":
-        return convert_pdf_to_txt(file_path)
+
+    elif ext == "pdf":
+        # Traitement des fichiers PDF
+        return pdf2txt(file_path)
+
+    elif ext in ["cnf", "ini", "log", "md", "txt"] :
+        # Traitement des fichiers bruts
+        fp = open(file_path, 'r')
+        data = fp.read()
+        fp.close()
+        return data
 
 if __name__ == "__main__":
     if (len(sys.argv) == 2) :
+        # On se place dans le dossier du script
         os.chdir(os.path.dirname(__file__))
         print file2text(sys.argv[1])

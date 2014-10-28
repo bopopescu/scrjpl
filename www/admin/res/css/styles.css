@@ -292,12 +292,17 @@ p.section-title {
 	box-shadow: 0px 0px 5px 3px #c7c7c7;
 	color: #373737;
 	float: left;
-	margin: 10px 10px;
-	padding: 15px;
 	height: 130px;
-	width: 31%;
-	text-align: right;
+	margin: 10px 10px;
+	overflow: hidden;
+	padding: 15px;
 	position: relative;
+	text-align: right;
+	width: 31%;
+
+	transition: height 150ms linear;
+	-webkit-transition: height 150ms linear;
+
 	animation: element_insert 300ms forwards;
 	-o-animation: element_insert 300ms forwards;
 	-ms-animation: element_insert 300ms forwards;
@@ -322,8 +327,9 @@ i.ib-title-icon {
 }
 
 .ib-options {
-	position: relative;
-	top: 24px;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
 	font-size: 16px;
 }
 

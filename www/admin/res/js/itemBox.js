@@ -358,6 +358,7 @@ function insertSearchResult(result) {
     aView.setAttribute("href", result.path);
     aView.setAttribute("target", "_blank");
     aDetail.setAttribute("href", "#");
+    aDetail.setAttribute("onclick", "toggleDocDetails(" + result.id + ")");
 
     switch (result.type) {
         case "tuto":
@@ -383,12 +384,23 @@ function insertSearchResult(result) {
     options.innerHTML += " | ";
     options.appendChild(aDetail);
 
+    // Details inclusion (hidden part)
+    var d = document.createElement('div');
+    d.className = "search-result-detail";
+
+    // TODO : a améliorer
+    var pathSplit = result.path.split('.')
+    d.innerHTML = "<b>Tags : </b>" + result.tags + "<br/><br/><b>Format : </b>"
+        + pathSplit[pathSplit.length-1].toUpperCase();
+
+
     box.appendChild(iTitle);
     box.appendChild(title);
     box.insertBefore(document.createElement('br'), box.children[2]);
     box.appendChild(subtitle);
 
     box.appendChild(options);
+    box.appendChild(d);
 
     wrapper.appendChild(box);
     fireResize();
@@ -410,4 +422,9 @@ function insertAddTdItem() {
     addTdBox.appendChild(a);
     wrapper.appendChild(addTdBox);
     fireResize();
+}
+
+function toggleDocDetails(id) {
+    var b = document.getElementById(id);
+    b.style.height = (b.style.height == "280px") ? "130px" : "280px";
 }

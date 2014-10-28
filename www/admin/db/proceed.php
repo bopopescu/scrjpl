@@ -42,7 +42,7 @@
         }
 
 
-        $query = $db->query("SELECT id, title, subtitle, type, path
+        $query = $db->query("SELECT id, title, subtitle, type, tags, path
             FROM documents WHERE MATCH(title, subtitle, tags, raw_data)
             AGAINST(\"$search\") {$searchOptions};");
         $result = array();

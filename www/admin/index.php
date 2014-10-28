@@ -1,6 +1,11 @@
 <?php
+    include 'db/connect.php';
+    $db = connect();
 
- ?>
+    $docs = $db->query("SELECT COUNT(*) FROM documents;")->fetch_assoc();
+
+    $db->close();
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -63,10 +68,12 @@
             <div class="panel-container">
                 <div class="panel-top">
                     <i class="panel-top-icon"></i>
-                    <div class="panel-title-number">42</div>
+                    <div class="panel-title-number">
+                        <?php echo $docs['COUNT(*)']; ?>
+                    </div>
                     <span class="panel-title-text">Documents sont consultables</span>
                 </div>
-                <a href="detail.php">
+                <a href="documentation.php">
                     <div class="panel-bottom">Voir détails<i class="panel-detail-icon"></i></div>
                 </a>
             </div>

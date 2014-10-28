@@ -14,7 +14,7 @@
         $title = mysql_real_escape_string($_POST['title']);
         $subtitle = mysql_real_escape_string($_POST['subtitle']);
         $type = mysql_real_escape_string($_POST['type']);
-        $tags = "";
+        $tags = mysql_real_escape_string($_POST['tags']);
         $path = 'http://'.$_SERVER['SERVER_NAME']."".dirname(dirname($_SERVER["REQUEST_URI"]))."/".$path;
         $text = mysql_real_escape_string($text);
 

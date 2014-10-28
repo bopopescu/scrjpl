@@ -16,7 +16,7 @@
     <script language="JavaScript" src="res/js/search.js"></script>
 </head>
 
-<body onkeypress="if (event.keyCode == 13) search()"  onload="setBoxWrapperSize()" onresize="setBoxWrapperSize()">
+<body onkeypress="if (event.keyCode == 13) search()" >
     <nav class="topbar">
         <div class="topbar-title">DAARRT Manager</div>
     </nav>
@@ -39,7 +39,7 @@
     </ul>
     <div class="wrapper">
         <div id="search-form">
-            <input id="search-input" type="text" placeholder="Rechercher" autofocus/>
+            <input id="search_input" type="text" placeholder="Rechercher" autofocus/>
             <a href="javascript:search()"><i class="search-icon"></i></a>
             <a href="javascript:showSearchOptions()"><i class="search-icon-settings"></i></a>
 
@@ -69,37 +69,10 @@
         </div>
         <hr />
         <div id="search_results" class="item-zone">
-            <div class="item-zone-wrapper">
-
-            <div id="add_document" class="ib">
-                <form action="db/upload.php" method="POST" enctype="multipart/form-data">
-                    <label for="title">Titre :
-                        <input id="title" name="title" type="text"/>
-                    </label><br />
-
-                    <label for="subtitle">Sous-titre :
-                        <input id="subtitle" name="subtitle" type="text"/>
-                    </label><br />
-
-                    <label for="type">Type :
-                        <select id="type" name="type">
-                            <option>Datasheet</option>
-                            <option>Tutoriel</option>
-                            <option>Wiki</option>
-                        </select>
-                    </label><br />
-
-                    <label for="document">Fichier :
-                        <input id="document" name="document" type="file"/>
-                    </label><br />
-
-                    <button value="submit">Envoyer</button>
-                </form>
-            </div>
-
-            </div>
+            <div class="item-zone-wrapper"></div>
         </div>
 
     </div>
+    <script language="JavaScript" >insertNewDocButton()</script>
 </body>
 </html>
