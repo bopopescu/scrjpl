@@ -5,10 +5,10 @@ function showSearchOptions() {
     var p = document.getElementById("search-options-title");
     var table = document.getElementById("advanced-search-options");
 
-    if (wrapper.style.height == "45px" || wrapper.style.height == "") {
-        wrapper.style.height = 85 + p.offsetHeight + table.clientHeight + "px";}
+    if (wrapper.style.height == "50px" || wrapper.style.height == "") {
+        wrapper.style.height = 90 + p.offsetHeight + table.clientHeight + "px";}
     else
-        wrapper.style.height = "45px";
+        wrapper.style.height = "50px";
 }
 
 var persistNode;
@@ -23,16 +23,15 @@ function search() {
     try {
         var mainWrapper = document.getElementsByClassName('wrapper')[0]
         var addDoc = document.getElementById("add_document_box");
-        persistNode = addDoc.cloneNode(true);
         mainWrapper.removeChild(addDoc);
     } catch (e) {}
 
     if (query.length == "") {
-        mainWrapper.appendChild(persistNode);
+        insertNewDocButton();
     }
     else if (query.length < 3) {
         var p = document.createElement('p');
-        p.innerText = "La recherche doit contenir au moins 3 caractères !";
+        p.innerHTML = "La recherche doit contenir au moins 3 caractères !";
         p.style.fontSize = "30px";
         p.style.color = "#c34747";
         p.style.textAlign = "center";
@@ -68,7 +67,7 @@ function search() {
             if (result.length == 0) {
                 body.setAttribute("onresize", "");
                 var p = document.createElement('p');
-                p.innerText = "Aucun résultat !";
+                p.innerHTML = "Aucun résultat !";
                 p.style.fontSize = "30px";
                 p.style.color = "#c34747";
                 p.style.textAlign = "center";
@@ -93,7 +92,7 @@ function toggleLock() {
 
 function sendNewDocument() {
     var wrap = document.getElementById('add_document_box');
-    // Nettoyage de la recherche précédente
+    // Nettoyage ddu contenu du node
     while (wrap.firstChild) { wrap.removeChild(wrap.firstChild) };
 
     var processIcon = document.createElement('i');
@@ -101,7 +100,7 @@ function sendNewDocument() {
 
     var caption = document.createElement('p');
     caption.className = "section-title";
-    caption.innerText = "Ajout en cours...";
+    caption.innerHTML = "Ajout en cours...";
 
     wrap.style.textAlign = "center";
     wrap.appendChild(processIcon);
@@ -112,10 +111,10 @@ function sendNewDocument() {
 
 function insertNewDocForm(e) {
     var wrapper = document.getElementsByClassName("wrapper")[0];
-    var wrap = document.createElement('div');
-    wrapper.removeChild(e);
-
-    wrap.id = "add_document_box";
+    var wrap = document.getElementById("add_document_box");
+    // Nettoyage ddu contenu du node
+    while (wrap.firstChild) { wrap.removeChild(wrap.firstChild) };
+    wrap.style.textAlign = "";
 
     var form = document.createElement('form');
     form.setAttribute("action", "db/upload.php");
@@ -131,18 +130,18 @@ function insertNewDocForm(e) {
 
     // Champs du type
     var labelType = document.createElement('label');
-    labelType.innerText = "Type : ";
+    labelType.innerHTML = "Type : ";
     labelType.setAttribute("for", "type");
     var inputType = document.createElement('select');
     inputType.id = "type";
     inputType.name = "type";
 
     var datasheet = document.createElement('option');
-    datasheet.innerText = "Datasheet";
+    datasheet.innerHTML = "Datasheet";
     var tuto = document.createElement('option');
-    tuto.innerText = "Tutoriel";
+    tuto.innerHTML = "Tutoriel";
     var wiki = document.createElement('option');
-    wiki.innerText = "Wiki";
+    wiki.innerHTML = "Wiki";
 
     inputType.appendChild(datasheet);
     inputType.appendChild(tuto);
@@ -161,7 +160,7 @@ function insertNewDocForm(e) {
     var button = document.createElement('button');
     button.className = "submit_button";
     button.value = "submit";
-    button.innerText = "Envoyer";
+    button.innerHTML = "Envoyer";
 
     // Assemblage
     form.appendChild(fieldTitle);
@@ -181,7 +180,7 @@ function insertNewDocForm(e) {
 
 function createInput(name, type, labelText, required, maxlength) {
     var label = document.createElement('label');
-    label.innerText = labelText;
+    label.innerHTML = labelText;
 
     label.setAttribute("for", name);
     var input = document.createElement('input');
@@ -204,15 +203,15 @@ function insertNewDocButton() {
     var p = document.createElement('p');
 
     p.className = "section-title";
-    p.innerText = "Ajouter un document";
+    p.innerHTML = "Ajouter un document";
     i.className = "search-icon-upload search-big-icon";
-    div.id = "add_document_box";
-    div.style.textAlign = "center";
-    div.appendChild(i);
-    div.appendChild(p);
-
+    a.appendChild(i);
+    a.appendChild(p);
     a.href = "#";
     a.setAttribute("onclick", "insertNewDocForm(this)");
-    a.appendChild(div);
-    wrapper.appendChild(a);
+
+    div.id = "add_document_box";
+    div.style.textAlign = "center";
+    div.appendChild(a);
+    wrapper.appendChild(div);
 }

@@ -1,11 +1,12 @@
 <?php
-    include 'db/connect.php';
-    $db = connect();
+  include 'db/connect.php';
+  $db = connect();
 
-    $docs = $db->query("SELECT COUNT(*) FROM documents;")->fetch_assoc();
+  $docs = $db->query("SELECT COUNT(*) FROM documents;")->fetch_assoc();
 
-    $db->close();
+  $db->close();
 ?>
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -39,6 +40,7 @@
             <a href="logout.php"><i class="navbar-icon navbar-icon-logout"></i>Déconnexion</a>
         </li>
     </ul>
+
     <div class="wrapper">
         <div class="panel panel-blue">
             <div class="panel-container">

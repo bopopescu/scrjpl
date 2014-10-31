@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="res/css/styles.css">
     <link rel="stylesheet" href="res/css/search.css">
-    <script language="JavaScript" src="res/js/itembox.js"></script>
+    <script language="JavaScript" src="res/js/itemBox.js"></script>
     <script language="JavaScript" src="res/js/search.js"></script>
 </head>
 
