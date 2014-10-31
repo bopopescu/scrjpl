@@ -6,9 +6,9 @@
 
     if (@$_GET["td"] == "modify") {
         $query = $db->query("INSERT INTO td (id, title, subtitle) VALUES
-                    (".mysql_real_escape_string($_POST['id']).",
-                     \"".mysql_real_escape_string($_POST['title'])."\",
-                    \"".mysql_real_escape_string($_POST['subtitle'])."\");");
+                    (".$db->real_escape_string($_POST['id']).",
+                     \"".$db->real_escape_string($_POST['title'])."\",
+                    \"".$db->real_escape_string($_POST['subtitle'])."\");");
 
         if ($query) {
             echo "0";
@@ -20,7 +20,7 @@
     }
     elseif (@$_GET["search"] != "") {
         // On échappe les caractères de la requête
-        $search = mysql_real_escape_string($_GET["search"]);
+        $search = $db->real_escape_string($_GET["search"]);
 
         if ($_GET['datasheet'] == "true" && $_GET['wiki'] == "true" && $_GET['tuto'] == "true") {
             $searchOptions = "";
@@ -41,10 +41,9 @@
             $searchOptions = $searchOptions."".implode(" OR ", $el).")";
         }
 
-
         $query = $db->query("SELECT id, title, subtitle, type, tags, path
             FROM documents WHERE MATCH(title, subtitle, tags, raw_data)
-            AGAINST(\"$search\") {$searchOptions};");
+            AGAINST(\"{$search}\") {$searchOptions};");
         $result = array();
 
         while ($row = $query->fetch_assoc()) {
@@ -54,7 +53,7 @@
         echo json_encode($result);
     }
     elseif (@$_GET["td"] == "delete") {
-        $id = mysql_real_escape_string($_POST["id"]);
+        $id = $db->real_escape_string($_POST["id"]);
         $query = $db->query("DELETE FROM td WHERE id={$id} LIMIT 1;");
 
         if (!$query) {

@@ -73,13 +73,12 @@ p.section-title {
 }
 
 .topbar-title {
-	background-color: #19191b;
 	background-origin: padding-box;
 	box-sizing: border-box;
 	color: #e4e4e4;
 	font-size: 40px;
-	height: 100%;
-	padding: 10px 0px 15px 0px;
+	position: relative;
+	top: 15px;
 	text-align: center;
 }
 
@@ -311,8 +310,8 @@ p.section-title {
 }
 
 .ib-title {
-	font-size: 35px;
-	line-height: 45px;
+	font-size: 25px;
+	line-height: 35px;
 }
 
 .ib-subtitle {
@@ -346,15 +345,15 @@ i.ib-title-icon {
 .ib-edit-title {
 	color: #373737;
 	position: relative;
-	top: -5px;
-	font-size: 30px;
+	/*top: -5px;*/
+	font-size: 20px;
 	margin-bottom: 2px;
 	width: 33%;
 }
 
 .ib-edit-subtitle {
 	color: #a8a8a8;
-	font-size: 18px;
+	font-size: 15px;
 	width: 50%;
 }
 
