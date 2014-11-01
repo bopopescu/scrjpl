@@ -5,10 +5,10 @@ function showSearchOptions() {
     var p = document.getElementById("search-options-title");
     var table = document.getElementById("advanced-search-options");
 
-    if (wrapper.style.height == "50px" || wrapper.style.height == "") {
-        wrapper.style.height = 90 + p.offsetHeight + table.clientHeight + "px";}
+    if (wrapper.style.height == "40px" || wrapper.style.height == "") {
+        wrapper.style.height = 80 + p.offsetHeight + table.clientHeight + "px";}
     else
-        wrapper.style.height = "50px";
+        wrapper.style.height = "40px";
 }
 
 var persistNode;
