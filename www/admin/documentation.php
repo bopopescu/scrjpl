@@ -1,5 +1,5 @@
 <?php
-
+    // session_start();
  ?>
 <!doctype html>
 <html lang="fr">
@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="res/css/styles.css">
     <link rel="stylesheet" href="res/css/search.css">
+    <script language="JavaScript" src="res/js/infobox.js"></script>
     <script language="JavaScript" src="res/js/itemBox.js"></script>
     <script language="JavaScript" src="res/js/search.js"></script>
 </head>
@@ -68,11 +69,20 @@
             </table>
         </div>
         <hr />
+        <div id="infobox-zone"></div>
         <div id="search_results" class="item-zone">
             <div class="item-zone-wrapper"></div>
         </div>
 
     </div>
-    <script language="JavaScript" >insertNewDocButton()</script>
+    <script language="JavaScript">
+        insertNewDocButton();
+        <?php
+            if (@$_GET['err'] == "db")
+                echo "insertBox(\"Une erreur est survenue lors de l'ajout du document à la base de données.\", \"error\");";
+            else if (@$_GET['err'] == "parser")
+                echo "insertBox(\"Impossible d'extraire le texte de ce document ! Son contenu ne sera pas indexé.\", \"warning\");";
+        ?>
+    </script>
 </body>
 </html>

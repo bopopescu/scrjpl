@@ -47,7 +47,10 @@
     border-spacing: 0px;
 }
 
-#advanced-search-options td { width: 25%; }
+#advanced-search-options td {
+    text-align: center;
+    width: 25%;
+}
 
 #search-form {
     height: 40px;

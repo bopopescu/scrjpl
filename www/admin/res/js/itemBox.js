@@ -1,5 +1,6 @@
 var resizeTimer = 0;
 var maxTdId = 0;
+var currentPopup;
 
 // Bloque la fonction fireResize jusqu'a la fin du redimensionnement
 function setBoxWrapperSize() {
@@ -24,7 +25,7 @@ function fireResize() {
     if (container.clientWidth < 480) { n = 1;p = 0.91; }
     else if (container.clientWidth < 605) { n = 1; p = 0.93; }
     else if (container.clientWidth < 780) { n = 2; p = 0.46; }
-    else if (container.clientWidth < 900) { n = 2; p = 0.47; }
+    else if (container.clientWidth < 1000) { n = 2; p = 0.47; }
     else { n = 3; p = 0.31; }
 
     wrap.style.width = n * (p * container.clientWidth
@@ -54,7 +55,7 @@ function insertDaarrt(id, grp) {
     var subtitle = document.createElement('font');
     daarrtBox.className = "ib";
     options.className = "ib-options";
-    title.className = "ib-title";
+    title.className = "ib-title-short";
     subtitle.className = "ib-subtitle";
 
     subtitle.innerHTML += grp + ((grp <= 1) ? " groupe" : " groupes");
@@ -129,7 +130,7 @@ function insertTd(id, titre, sujet, eno, res, cor) {
     tdBox.id = id;
     tdBox.className = "ib";
     options.className = "ib-options td-box-options";
-    title.className = "ib-title";
+    title.className = (titre.length < 10) ? "ib-title-short" : "ib-title-long";
     subtitle.className = "ib-subtitle";
 
     title.innerHTML += titre;
@@ -156,7 +157,7 @@ function insertTd(id, titre, sujet, eno, res, cor) {
     edit.appendChild(aEdit);
     edit.appendChild(aDel);
 
-    // OPTIONS UTILISATEUR
+    // OPTIONS UTILISATEUR (Enoncé, Ressources, Correction)
     var iTitle = document.createElement('i');
     var iEno = document.createElement('i');
     var iRes = document.createElement('i');
@@ -171,9 +172,12 @@ function insertTd(id, titre, sujet, eno, res, cor) {
     var aRes = document.createElement('a');
     var aCor = document.createElement('a');
 
-    aEno.setAttribute('href', 'td/enonce.php?id=' + id);
-    aRes.setAttribute('href', 'td/ressources.php?id=' + id);
-    aCor.setAttribute('href', 'td/correction.php?id=' + id);
+    aEno.setAttribute('href', (eno) ? eno : '#');
+    if (eno) aEno.setAttribute('target', '_blank');
+    aRes.setAttribute('href', (res) ? res : '#');
+    if (res) aRes.setAttribute('target', '_blank');
+    aCor.setAttribute('href', (cor) ? cor : '#');
+    if (cor) aCor.setAttribute('target', '_blank');
 
     iEno.className += (eno) ? " td-box-green-icon" : " td-box-red-icon";
     iRes.className += (res) ? " td-box-green-icon" : " td-box-red-icon";
@@ -230,8 +234,8 @@ function insertAddTdItem() {
 
 function editInPlace(id) {
     var box = document.getElementById(id);
-    var title = box.getElementsByClassName("ib-title")[0];
-    var subtitle = box.getElementsByClassName("ib-subtitle")[0];
+    var title = box.children[1];
+    var subtitle = box.children[3];
 
     var inputTitle = document.createElement('input');
     inputTitle.type = "text";
@@ -251,6 +255,43 @@ function editInPlace(id) {
     editOptions.removeChild(editOptions.firstChild);
     editOptions.firstChild.firstChild.className = "icon-save";
     editOptions.firstChild.setAttribute("onclick", "saveInPlace(" + id + ")");
+
+    var userOptions = box.getElementsByClassName("ib-options")[0];
+    for (var i = 0 ; i < userOptions.children.length ; i++) {
+        var el = userOptions.children[i];
+        el.setAttribute("onclick", "return showPopUp(" + id + ", " + i + ")");
+    }
+}
+
+function showPopUp(id, i) {
+    var body = document.getElementsByTagName("body")[0];
+    try { body.removeChild(currentPopup); } catch (e) {}
+
+
+    var box = document.getElementById(id);
+    var userOptions = box.getElementsByClassName("ib-options")[0];
+    var el = userOptions.children[i];
+    var dim = el.getBoundingClientRect();
+    // alert(dim.top);
+    var popup = document.createElement('div');
+    var input = document.createElement('input');
+    var button = document.createElement('button');
+
+    button.className = "ib-pop-up-button"
+    button.setAttribute("onclick", "updateLink(" + id + ", " + i + ")");
+    input.type = "text";
+    input.value = (el.href == document.URL.replace('#', '') + '#') ? '' : el.href;
+    popup.className = "ib-pop-up";
+    popup.id = "popup_" + i;
+
+    popup.appendChild(input);
+    button.appendChild(document.createElement('i'));
+    popup.appendChild(button);
+    body.appendChild(popup);
+    popup.style.top = (dim.top - popup.clientHeight - 5) + "px";
+    popup.style.left = dim.left - 0.5 * (popup.clientWidth + dim.left - dim.right) + "px";
+    currentPopup = popup;
+    return false;
 }
 
 function saveInPlace(id) {
@@ -276,7 +317,7 @@ function saveInPlace(id) {
 
     var title = document.createElement('font');
     title.innerHTML = inputTitle.value;
-    title.className = "ib-title";
+    title.className = (inputTitle.value.length < 10) ? "ib-title-short" : "ib-title-long";
     box.insertBefore(title, box.children[1]);
     box.removeChild(inputTitle);
 
@@ -298,6 +339,16 @@ function saveInPlace(id) {
     editOptions.firstChild.firstChild.className = "icon-modify";
     editOptions.firstChild.setAttribute("onclick", "editInPlace(" + id + ")");
     editOptions.firstChild.setAttribute('href', '#');
+
+
+    var body = document.getElementsByTagName("body")[0];
+    try { body.removeChild(currentPopup); } catch (e) {}
+
+    var userOptions = box.getElementsByClassName("ib-options")[0];
+    for (var i = 0 ; i < userOptions.children.length ; i++) {
+        var el = userOptions.children[i];
+        el.removeAttribute("onclick");
+    }
 }
 
 function deleteInPlace(id) {
@@ -317,7 +368,7 @@ function deleteInPlace(id) {
     var box = document.getElementById(id);
 
     if (confirm("Êtes vous sur de vouloir supprimer \"" +
-    box.getElementsByClassName("ib-title")[0].innerHTML + "\" ?")) {
+    box.children[1].innerHTML + "\" ?")) {
         xhr.send(data);
         wrap.removeChild(box);
     }
@@ -337,7 +388,7 @@ function insertSearchResult(result) {
     box.id = result.id;
     box.className = "ib";
     options.className = "ib-options";
-    title.className = "ib-title";
+    title.className = (result.title.length < 10) ? "ib-title-short" : "ib-title-long";
     subtitle.className = "ib-subtitle";
 
     title.innerHTML += result.title;
@@ -384,14 +435,16 @@ function insertSearchResult(result) {
     options.innerHTML += " | ";
     options.appendChild(aDetail);
 
-    // Details inclusion (hidden part)
+    // Details (hidden part)
     var d = document.createElement('div');
     d.className = "search-result-detail";
 
     // TODO : a améliorer
     var pathSplit = result.path.split('.')
-    d.innerHTML = "<b>Tags : </b>" + result.tags + "<br/><br/><b>Format : </b>"
-        + pathSplit[pathSplit.length-1].toUpperCase();
+    d.innerHTML = "<b>Tags : </b>" + result.tags;
+    d.appendChild(document.createElement('br'));
+    d.appendChild(document.createElement('br'));
+    d.innerHTML += "<b>Format : </b>" + pathSplit[pathSplit.length-1].toUpperCase();
 
 
     box.appendChild(iTitle);

@@ -11,8 +11,6 @@ function showSearchOptions() {
         wrapper.style.height = "40px";
 }
 
-var persistNode;
-
 function search() {
     var query = document.getElementById("search_input").value;
     var wrap = document.getElementsByClassName("item-zone-wrapper")[0];
@@ -65,7 +63,7 @@ function search() {
                 fireTimeout(result[i], i);
             }
             if (result.length == 0) {
-                body.setAttribute("onresize", "");
+                body.removeAttribute("onresize");
                 var p = document.createElement('p');
                 p.innerHTML = "Aucun résultat !";
                 p.style.fontSize = "30px";
@@ -123,7 +121,7 @@ function insertNewDocForm(e) {
     form.setAttribute("onsubmit", "return sendNewDocument();");
 
     // Champs du titre
-    var fieldTitle = createInput("title", "text", "Titre : ", true);
+    var fieldTitle = createInput("title", "text", "Titre : ", true, 16);
 
     // Champs du sous-titre
     var fieldSubtitle = createInput("subtitle", "text", "Sous-titre : ", true);

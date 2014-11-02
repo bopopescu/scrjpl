@@ -309,7 +309,12 @@ p.section-title {
 	-webkit-animation: element_insert 300ms forwards;
 }
 
-.ib-title {
+.ib-title-short {
+	font-size: 35px;
+	line-height: 40px;
+}
+
+.ib-title-long {
 	font-size: 25px;
 	line-height: 35px;
 }
@@ -331,6 +336,19 @@ i.ib-title-icon {
 	right: 5px;
 	font-size: 16px;
 }
+
+.ib-pop-up {
+	box-shadow: 0px 0px 3px 1px #b1b1b1;
+	box-sizing: border-box;
+	background-color: #f8f8f8;
+	border-radius: 5px;
+	padding: 5px;
+	position: absolute;
+}
+
+.ib-pop-up-button {margin-left: 5px;}
+.ib-pop-up-button > i::before {content: "\f058";}
+
 
 .ib-edit {
 	position: relative;
