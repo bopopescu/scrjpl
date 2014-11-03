@@ -60,6 +60,5 @@ class World :
                 y=num_ligne*taille_element
                 if element=='m':
                     simulation.blit(self.mur,(x,y))
-                    print num_case
                 num_case+=1
             num_ligne+=1
