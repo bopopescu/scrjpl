@@ -5,19 +5,6 @@ from numpy import array
 
 from constantes import *
 
-def poly_translate (p, tx, ty):
-    pp = p.P
-    ppt = array([(x+tx,y+ty) for (x,y) in pp])
-    p.P = ppt
-    return pylygon.Polygon(p)
-
-def poly_rotate (p, theta):
-    thetar = theta*math.pi/180.0
-    pp = p.P
-    ppr = array([(x*math.cos(thetar)-y*math.sin(thetar),
-                  x*math.sin(thetar)+y*math.cos(thetar)) for (x,y) in pp])
-    p.P = ppr
-    return pylygon.Polygon(p)
 
 
 class DAARRT2d:
@@ -27,23 +14,34 @@ class DAARRT2d:
         self.posX=0.0
         self.posY=0.0
         self.cap=90.0
+        self.image=pygame.image.load(imageRobot).convert_alpha()
+        self.imageBase=pygame.image.load(imageRobot).convert_alpha()
         self.longueur=longueurRobot
         self.largeur=largeurRobot
 
-    def sonar():
+    def sonar(self):
         pass
 
-    def draw():
-        pass
+    def draw(self,simulation):
+        simulation.blit(self.image,(self.posX,self.posY))
+
+
+    def rotate(self,angle):
+        self.image=pygame.transform.rotate(self.imageBase,angle)
+        rect = self.image.get_rect()
+        rect_origine=self.imageBase.get_rect()
+        rect.center=rect_origine.center
+
 
 
 class World :
-    def__init__(self,fichier):
+    def __init__(self,fichier):
         self.nom=fichier
         self.structure=0
+        self.mur=pygame.image.load(mur).convert_alpha()
 
     def generer(self):
-        with open(self.fichier,"r") as fichier :
+        with open(self.nom,"r") as fichier :
             structure_monde=[]
             for ligne in fichier :
                 ligne_monde=[]
@@ -54,15 +52,14 @@ class World :
             self.structure=structure_monde
 
     def afficher(self,simulation):
-        mur=pygame.image.load(mur).convert_alpha()
-
         num_ligne=0
         for ligne in self.structure :
             num_case=0
             for element in ligne :
                 x=num_case*taille_element
                 y=num_ligne*taille_element
-                if element='m':
-                    simulation.blit(mur,(x,y))
-            num_case+=1
-        num_ligne+=1
+                if element=='m':
+                    simulation.blit(self.mur,(x,y))
+                    print num_case
+                num_case+=1
+            num_ligne+=1
