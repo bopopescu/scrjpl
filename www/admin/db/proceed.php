@@ -4,17 +4,27 @@
 
     $db = connect();
 
+
     if (@$_GET["td"] == "modify") {
-        $query = $db->query("INSERT INTO td (id, title, subtitle) VALUES
+
+        // TODO : A améliorer !
+
+        $query = $db->query("INSERT INTO td (id, title, subtitle, enonce, ressources, correction) VALUES
                     (".$db->real_escape_string($_POST['id']).",
                      \"".$db->real_escape_string($_POST['title'])."\",
-                    \"".$db->real_escape_string($_POST['subtitle'])."\");");
+                     \"".$db->real_escape_string($_POST['subtitle'])."\",
+                     \"".$db->real_escape_string($_POST['eno'])."\",
+                     \"".$db->real_escape_string($_POST['res'])."\",
+                     \"".$db->real_escape_string($_POST['cor'])."\");");
 
         if ($query) {
             echo "0";
         }
         elseif (!$db->query("UPDATE td SET title=\"".$_POST['title']."\",
-        subtitle=\"".$_POST['subtitle']."\" WHERE id=".$_POST['id'].";")) {
+        subtitle=\"".$_POST['subtitle']."\",
+        enonce=\"".$_POST['eno']."\",
+        ressources=\"".$_POST['res']."\",
+        correction=\"".$_POST['cor']."\" WHERE id=".$_POST['id'].";")) {
             echo "ERROR";
         }
     }

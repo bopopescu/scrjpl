@@ -185,6 +185,7 @@ function createInput(name, type, labelText, required, maxlength) {
     input.id = name;
     input.name = name;
     input.type = type;
+    if (name == "file") input.style.textAlign = "right";
     if (required) input.setAttribute("required", "");
     if (maxlength) input.setAttribute("maxlength", maxlength);
     label.appendChild(input);

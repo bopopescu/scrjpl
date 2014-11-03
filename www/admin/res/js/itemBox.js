@@ -272,7 +272,7 @@ function showPopUp(id, i) {
     var userOptions = box.getElementsByClassName("ib-options")[0];
     var el = userOptions.children[i];
     var dim = el.getBoundingClientRect();
-    // alert(dim.top);
+
     var popup = document.createElement('div');
     var input = document.createElement('input');
     var button = document.createElement('button');
@@ -294,6 +294,23 @@ function showPopUp(id, i) {
     return false;
 }
 
+function updateLink(id, i) {
+    var newLink = currentPopup.getElementsByTagName("input")[0].value;
+
+    var box = document.getElementById(id);
+    var userOptions = box.getElementsByClassName("ib-options")[0];
+    var el = userOptions.children[i]
+    el.setAttribute("href", (newLink == '') ? '#' : newLink);
+
+    if (newLink == '')
+        el.firstChild.className = el.firstChild.className.replace('green', 'red');
+    else
+        el.firstChild.className = el.firstChild.className.replace('red', 'green');
+
+    var body = document.getElementsByTagName("body")[0];
+    body.removeChild(currentPopup);
+}
+
 function saveInPlace(id) {
     var box = document.getElementById(id);
     var inputTitle = box.getElementsByClassName("ib-edit-title")[0];
@@ -304,6 +321,15 @@ function saveInPlace(id) {
 	data.append('id', id);
 	data.append('title', inputTitle.value);
 	data.append('subtitle', inputSubtitle.value);
+
+    var fields = ['eno', 'res', 'cor'] ;
+
+    var userOptions = box.getElementsByClassName("ib-options")[0];
+    for (var i = 0 ; i < userOptions.children.length ; i++) {
+        var el = userOptions.children[i];
+        data.append(fields[i], (el.href == document.URL.replace('#', '') + '#') ? '' : el.href);
+        el.removeAttribute("onclick");
+    }
 
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', 'db/proceed.php?td=modify', true);
@@ -343,12 +369,6 @@ function saveInPlace(id) {
 
     var body = document.getElementsByTagName("body")[0];
     try { body.removeChild(currentPopup); } catch (e) {}
-
-    var userOptions = box.getElementsByClassName("ib-options")[0];
-    for (var i = 0 ; i < userOptions.children.length ; i++) {
-        var el = userOptions.children[i];
-        el.removeAttribute("onclick");
-    }
 }
 
 function deleteInPlace(id) {
@@ -372,6 +392,24 @@ function deleteInPlace(id) {
         xhr.send(data);
         wrap.removeChild(box);
     }
+}
+
+function insertAddTdItem() {
+
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
+    var addTdBox = document.createElement('div');
+    var a = document.createElement('a');
+    var i = document.createElement('i');
+
+    a.setAttribute("href", "javascript:insertNewTd()");
+
+    addTdBox.id = "add-td-box";
+    addTdBox.className = "ib";
+
+    a.appendChild(i);
+    addTdBox.appendChild(a);
+    wrapper.appendChild(addTdBox);
+    fireResize();
 }
 
 /*
@@ -456,24 +494,6 @@ function insertSearchResult(result) {
     box.appendChild(d);
 
     wrapper.appendChild(box);
-    fireResize();
-}
-
-function insertAddTdItem() {
-
-    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
-    var addTdBox = document.createElement('div');
-    var a = document.createElement('a');
-    var i = document.createElement('i');
-
-    a.setAttribute("href", "javascript:insertNewTd()");
-
-    addTdBox.id = "add-td-box";
-    addTdBox.className = "ib";
-
-    a.appendChild(i);
-    addTdBox.appendChild(a);
-    wrapper.appendChild(addTdBox);
     fireResize();
 }
 
