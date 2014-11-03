@@ -1,5 +1,6 @@
 <?php
-    // session_start();
+    session_start();
+    if (!$_SESSION['isRegistered']) {header("location: login.php");}
  ?>
 <!doctype html>
 <html lang="fr">

@@ -5,18 +5,31 @@
     bottom: 0px;
 }
 
+.login-icon::before {
+    content: "\f069\f069\f069\f069";
+    font-size: 55px;
+    position: relative;
+    top: 20px;
+}
+
+.auth_fail {
+    color: #BB2D2D;
+}
+
 #login_box {
     background-color: #f3f3f3;
     box-shadow: 0px 0px 3px 4px #c8c8c8;
     height: 150px;
     margin: auto;
     position: relative;
+    text-align: center;
     top: 20px;
     width:300px;
 }
 
-#password {
-    bottom: 10px;
+input[type='password'] {
+    bottom: 20px;
+    font-size: 25px;
     left: 22px;
     right: 22px;
     position: absolute;

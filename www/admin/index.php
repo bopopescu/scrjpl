@@ -1,10 +1,14 @@
 <?php
-  include 'db/connect.php';
-  $db = connect();
+    session_start();
 
-  $docs = $db->query("SELECT COUNT(*) FROM documents;")->fetch_assoc();
+    if (!$_SESSION['isRegistered']) {header("location: login.php");}
+    else {
+        include 'db/connect.php';
 
-  $db->close();
+        $db = connect();
+        $docs = $db->query("SELECT COUNT(*) FROM documents;")->fetch_assoc();
+        $db->close();
+    }
 ?>
 
 <!doctype html>

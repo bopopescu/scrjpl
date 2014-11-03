@@ -1,5 +1,6 @@
 <?php
-    // session_start();
+    session_start();
+    if (@$_SESSION['isRegistered']) {header("location: index.php");}
  ?>
 <!doctype html>
 <html lang="fr">
@@ -20,7 +21,12 @@
         <div class="topbar-title">DAARRT Manager</div>
     </nav>
     <div id="login_wrapper">
-        <div id="login_box"><input id="password" name="password" type="text"/></div>
+        <div id="login_box">
+            <i class="login-icon<?php if (@$_GET['auth'] == "fail") echo " auth_fail"; ?>"></i>
+            <form action="db/proceed.php" method="POST">
+                <input id="password" name="password" type="password" placeholder="Password" autofocus/>
+            </form>
+        </div>
     </div>
 </body>
 </html>
