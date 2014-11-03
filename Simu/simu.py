@@ -8,18 +8,28 @@ from numpy import array
 from classes import *
 from constantes import *
 
+pygame.init()
+simulation=pygame.display.set_mode((hauteur,largeur))
+
+myWorld=World("world1.txt")
+myDAARRT2d=DAARRT2d()
+myWorld.generer()
+
+
 
 #ouverture de la fenetre avec les constantes
-simulation=pygame.display.set_mode((hauteur,largeur))
 
 #Icone
 icone=pygame.image.load(icone)
 pygame.display.set_icon(icone)
+bg=pygame.image.load(background).convert()
 
 pygame.display.set_caption(titre)
 
 #boucle du simulateur
+pygame.key.set_repeat(400, 30)
 continuer=1
+angle=10
 while continuer :
 
     #Limitation vitesse
@@ -27,3 +37,11 @@ while continuer :
     for event in pygame.event.get():
         if event.type==QUIT :
             continuer=0
+        if event.type == KEYDOWN:
+            if event.key == K_DOWN:	#Si "fleche bas"
+                myDAARRT2d.rotate(angle)
+                angle+=10
+    simulation.blit(bg,(0,0))
+    myWorld.afficher(simulation)
+    myDAARRT2d.draw(simulation)
+    pygame.display.flip()
