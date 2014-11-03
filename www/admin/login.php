@@ -20,7 +20,7 @@
         <div class="topbar-title">DAARRT Manager</div>
     </nav>
     <div id="login_wrapper">
-        <div id="login_box"></div>
+        <div id="login_box"><input id="password" name="password" type="text"/></div>
     </div>
 </body>
 </html>

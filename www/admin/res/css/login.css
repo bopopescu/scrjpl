@@ -14,3 +14,11 @@
     top: 20px;
     width:300px;
 }
+
+#password {
+    bottom: 10px;
+    left: 22px;
+    right: 22px;
+    position: absolute;
+    width: 250px;
+}
