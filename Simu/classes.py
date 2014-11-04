@@ -2,6 +2,7 @@ import time, math, sys
 import pygame,pylygon
 from pygame.locals import *
 from numpy import array
+import math
 
 from constantes import *
 
@@ -11,9 +12,9 @@ class DAARRT2d:
 
     def __init__(self):
         self.nom=nomRobot
-        self.posX=0.0
-        self.posY=0.0
-        self.cap=90.0
+        self.posX=125
+        self.posY=125
+        self.cap=0.0
         self.image=pygame.image.load(imageRobot).convert_alpha()
         self.imageBase=pygame.image.load(imageRobot).convert_alpha()
         self.longueur=longueurRobot
@@ -31,6 +32,11 @@ class DAARRT2d:
         rect = self.image.get_rect()
         rect_origine=self.imageBase.get_rect()
         rect.center=rect_origine.center
+
+    def move(self):
+        self.posX+=math.cos(math.radians(self.cap+90))
+        self.posY-=math.sin(math.radians(self.cap+90))
+
 
 
 
