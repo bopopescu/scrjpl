@@ -38,9 +38,13 @@ while continuer :
         if event.type==QUIT :
             continuer=0
         if event.type == KEYDOWN:
-            if event.key == K_DOWN:	#Si "fleche bas"
-                myDAARRT2d.rotate(angle)
-                angle+=10
+            if event.key==K_r:
+                myDAARRT2d.cap+=10
+                myDAARRT2d.cap=myDAARRT2d.cap%360
+                myDAARRT2d.rotate(myDAARRT2d.cap)
+            if event.key==K_m:
+                myDAARRT2d.move()
+
     simulation.blit(bg,(0,0))
     myWorld.afficher(simulation)
     myDAARRT2d.draw(simulation)
