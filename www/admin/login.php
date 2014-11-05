@@ -22,9 +22,26 @@
     </nav>
     <div id="login_wrapper">
         <div id="login_box">
-            <i class="login-icon<?php if (@$_GET['auth'] == "fail") echo " auth_fail"; ?>"></i>
+            <i class="login-icon<?php if (@$_SESSION['try'] >= 1) echo " auth_fail"; ?>"></i>
+            <i class="login-icon<?php if (@$_SESSION['try'] >= 2) echo " auth_fail"; ?>"></i>
+            <i class="login-icon<?php if (@$_SESSION['try'] >= 3) echo " auth_fail"; ?>"></i>
+            <i class="login-icon<?php if (@$_SESSION['try'] >= 4) echo " auth_fail"; ?>"></i>
             <form action="db/proceed.php" method="POST">
-                <input id="password" name="password" type="password" placeholder="Password" autofocus/>
+                <?php
+                    if (isset($_SESSION['fail_start'])) {
+                        if ($_SESSION['fail_start'] + 300 <= time()) {
+                            unset($_SESSION['fail_start'], $_SESSION['try']);
+                            header("location: login.php");
+                        }
+                        else {
+                            $wait = round(($_SESSION['fail_start'] + 300 - time())/60);
+                            echo "<input id=\"password\" name=\"password\" type=\"text\" placeholder=\"Password\" value=\"Patientez {$wait} minutes\" disabled/>";
+                        }
+                    }
+                    else {
+                        echo '<input id="password" name="password" type="password" placeholder="Password" autofocus/>';
+                    }
+                ?>
             </form>
         </div>
     </div>

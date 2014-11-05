@@ -38,7 +38,7 @@
             <a href="logout.php"><i class="navbar-icon navbar-icon-logout"></i>Déconnexion</a>
         </li>
     </ul>
-    <div class="wrapper">
+    <div class="wrapper" onscroll="relocatePopup()">
         <div id="infobox-zone"></div>
 
         <div class="item-zone">

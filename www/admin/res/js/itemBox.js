@@ -35,6 +35,8 @@ function fireResize() {
         boxes[i].style.width = p * 100 + "%";
     }
 
+    relocatePopup();
+
     wrap.style.margin = "10px auto";
 }
 
@@ -263,7 +265,7 @@ function editInPlace(id) {
     }
 }
 
-function showPopUp(id, i) {
+function showPopUp(id, i, text) {
     var body = document.getElementsByTagName("body")[0];
     try { body.removeChild(currentPopup); } catch (e) {}
 
@@ -280,9 +282,10 @@ function showPopUp(id, i) {
     button.className = "ib-pop-up-button"
     button.setAttribute("onclick", "updateLink(" + id + ", " + i + ")");
     input.type = "text";
-    input.value = (el.href == document.URL.replace('#', '') + '#') ? '' : el.href;
+    var link = (text) ? text : el.href;
+    input.value = (link == document.URL.replace('#', '') + '#') ? '' : link;
     popup.className = "ib-pop-up";
-    popup.id = "popup_" + i;
+    popup.id = "popup_" + id + "_" + i;
 
     popup.appendChild(input);
     button.appendChild(document.createElement('i'));
@@ -309,6 +312,18 @@ function updateLink(id, i) {
 
     var body = document.getElementsByTagName("body")[0];
     body.removeChild(currentPopup);
+}
+
+function relocatePopup() {
+    var body = document.getElementsByTagName("body")[0];
+    try {
+        var tmp = currentPopup.id.split('_');
+        var id = tmp[1];
+        var i = tmp[2];
+        body.removeChild(currentPopup);
+        showPopUp(id, i, currentPopup.getElementsByTagName("input")[0].value);
+    }
+    catch (e) {}
 }
 
 function saveInPlace(id) {

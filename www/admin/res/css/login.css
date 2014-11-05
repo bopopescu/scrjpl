@@ -6,7 +6,7 @@
 }
 
 .login-icon::before {
-    content: "\f069\f069\f069\f069";
+    content: "\f069";
     font-size: 55px;
     position: relative;
     top: 20px;
@@ -27,7 +27,7 @@
     width:300px;
 }
 
-input[type='password'] {
+#password {
     bottom: 20px;
     font-size: 25px;
     left: 22px;

@@ -1,13 +1,28 @@
 <?php
     session_start();
 
-    if (!$_SESSION['isRegistered']) {header("location: login.php");}
+    include 'connect.php';
+    $db = connect();
+
+    if (isset($_POST['password']) && !isset($_SESSION['fail_start'])) {
+        $pass = $db->query("SELECT value FROM config WHERE var=\"password\" LIMIT 1;")->fetch_assoc();
+
+        if (sha1($_POST['password']) == $pass['value']) {
+            $_SESSION['isRegistered'] = true;
+            header("location: ../index.php");
+        }
+        else {
+            if (!isset($_SESSION['try'])) $_SESSION['try'] = 0;
+            $_SESSION['try']++;
+            if ($_SESSION['try'] == 4) { $_SESSION['fail_start'] = time(); }
+            header("location: ../login.php?auth=fail");
+        }
+    }
+    elseif (isset($_POST['password']) && isset($_SESSION['fail_start'])) {
+        header("location: ../login.php?auth=fail");
+    }
+    elseif (!$_SESSION['isRegistered']) {header("location: login.php");}
     else {
-
-        include 'connect.php';
-        $db = connect();
-
-
         if (@$_GET["td"] == "modify") {
 
             // TODO : A améliorer !
@@ -72,17 +87,6 @@
             if (!$query) {
                 echo "ERROR";
             }
-        }
-
-        elseif (isset($_POST['password'])) {
-            $pass = $db->query("SELECT value FROM config WHERE var=\"password\" LIMIT 1;")->fetch_assoc();
-
-            if (sha1($_POST['password']) == $pass['value']) {
-                $_SESSION['isRegistered'] = true;
-                header("location: ../index.php");
-            }
-            else
-                header("location: ../login.php?auth=fail");
         }
     }
 ?>
