@@ -19,9 +19,10 @@ i.td-box-icon-cor::before {content: "\f1c9";}
 
 #add-td-box a {
     color: #373737;
-    font-size: 95px;
 }
 
+
 #add-td-box i::before {
+    font-size: 108px;
     content: "\f067";
 }

@@ -173,7 +173,8 @@ function insertNewDocForm(e) {
     form.appendChild(button);
 
     wrap.appendChild(form);
-    wrapper.appendChild(wrap);
+    var newWrap = wrap.cloneNode(true);
+    wrapper.replaceChild(newWrap, wrap);
 }
 
 function createInput(name, type, labelText, required, maxlength) {
