@@ -115,5 +115,5 @@ Envoyer tous les commits de la branche locale vers un dépôt GitHub distant
 **git pull [alias d'un remote] [sur --> branche locale]**  
 Récupérer tout l'historique du dépôt distant et fusionner les modifications avec la branche locale
 
-**git remote add <mon_alias> https://github.com/<mon_login>/spid.git**  
+**git remote add [mon_alias] https://github.com/[mon_login]/spid.git**  
 Ajouter un dépôt distant à partir duquel on pourra faire des pull et des push. L'alias permet de le désigner facilement.
