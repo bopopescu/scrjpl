@@ -2,6 +2,9 @@ var resizeTimer = 0;
 var maxTdId = 0;
 var currentPopup;
 
+var daarrtList = new Array();
+var REFRESH_RATE = 5000;
+
 // Bloque la fonction fireResize jusqu'a la fin du redimensionnement
 function setBoxWrapperSize() {
     if (resizeTimer)
@@ -49,19 +52,20 @@ function hideEditOptions(e) {
 }
 
 // Génère une box "DAARRT" avec les liens vers la console, webcam, etc, ...
-function insertDaarrt(id, grp) {
-    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];;
+function insertDaarrt(id, name, grp) {
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
     var daarrtBox = document.createElement('div');
     var options = document.createElement('div');
     var title = document.createElement('font');
     var subtitle = document.createElement('font');
     daarrtBox.className = "ib";
+    daarrtBox.id = "daarrt-" + id;
     options.className = "ib-options";
     title.className = "ib-title-short";
     subtitle.className = "ib-subtitle";
 
     subtitle.innerHTML += grp + ((grp <= 1) ? " groupe" : " groupes");
-    title.innerHTML += "DAARRT " + id + "<br/>";
+    title.innerHTML += name + "<br/>";
 
     // OPTIONS DU DAARRT (console, webcam, ...)
 
@@ -104,13 +108,52 @@ function insertDaarrt(id, grp) {
     daarrtBox.appendChild(options);
 
     wrapper.appendChild(daarrtBox);
+    daarrtList.push(id);
     fireResize();
 }
 
 // Ajoute une box DAARRT et création d'un message d'info signalant le nouveau DAARRT.
-function insertNewDaarrt(id, grp) {
-    insertDaarrt(id, grp);
+function insertNewDaarrt(id, name, grp) {
+    insertDaarrt(id, name, grp);
     insertBox("Le DAARRT " + id + " vient de se connecter", "info");
+}
+
+function checkNewDaarrt() {
+    var data = new FormData();
+
+    data.append('daarrts', JSON.stringify(daarrtList));
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'db/proceed.php?daarrts=update', true);
+    xhr.onload = function () {
+        if (this.responseText == "ERROR") {
+            insertBox("Impossible de mettre à jour la liste des DAARRT", "error");
+        }
+        else {
+            var add = JSON.parse(this.responseText.split("||")[0]);
+            var remove = JSON.parse(this.responseText.split("||")[1]);
+
+            var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
+            for (var i = 0 ; i < remove.length ; i++) {
+                el = remove[i];
+                wrapper.removeChild(document.getElementById("daarrt-" + remove[i]));
+                insertBox("Le DAARRT " + remove[i] + " vient de se déconnecter.", "info");
+                var index = daarrtList.indexOf(remove[i]);
+                if (index > -1) daarrtList.splice(index, 1);
+            }
+
+            for (var i = 0 ; i < add.length ; i++) {
+                setNewDaarrtDelay(add[i], i * 100);
+            }
+
+        }
+        setTimeout(checkNewDaarrt, REFRESH_RATE);
+    };
+    xhr.send(data);
+}
+
+function setNewDaarrtDelay(el, time) {
+    setTimeout(function () {insertNewDaarrt(el.id, el.name, el.groups);}, time);
 }
 
 /*

@@ -49,13 +49,20 @@
 <!-- Début de la partie de test -->
 <script language="javascript">
     <?php
-        $elem = 4;
-        for ($i = 1 ; $i <= $elem ; $i++) {
+        include 'db/connect.php';
+        $db = connect();
+
+        $res = $db->query("SELECT id, name, groups FROM active ORDER BY id ASC");
+        $db->close();
+
+        $elem = 1;
+        while ($row = $res->fetch_assoc()) {
             echo "setTimeout(function () {
-                insertDaarrt({$i}, ".rand(0, 5).")}, ({$i}-1) * 100);\n";
+                insertDaarrt(".$row['id'].", \"".$row['name']."\", ".$row['groups'].");
+            }, {$elem} * 100);\n";
+            $elem++;
         }
-        $elem++;
-    echo "setTimeout(function () {insertNewDaarrt({$elem}, ".rand(0, 5).");}, 2000);";
+        echo "setTimeout(checkNewDaarrt, {$elem} * 100);";
     ?>
     insertBox("ceci est un message d'avertissement", "warning");
     insertBox("ceci est un message d'erreur", "error");

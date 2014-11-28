@@ -7,8 +7,8 @@ import urllib
 import threading
 import ConfigParser
 
-TIMEOUT = 30 # Timeout in ms
-daarrtList = ["192.168.0.101", "test"] # Possible DAARRT IP list
+TIMEOUT = 50 # Timeout in ms
+daarrtList = ["192.168.0.101"] # Possible DAARRT IP list
 pool = [] # Threads pool
 result = {}
 
@@ -24,6 +24,7 @@ def proceed(ip):
 		conf = ConfigParser.ConfigParser()
 		conf.read(path)
 		data["id"] = int(conf.get("global", "id"))
+		data["name"] = conf.get("global", "name")
 		data["groups"] = int(conf.get("global", "groups"))
 
 
@@ -33,8 +34,8 @@ def proceed(ip):
 
 if __name__ == "__main__" :
 	# Initialisation
-	socket.setdefaulttimeout(TIMEOUT)
 	os.chdir(os.path.dirname(__file__))
+	socket.setdefaulttimeout(TIMEOUT)
 
 	# Fetch config file in separate threads
 	for ip in daarrtList :
