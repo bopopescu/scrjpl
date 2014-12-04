@@ -7,6 +7,8 @@
 
         $db = connect();
         $docs = $db->query("SELECT COUNT(*) FROM documents;")->fetch_assoc();
+        $daarrt = $db->query("SELECT COUNT(*) FROM active;")->fetch_assoc();
+        $groups = $db->query("SELECT IFNULL(SUM(groups), 0) AS SUM FROM active;")->fetch_assoc();
         $db->close();
     }
 ?>
@@ -50,7 +52,9 @@
             <div class="panel-container">
                 <div class="panel-top">
                     <i class="panel-top-icon"></i>
-                    <div class="panel-title-number">9</div>
+                    <div class="panel-title-number">
+                        <?php echo $daarrt['COUNT(*)']; ?>
+                    </div>
                     <span class="panel-title-text">DAARRT en cours d'utilisation</span>
                 </div>
                 <a href="detail.php">
@@ -62,7 +66,9 @@
             <div class="panel-container">
                 <div class="panel-top">
                     <i class="panel-top-icon"></i>
-                    <div class="panel-title-number">24</div>
+                    <div class="panel-title-number">
+                        <?php echo $groups['SUM']; ?>
+                    </div>
                     <span class="panel-title-text">Groupes travaillent actuellement</span>
                 </div>
                 <a href="detail.php">

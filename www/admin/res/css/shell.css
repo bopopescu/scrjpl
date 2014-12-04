@@ -1,0 +1,15 @@
+iframe {
+	border:none;
+}
+
+.export-icon::before {
+	content: '\f08e';
+	color: #e5e5e5;
+}
+
+.export-icon {
+	font-size: 30px;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}

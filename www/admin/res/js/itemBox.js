@@ -52,20 +52,22 @@ function hideEditOptions(e) {
 }
 
 // Génère une box "DAARRT" avec les liens vers la console, webcam, etc, ...
-function insertDaarrt(id, name, grp) {
+function insertDaarrt(json) {
+    var daarrt = JSON.parse(json);
+
     var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
     var daarrtBox = document.createElement('div');
     var options = document.createElement('div');
     var title = document.createElement('font');
     var subtitle = document.createElement('font');
     daarrtBox.className = "ib";
-    daarrtBox.id = "daarrt-" + id;
+    daarrtBox.id = "daarrt-" + daarrt.id;
     options.className = "ib-options";
     title.className = "ib-title-short";
     subtitle.className = "ib-subtitle";
 
-    subtitle.innerHTML += grp + ((grp <= 1) ? " groupe" : " groupes");
-    title.innerHTML += name + "<br/>";
+    subtitle.innerHTML += daarrt.groups + ((daarrt.groups <= 1) ? " groupe" : " groupes");
+    title.innerHTML += daarrt.name + "<br/>";
 
     // OPTIONS DU DAARRT (console, webcam, ...)
 
@@ -83,9 +85,9 @@ function insertDaarrt(id, name, grp) {
     var aConsole = document.createElement('a');
     var aDetail = document.createElement('a');
 
-    aView.setAttribute('href', 'daarrt/view.php?id=' + id);
-    aConsole.setAttribute('href', 'daarrt/ssh.php?id=' + id);
-    aDetail.setAttribute('href', 'daarrt/details.php?id=' + id);
+    aView.setAttribute('href', 'daarrt/view.php?id=' + daarrt.id);
+    aConsole.setAttribute('href', 'daarrt/shell.php?id=' + daarrt.id);
+    aDetail.setAttribute('href', 'daarrt/details.php?id=' + daarrt.id);
 
     // Assemblage des éléments de la box
 
@@ -108,13 +110,13 @@ function insertDaarrt(id, name, grp) {
     daarrtBox.appendChild(options);
 
     wrapper.appendChild(daarrtBox);
-    daarrtList.push(id);
+    daarrtList.push(daarrt.id);
     fireResize();
 }
 
 // Ajoute une box DAARRT et création d'un message d'info signalant le nouveau DAARRT.
-function insertNewDaarrt(id, name, grp) {
-    insertDaarrt(id, name, grp);
+function insertNewDaarrt(id, el) {
+    insertDaarrt(el);
     insertBox("Le DAARRT " + id + " vient de se connecter", "info");
 }
 
@@ -153,7 +155,7 @@ function checkNewDaarrt() {
 }
 
 function setNewDaarrtDelay(el, time) {
-    setTimeout(function () {insertNewDaarrt(el.id, el.name, el.groups);}, time);
+    setTimeout(function () {insertNewDaarrt(el.id, JSON.stringify(el));}, time);
 }
 
 /*

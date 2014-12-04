@@ -46,26 +46,24 @@
     </div>
 
 </body>
-<!-- Début de la partie de test -->
 <script language="javascript">
     <?php
         include 'db/connect.php';
         $db = connect();
 
-        $res = $db->query("SELECT id, name, groups FROM active ORDER BY id ASC");
+        $res = $db->query("SELECT * FROM active ORDER BY id ASC");
         $db->close();
 
         $elem = 1;
         while ($row = $res->fetch_assoc()) {
             echo "setTimeout(function () {
-                insertDaarrt(".$row['id'].", \"".$row['name']."\", ".$row['groups'].");
+                insertDaarrt('".json_encode($row)."');
             }, {$elem} * 100);\n";
             $elem++;
         }
         echo "setTimeout(checkNewDaarrt, {$elem} * 100);";
     ?>
-    insertBox("ceci est un message d'avertissement", "warning");
-    insertBox("ceci est un message d'erreur", "error");
+    // insertBox("ceci est un message d'avertissement", "warning");
+    // insertBox("ceci est un message d'erreur", "error");
 </script>
-<!-- Fin de la partie de test -->
 </html>

@@ -52,6 +52,5 @@ def file2text(file_path):
 
 if __name__ == "__main__":
     if (len(sys.argv) == 2) :
-        # On se place dans le dossier du script
-        os.chdir(os.path.dirname(__file__))
-        print file2text(sys.argv[1])
+        os.chdir(os.path.dirname(__file__)) # On se place dans le dossier du script
+        print file2text(sys.argv[1]) # On affiche le texte du document
