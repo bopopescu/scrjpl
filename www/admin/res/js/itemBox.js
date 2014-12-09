@@ -115,9 +115,9 @@ function insertDaarrt(json) {
 }
 
 // Ajoute une box DAARRT et création d'un message d'info signalant le nouveau DAARRT.
-function insertNewDaarrt(id, el) {
+function insertNewDaarrt(name, el) {
     insertDaarrt(el);
-    insertBox("Le DAARRT " + id + " vient de se connecter", "info");
+    insertBox(name + " vient de se connecter", "info");
 }
 
 function checkNewDaarrt() {
@@ -155,7 +155,7 @@ function checkNewDaarrt() {
 }
 
 function setNewDaarrtDelay(el, time) {
-    setTimeout(function () {insertNewDaarrt(el.id, JSON.stringify(el));}, time);
+    setTimeout(function () {insertNewDaarrt(el.name, JSON.stringify(el));}, time);
 }
 
 /*

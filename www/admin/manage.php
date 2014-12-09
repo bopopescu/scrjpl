@@ -62,6 +62,13 @@
             $elem++;
         }
         echo "setTimeout(checkNewDaarrt, {$elem} * 100);";
+
+        if (@$_GET['offline'] == "true") {
+            if (@$_GET['origin'] == "details")
+                echo "insertBox(\"Impossible de récupérer les détails de ".$_GET['name'].", le DAARRT semble déconnecté\", \"error\");";
+            if (@$_GET['origin'] == "shell")
+                echo "insertBox(\"Impossible de se connecter au shell de ".$_GET['name'].", le DAARRT semble déconnecté\", \"error\");";
+        }
     ?>
     // insertBox("ceci est un message d'avertissement", "warning");
     // insertBox("ceci est un message d'erreur", "error");

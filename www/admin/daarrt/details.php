@@ -7,10 +7,6 @@
 		$db = connect();
 		$daarrt = $db->query("SELECT * FROM active WHERE id=".$_GET['id'])->fetch_assoc();
 		$db->close();
-
-		$alive = json_decode(shell_exec("../scripts/daarrt.py ".$daarrt['id']), true);
-		$alive = $alive[$daarrt['id']];
-		if ($alive == "offline") header("location: ../manage.php?offline=true&origin=shell&name=".$daarrt['name']);
 	}
 ?>
 <!doctype html>
@@ -18,20 +14,11 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Console de <?php echo $daarrt['name']; ?></title>
+	<title>Détails de <?php echo $daarrt['name']; ?></title>
 	<meta name="description" content="Base de donnée d'information sur les DAARRT">
 	<meta name="author" content="Brian">
 
 	<link rel="stylesheet" href="../res/css/styles.css">
-	<link rel="stylesheet" href="../res/css/shell.css">
-	<script language="javascript">
-		function exportShell(url, title, w, h) {
-			var left = (screen.width/2)-(w/2);
-			var top = (screen.height/2)-(h/2);
-			window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
-			document.location = "../manage.php";
-		}
-	</script>
 </head>
 
 <body>
@@ -40,9 +27,6 @@
 
 		</div>
 	</nav>
-	<a href="javascript:exportShell('http://
-	<?php echo $daarrt['address']; ?>/shell','shell_<?php echo $daarrt['id']; ?>
-	', 900, 400);"><i class="export-icon"></i></a>
 
 	<ul class="navbar">
 		<li>
@@ -61,8 +45,19 @@
 			<a href="../logout.php"><i class="navbar-icon navbar-icon-logout"></i>Déconnexion</a>
 		</li>
 	</ul>
-	<div class="console">
-		<iframe src="http://<?php echo $daarrt['address']; ?>/shell" width="100%" height="100%"></iframe>
+	<div class="wrapper">
+		<?php
+			$details = json_decode(shell_exec("../scripts/daarrt.py ".$daarrt['id']), true);
+			$details = $details[$daarrt['id']];
+			if ($details == "offline") header("location: ../manage.php?offline=true&origin=details&name=".$daarrt['name']);
+			foreach ($details as $section => $params) {
+				echo "<p class='section-title'>".ucfirst($section)." :</p>";
+				foreach ($params as $name => $value) {
+					echo "<dd>".ucfirst($name)." : {$value}</dd>";
+				}
+			}
+
+		?>
 	</div>
 </body>
 </html>
