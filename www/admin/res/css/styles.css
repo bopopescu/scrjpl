@@ -24,6 +24,17 @@
 @-moz-keyframes infobox_closing { from { left: 0%; } to { left: 100%; } }
 @-webkit-keyframes infobox_closing { from { left: 0%; } to { left: 100%; } }
 
+@keyframes konami { from { transform: rotate(0deg) scale(0,0); } to { transform: rotate(720deg) scale(1,1); } }
+@-webkit-keyframes konami { from { -webkit-transform: rotate(0deg) scale(0,0); } to { -webkit-transform: rotate(720deg) scale(1,1); } }
+
+#konami {
+	position: absolute;
+	top: 30%;
+	left: 30%;
+	animation: konami 1s forwards;
+	-webkit-animation: konami 1s forwards;
+}
+
 a {
 	color: #428bca;
 	text-decoration: none;

@@ -19,6 +19,7 @@
 	<meta name="author" content="Brian">
 
 	<link rel="stylesheet" href="../res/css/styles.css">
+	<script language="javascript" src="res/js/konami.js"></script>
 </head>
 
 <body>
@@ -49,7 +50,7 @@
 		<?php
 			$details = shell_exec("../scripts/daarrt.py ".$daarrt['id']);
 			$details = json_decode(stripslashes($details), TRUE);
-			
+
 			$details = $details[$daarrt['id']];
 			//if ($details == "offline") header("location: ../manage.php?offline=true&origin=details&name=".$daarrt['name']);
 			foreach ($details as $section => $params) {

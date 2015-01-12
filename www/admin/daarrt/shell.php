@@ -32,6 +32,7 @@
 			document.location = "../manage.php";
 		}
 	</script>
+	<script language="javascript" src="res/js/konami.js"></script>
 </head>
 
 <body>

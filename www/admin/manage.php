@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="res/css/styles.css">
     <script language="javascript" src="res/js/infobox.js"></script>
     <script language="javascript" src="res/js/itemBox.js"></script>
+    <script language="javascript" src="res/js/konami.js"></script>
 </head>
 
 <body onload="setBoxWrapperSize()" onresize="setBoxWrapperSize()">

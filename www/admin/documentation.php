@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="res/css/styles.css">
     <link rel="stylesheet" href="res/css/search.css">
+    <script language="javascript" src="res/js/konami.js"></script>
     <script language="JavaScript" src="res/js/infobox.js"></script>
     <script language="JavaScript" src="res/js/itemBox.js"></script>
     <script language="JavaScript" src="res/js/search.js"></script>
