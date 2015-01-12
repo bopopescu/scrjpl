@@ -47,9 +47,11 @@
 	</ul>
 	<div class="wrapper">
 		<?php
-			$details = json_decode(shell_exec("../scripts/daarrt.py ".$daarrt['id']), true);
+			$details = shell_exec("../scripts/daarrt.py ".$daarrt['id']);
+			$details = json_decode(stripslashes($details), TRUE);
+			
 			$details = $details[$daarrt['id']];
-			if ($details == "offline") header("location: ../manage.php?offline=true&origin=details&name=".$daarrt['name']);
+			//if ($details == "offline") header("location: ../manage.php?offline=true&origin=details&name=".$daarrt['name']);
 			foreach ($details as $section => $params) {
 				echo "<p class='section-title'>".ucfirst($section)." :</p>";
 				foreach ($params as $name => $value) {
