@@ -1,0 +1,82 @@
+
+def MasterReceive():
+#================================================================= Error Checking ==========================================================
+  i=0
+  Wire.requestFrom(I2Caddress,24)                                # request 24 bytes from device 007
+
+  while (Wire.available()<24):                                      # wait for entire data packet to be received
+    if(i==0) : Serial.println("Waiting for slave to send data.")     # Only print message once (i==0)
+    if(i>0) : Serial.println(".")                                    # print a dot for every loop where buffer<24 bytes
+    i+=1                                                          # increment i so that message only prints once.
+    if(i>79) :
+      Serial.println("")
+      i=1
+
+  d=Wire.read()                                                  # read start byte from buffer
+  if(d!=startbyte):                                               # if start byte not equal to 0x0F
+    Serial.println(d,DEC)
+    while(Wire.available()>0):                                     # empty buffer of bad data
+      d=Wire.read()
+    Serial.println("  Wrong Start Byte")                         # error message
+    return                                                       # quit
+
+
+  #================================================================ Read Data ==============================================================
+  Serial.println("Slave Error Message:")                           # slave error report
+  Serial.println(Wire.read(),DEC)
+
+  i=Wire.read()*256+Wire.read()                                  # T'REX battery voltage
+  Serial.println("Battery Voltage:\t")
+  Serial.println(int(i/10))
+  Serial.println(".")
+  Serial.println(i-(int(i/10)*10))
+  Serial.println("V")
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("Left  Motor Current:\t")
+  Serial.println(i)
+  Serial.println("mA")                           # T'REX left  motor current in mA
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("Left  Motor Encoder:\t")
+  Serial.println(i)                                              # T'REX left  motor encoder count
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("Right Motor Current:\t")
+  Serial.println(i)
+  Serial.println("mA")                           # T'REX right motor current in mA
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("Right Motor Encoder:\t")
+  Serial.println(i)                                              # T'REX right motor encoder count
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("X-axis:\t\t")
+  Serial.println(i)                                              # T'REX X-axis
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("Y-axis:\t\t")
+  Serial.println(i)                                              # T'REX Y-axis
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("Z-axis:\t\t")
+  Serial.println(i)                                              # T'REX Z-axis
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("X-delta:\t\t")
+  Serial.println(i)                                              # T'REX X-delta
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("Y-delta:\t\t")
+  Serial.println(i)                                              # T'REX Y-delta
+
+  i=Wire.read()*256+Wire.read()
+  Serial.println("Z-delta:\t\t")
+  Serial.println(i)                                              # T'REX Z-delta
+  Serial.println("\r\n\n\n")
+
+def setup():
+    MasterReceive()
+
+def loop():
+    MasterReceive()

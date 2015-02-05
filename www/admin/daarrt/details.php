@@ -48,8 +48,7 @@
 	</ul>
 	<div class="wrapper">
 		<?php
-			$details = shell_exec("../scripts/daarrt.py ".$daarrt['id']);
-			$details = json_decode(stripslashes($details), TRUE);
+			$details = json_decode(stripslashes(shell_exec("../scripts/daarrt.py ".$daarrt['id'])), TRUE);
 
 			$details = $details[$daarrt['id']];
 			//if ($details == "offline") header("location: ../manage.php?offline=true&origin=details&name=".$daarrt['name']);

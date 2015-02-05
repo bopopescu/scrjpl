@@ -1,0 +1,25 @@
+#!/bin/sh
+
+case $1 in
+	start)
+		python /etc/daarrt/scripts/register.py start
+	;;
+	stop)
+		python /etc/daarrt/scripts/register.py stop
+	;;
+	reload|restart)
+		sudo service apache2 restart
+		sudo service shellinabox restart
+		python /etc/daarrt/scripts/register.py start
+	;;
+	status)
+		echo "Checking DAARRT status..."
+		sudo service apache2 status
+		sudo service shellinabox status
+	;;
+	*)
+		log_success_msg "Usage: /etc/init.d/daarrt {start|stop|restart|reload|status}"
+		exit 1
+	;;
+esac
+exit 0

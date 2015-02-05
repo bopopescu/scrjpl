@@ -25,7 +25,7 @@ def proceed(id):
 	cur = db.cursor()
 	cur.execute("SELECT address FROM active WHERE id=" + id + " LIMIT 1")
 	data = cur.fetchone()
-	
+
 	try : ip = data[0]
 	except :
 		cur.close()
@@ -61,7 +61,7 @@ def proceed(id):
 	except :
 		# On supprime de la bdd le DAARRT qui semble déconnecté
 		result[id] = "offline" # if can't reach -> set offline
-		#cur.execute("DELETE FROM active WHERE id=" + id + " LIMIT 1")
+		cur.execute("DELETE FROM active WHERE id=" + id + " LIMIT 1")
 		db.commit()
 		cur.close()
 		return DAARRT_NOT_RESPONDING
