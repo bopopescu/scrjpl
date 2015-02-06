@@ -86,7 +86,7 @@ class Trex():
         # answer = self.trex_bus.i2c_read()
         # return map(ord, answer)
         raw_status = self.trex_bus.i2cRead()
-        return struct.unpack(">cchhhhhhhhhhh", raw_status)
+        return struct.unpack(">cchhhhhhhhhhh", raw_status)[2:]
 
 
     def reset(self):

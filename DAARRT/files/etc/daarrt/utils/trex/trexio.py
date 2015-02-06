@@ -51,15 +51,16 @@ It is meant to be used inside the steelsquid daemon (see http://www.steelsquid.o
 @change: 2014-11-23 Created
 '''
 
+import os
 import sys
-import ctypes
 import smbus
+import ctypes
 import struct
 import threading
-#If the python3 packages not is in path (quick2wire)
+import ConfigParser
+
+# If the python3 packages not is in path (quick2wire)
 sys.path.append("/usr/lib/python3/dist-packages")
-import os
-print os.getcwd()
 import trex.quick2wire.i2c as i2c
 from trex.quick2wire.i2c import I2CMaster, writing_bytes, reading
 
@@ -68,7 +69,7 @@ class TrexIO():
         self.i2c_write_bus = smbus.SMBus(2)
         self.i2c_read_bus = i2c.I2CMaster(2)
 
-        self.ADDRESS = addr#0x07
+        self.ADDRESS = addr
 
         self.lock = threading.Lock()
         self.package = [None] * 26
@@ -135,13 +136,39 @@ class TrexIO():
         self.package[24] = data['i2c_address']
         self.package[25] = data['i2c_clock']
 
+    def __updateStatus(self, raw_status):
+        conf = ConfigParser.ConfigParser()
+        conf.read("/var/www/html/daarrt.conf")
+
+        status = struct.unpack(">cchhhhhhhhhhh", raw_status)
+
+        if not conf.has_section("trex") : conf.add_section("trex")
+
+        conf.set("trex", "battery", status[2])
+
+        conf.set("trex", "left_motor", status[3])
+        conf.set("trex", "left_encoder", status[4])
+
+        conf.set("trex", "right_motor", status[5])
+        conf.set("trex", "right_encoder", status[6])
+
+        conf.set("trex", "accelerometer_x", status[7])
+        conf.set("trex", "accelerometer_y", status[8])
+        conf.set("trex", "accelerometer_z", status[9])
+
+        fd = open("/var/www/html/daarrt.conf", 'w')
+        conf.write(fd)
+        fd.close()
+
     def i2cRead(self):
         '''
         Read status from trex
         Return as a byte array
         '''
-        # answer = i2c_read_bus.transaction(i2c.reading(self.ADDRESS, 24))[0]
-        return self.i2c_read_bus.transaction(i2c.reading(self.ADDRESS, 24))[0]
+        status = i2c_read_bus.transaction(i2c.reading(self.ADDRESS, 24))[0]
+        self.__updateStatus(status)
+
+        return status
 
 
     def i2cWrite(self, data):
