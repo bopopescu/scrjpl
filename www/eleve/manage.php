@@ -55,7 +55,7 @@
         $res = $db->query("SELECT * FROM active ORDER BY id ASC");
         $db->close();
 
-        $elem = 0;
+        $elem = 1;
         while ($row = $res->fetch_assoc()) {
             echo "setTimeout(function () {
                 insertDaarrt('".json_encode($row)."');

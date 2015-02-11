@@ -1,20 +1,18 @@
-<?php
-    session_start();
-    if (!$_SESSION['isRegistered']) {header("location: login.php");}
- ?>
 <!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
 
-    <title>Panneau de contrôle</title>
-    <meta name="description" content="Panneau de contrôle des DAART">
+    <title>Choix d'un groupe</title>
+    <meta name="description" content="Choix d'un groupe de travail.">
     <meta name="author" content="Brian">
 
     <link rel="stylesheet" href="res/css/styles.css">
-    <script language="javascript" src="res/js/infobox.js"></script>
-    <script language="javascript" src="res/js/itemBox.js"></script>
-    <script language="javascript" src="res/js/konami.js"></script>
+    <link rel="stylesheet" href="res/css/home.css">
+    <link rel="stylesheet" href="res/css/td.css">
+    <script language="JavaScript" src="res/js/infobox.js"></script>
+    <script language="JavaScript" src="res/js/itemBox.js"></script>
+    <script language="JavaScript" src="res/js/home.js"></script>
 </head>
 
 <body onload="setBoxWrapperSize()" onresize="setBoxWrapperSize()">
@@ -23,7 +21,7 @@
     </nav>
     <ul class="navbar">
         <li>
-            <a href="index.php"><i class="navbar-icon navbar-icon-dashboard"></i>Dashboard</a>
+            <a href="index.php"><i class="navbar-icon navbar-icon-groups"></i>Groupes</a>
         </li>
         <li>
             <a href="manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
@@ -41,37 +39,40 @@
     <div class="wrapper">
         <div id="infobox-zone"></div>
 
+        <div class="new-group">
+            <i class="new-group-icon"></i>
+            <br>Nouveau Groupe
+        </div>
+
+        <div class="search-group">
+            <i class="search-icon"></i>
+            <input id="search_input" name="search_input" type="text" placeholder="Rechercher" oninput="searchGroup(this.value)"/>
+        </div>
+
         <div class="item-zone">
             <div class="item-zone-wrapper"></div>
         </div>
+
     </div>
 
 </body>
+
 <script language="javascript">
     <?php
         include 'db/connect.php';
         $db = connect();
 
-        $res = $db->query("SELECT * FROM active ORDER BY id ASC");
-        $db->close();
+        $res = $db->query("SELECT id, id_ori, name, members, daarrt, date from groups g, (SELECT MAX(date) as maxi FROM `groups` GROUP BY id_ori) t WHERE g.date=t.maxi ORDER BY g.name");
+
 
         $elem = 0;
         while ($row = $res->fetch_assoc()) {
             echo "setTimeout(function () {
-                insertDaarrt('".json_encode($row)."');
-            }, {$elem} * 100);\n";
+                insertGroup('".$db->real_escape_string(json_encode($row))."');
+            }, ({$elem}) * 100);\n";
             $elem++;
         }
-        echo "setTimeout(checkNewDaarrt, {$elem} * 100);";
-
-        if (@$_GET['offline'] == "true") {
-            if (@$_GET['origin'] == "details")
-                echo "insertBox(\"Impossible de récupérer les détails de ".$_GET['name'].", le DAARRT semble déconnecté\", \"error\");";
-            if (@$_GET['origin'] == "shell")
-                echo "insertBox(\"Impossible de se connecter au shell de ".$_GET['name'].", le DAARRT semble déconnecté\", \"error\");";
-        }
+        $db->close();
     ?>
-    // insertBox("ceci est un message d'avertissement", "warning");
-    // insertBox("ceci est un message d'erreur", "error");
 </script>
 </html>

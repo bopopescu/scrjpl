@@ -1,7 +1,3 @@
-<?php
-    session_start();
-    if (!$_SESSION['isRegistered']) {header("location: login.php");}
- ?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -19,7 +15,7 @@
     <script language="JavaScript" src="res/js/search.js"></script>
 </head>
 
-<body onkeypress="if (event.keyCode == 13) search()">
+<body onkeypress="if (event.keyCode == 13) search()" >
     <nav class="topbar">
         <div class="topbar-title">DAARRT Manager</div>
     </nav>
@@ -62,47 +58,13 @@
                         </label>
                     </td>
                     <td>
-                        <label for="tuto">
+                        <label for="td">
                             <input name="tuto" id="tuto" type="checkbox" checked/>
                             Inclure les tutoriels
                         </label>
                     </td>
                 </tr>
             </table>
-            <p id="search-syntax-title" class="section-title">Synthaxe de recherche :</p>
-            <table id="search-syntax-help">
-                <tr>
-                    <td>
-                        <dd><b>+ :</b> un plus placé devant un mot indique que celui-ci doit être présent dans chaque résultat retourné.</dd>
-                    </td>
-                    <td>
-                        <dd><b>- :</b> un moins placé devant un mot indique que celui-ci doit être présent dans aucun des résultats retournés.</dd>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <dd><b>< > :</b> change la contribution d'un mot à la pertinence du résultat final. L'opérateur > accroît la contribution et l'opérateur < la diminue.</dd>
-                    </td>
-                    <td>
-                        <dd><b>( ) :</b> les parenthèses permettent de regrouper des mots en sous-expressions. Les groupes de parenthèses peuvent être imbriquées.</dd>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <dd><b>~ :</b> le tilde, placé devant un mot, est un opérateur de négation permettant de diminuer la pertinence (et donc le classement) d'un résultat contenant ce mot.</dd>
-                    </td>
-                    <td>
-                        <dd><b>* :</b> opérateur de troncature. Placé à la fin d'un mot il permet de chercher tous les mots ayant le même préfix.</dd>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <dd><b>" :</b> le tilde, placé devant un mot, est un opérateur de négation permettant de diminuer la pertinence (et donc le classement) d'un résultat contenant ce mot.</dd>
-                    </td>
-                    <td></td>
-                </tr>
-            </tr>
-        </table>
         </div>
         <hr />
         <div id="infobox-zone"></div>
@@ -112,7 +74,6 @@
 
     </div>
     <script language="JavaScript">
-        insertNewDocButton();
         <?php
             if (@$_GET['err'] == "db")
                 echo "insertBox(\"Une erreur est survenue lors de l'ajout du document à la base de données.\", \"error\");";

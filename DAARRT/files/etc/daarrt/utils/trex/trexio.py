@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- encoding: utf-8 -*-
+
 '''
 Controll the Trex robot controller
 http://www.dagurobot.com/goods.php?id=135
@@ -72,73 +75,78 @@ class TrexIO():
         self.ADDRESS = addr
 
         self.lock = threading.Lock()
-        self.package = [None] * 26
-        self.__trex_reset()
+        self.package = {}
+        self.__byte_package = [None] * 26
+        self.reset()
 
     def __trex_reset(self):
         '''
         Reset the trex controller byte array
         '''
-        self.start_byte = 15
-        self.package[0] = 6    # PWMfreq
-        self.package[1] = 0    # Left speed high byte
-        self.package[2] = 0    # Left Speed low byte
-        self.package[3] = 0    # Left brake
-        self.package[4] = 0    # Right Speed high byte
-        self.package[5] = 0    # Right Speed low byte
-        self.package[6] = 0    # Right brake
-        self.package[7] = 0    # Servo 1 high byte
-        self.package[8] = 0    # Servo 1 low byte
-        self.package[9] = 0    # Servo 2 high byte
-        self.package[10] = 0   # Servo 2 low byte
-        self.package[11] = 0   # Servo 3 high byte
-        self.package[12] = 0   # Servo 3 low byte
-        self.package[13] = 0   # Servo 4 high byte
-        self.package[14] = 0   # Servo 4 low byte
-        self.package[15] = 0   # Servo 5 high byte
-        self.package[16] = 0   # Servo 5 low byte
-        self.package[17] = 0   # Servo 6 high byte
-        self.package[18] = 0   # Servo 6 low byte
-        self.package[19] = 50  # Devibrate
-        self.package[20] = 0   # Impact sensitivity high byte
-        self.package[21] = 50  # Impact sensitivity low byte
-        self.package[22] = 0   # Battery voltage high byte
-        self.package[23] = 50  # Battery voltage low byte
-        self.package[24] = 7   # I2C slave address
-        self.package[25] = 0   # I2C clock frequency
+        self.package = {
+        	'start_byte' : 15,                     # Start byte
+        	'pwm_freq' : 6,                        # PWMfreq
+        	'lm_speed_high_byte' : 0,              # Left speed high byte
+        	'lm_speed_low_byte' : 0,               # Left Speed low byte
+        	'lm_brake' : 0,                        # Left brake
+        	'rm_speed_high_byte' : 0,                     # Right Speed high byte
+        	'rm_speed_low_byte' : 0,               # Right Speed low byte
+        	'rm_brake' : 0,                        # Right brake
+        	'servo_1_high_byte' : 0,               # Servo 1 high byte
+        	'servo_1_low_byte' : 0,                # Servo 1 low byte
+        	'servo_2_high_byte' : 0,               # Servo 2 high byte
+        	'servo_2_low_byte' : 0,                # Servo 2 low byte
+        	'servo_3_high_byte' : 0,               # Servo 3 high byte
+        	'servo_3_low_byte' : 0,                # Servo 3 low byte
+        	'servo_4_high_byte' : 0,               # Servo 4 high byte
+        	'servo_4_low_byte' : 0,                # Servo 4 low byte
+        	'servo_5_high_byte' : 0,               # Servo 5 high byte
+        	'servo_5_low_byte' : 0,                # Servo 5 low byte
+        	'servo_6_high_byte' : 0,               # Servo 6 high byte
+        	'servo_6_low_byte' : 0,                # Servo 6 low byte
+        	'devibrate' : 50,                      # Devibrate
+        	'impact_sensitivity_high_byte' : 0,    # Impact sensitivity high byte
+        	'impact_sensitivity_low_byte' : 50,    # Impact sensitivity low byte
+        	'battery_high_byte' : 0,               # Battery voltage high byte
+        	'battery_low_byte' : 50,               # Battery voltage low byte
+        	'i2c_address' : 7,                     # I2C slave address
+        	'i2c_clock' : 0                       # I2C clock frequency
+        }
 
-    def __map(self, data):
-        self.start_byte = data['start_byte']
-        self.package[0] = data['pwm_freq']
-        self.package[1] = data['lm_speed_high_byte']
-        self.package[2] = data['lm_speed_low_byte']
-        self.package[3] = data['lm_brake']
-        self.package[4] = data['rm_speed_high_byte']
-        self.package[5] = data['rm_speed_low_byte']
-        self.package[6] = data['rm_brake']
-        self.package[7] = data['servo_1_high_byte']
-        self.package[8] = data['servo_1_low_byte']
-        self.package[9] = data['servo_2_high_byte']
-        self.package[10] = data['servo_2_low_byte']
-        self.package[11] = data['servo_3_high_byte']
-        self.package[12] = data['servo_3_low_byte']
-        self.package[13] = data['servo_4_high_byte']
-        self.package[14] = data['servo_4_low_byte']
-        self.package[15] = data['servo_5_high_byte']
-        self.package[16] = data['servo_5_low_byte']
-        self.package[17] = data['servo_6_high_byte']
-        self.package[18] = data['servo_6_low_byte']
-        self.package[19] = data['devibrate']
-        self.package[20] = data['impact_sensitivity_high_byte']
-        self.package[21] = data['impact_sensitivity_low_byte']
-        self.package[22] = data['battery_high_byte']
-        self.package[23] = data['battery_low_byte']
-        self.package[24] = data['i2c_address']
-        self.package[25] = data['i2c_clock']
+        self.__map()
+
+    def __map(self):
+        self.start_byte = self.package['start_byte']
+        self.__byte_package[0] = self.package['pwm_freq']
+        self.__byte_package[1] = self.package['lm_speed_high_byte']
+        self.__byte_package[2] = self.package['lm_speed_low_byte']
+        self.__byte_package[3] = self.package['lm_brake']
+        self.__byte_package[4] = self.package['rm_speed_high_byte']
+        self.__byte_package[5] = self.package['rm_speed_low_byte']
+        self.__byte_package[6] = self.package['rm_brake']
+        self.__byte_package[7] = self.package['servo_1_high_byte']
+        self.__byte_package[8] = self.package['servo_1_low_byte']
+        self.__byte_package[9] = self.package['servo_2_high_byte']
+        self.__byte_package[10] = self.package['servo_2_low_byte']
+        self.__byte_package[11] = self.package['servo_3_high_byte']
+        self.__byte_package[12] = self.package['servo_3_low_byte']
+        self.__byte_package[13] = self.package['servo_4_high_byte']
+        self.__byte_package[14] = self.package['servo_4_low_byte']
+        self.__byte_package[15] = self.package['servo_5_high_byte']
+        self.__byte_package[16] = self.package['servo_5_low_byte']
+        self.__byte_package[17] = self.package['servo_6_high_byte']
+        self.__byte_package[18] = self.package['servo_6_low_byte']
+        self.__byte_package[19] = self.package['devibrate']
+        self.__byte_package[20] = self.package['impact_sensitivity_high_byte']
+        self.__byte_package[21] = self.package['impact_sensitivity_low_byte']
+        self.__byte_package[22] = self.package['battery_high_byte']
+        self.__byte_package[23] = self.package['battery_low_byte']
+        self.__byte_package[24] = self.package['i2c_address']
+        self.__byte_package[25] = self.package['i2c_clock']
 
     def __updateStatus(self, raw_status):
         conf = ConfigParser.ConfigParser()
-        conf.read("/var/www/html/daarrt.conf")
+        conf.read("/var/www/daarrt.conf")
 
         status = struct.unpack(">cchhhhhhhhhhh", raw_status)
 
@@ -156,7 +164,7 @@ class TrexIO():
         conf.set("trex", "accelerometer_y", status[8])
         conf.set("trex", "accelerometer_z", status[9])
 
-        fd = open("/var/www/html/daarrt.conf", 'w')
+        fd = open("/var/www/daarrt.conf", 'w')
         conf.write(fd)
         fd.close()
 
@@ -165,20 +173,23 @@ class TrexIO():
         Read status from trex
         Return as a byte array
         '''
-        status = i2c_read_bus.transaction(i2c.reading(self.ADDRESS, 24))[0]
+        status = self.i2c_read_bus.transaction(i2c.reading(self.ADDRESS, 24))[0]
         self.__updateStatus(status)
 
         return status
 
 
-    def i2cWrite(self, data):
+    def i2cWrite(self):
         '''
         Write I2C data to T-Rex
         '''
-        self.__map(data)
+
+        self.__map()
         self.lock.acquire()
         try:
-            self.i2c_write_bus.write_i2c_block_data(self.ADDRESS, self.start_byte, self.package)
+            self.i2c_write_bus.write_i2c_block_data(self.ADDRESS, self.start_byte, self.__byte_package)
+        except:
+            print "Erreur d'accès au bus I2C"
         finally:
             self.lock.release()
 
@@ -190,6 +201,8 @@ class TrexIO():
         self.lock.acquire()
         try:
             self.__trex_reset()
-            self.i2c_write_bus.write_i2c_block_data(self.ADDRESS, self.start_byte, self.package)
+            self.i2c_write_bus.write_i2c_block_data(self.ADDRESS, self.start_byte, self.__byte_package)
+        except:
+            print "Erreur d'accès au bus I2C"
         finally:
             self.lock.release()

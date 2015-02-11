@@ -42,19 +42,14 @@
 }
 
 
-#advanced-search-options, #search-syntax-help  {
+#advanced-search-options {
     width: 100%;
     border-spacing: 0px;
 }
 
 #advanced-search-options td {
     text-align: center;
-    /*width: 25%;*/
-}
-
-#search-syntax-help td {
-    vertical-align: top;
-    padding: 10px 0px 10px 0px;
+    width: 25%;
 }
 
 #search-form {

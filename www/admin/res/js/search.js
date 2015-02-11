@@ -2,11 +2,14 @@ var lockSearch = false;
 
 function showSearchOptions() {
     var wrapper = document.getElementById("search-form");
-    var p = document.getElementById("search-options-title");
-    var table = document.getElementById("advanced-search-options");
+    var p1 = document.getElementById("search-options-title");
+    var table1 = document.getElementById("advanced-search-options");
+
+    var p2 = document.getElementById("search-syntax-title");
+    var table2 = document.getElementById("search-syntax-help");
 
     if (wrapper.style.height == "40px" || wrapper.style.height == "") {
-        wrapper.style.height = 80 + p.offsetHeight + table.clientHeight + "px";}
+        wrapper.style.height = 128 + p1.clientHeight + table1.clientHeight + p2.clientHeight + table2.clientHeight + "px";}
     else
         wrapper.style.height = "40px";
 }
@@ -149,7 +152,7 @@ function insertNewDocForm(e) {
     labelType.appendChild(inputType);
 
     // Champs du fichier
-    var fieldFile = createInput("file", "file", "Fichier : ", true);
+    var fieldFile = createInput("document", "file", "Fichier : ", true);
 
     // Champs des tags
     var fieldTags = createInput("tags", "text", "Tags : ", false, 255);

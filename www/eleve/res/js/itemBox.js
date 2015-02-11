@@ -38,17 +38,7 @@ function fireResize() {
         boxes[i].style.width = p * 100 + "%";
     }
 
-    relocatePopup();
-
     wrap.style.margin = "10px auto";
-}
-
-function showEditOptions(e) {
-    e.getElementsByClassName("ib-edit")[0].style.opacity = "1";
-}
-
-function hideEditOptions(e) {
-    e.getElementsByClassName("ib-edit")[0].style.opacity = "0";
 }
 
 // Génère une box "DAARRT" avec les liens vers la console, webcam, etc, ...
@@ -63,7 +53,7 @@ function insertDaarrt(json) {
     daarrtBox.className = "ib";
     daarrtBox.id = "daarrt-" + daarrt.id;
     options.className = "ib-options";
-    title.className = "ib-title-short";
+    title.className = (titre.length < 10) ? "ib-title-short" : "ib-title-long";
     subtitle.className = "ib-subtitle";
 
     subtitle.innerHTML += daarrt.groups + ((daarrt.groups <= 1) ? " groupe" : " groupes");
@@ -171,9 +161,6 @@ function insertTd(id, titre, sujet, eno, res, cor) {
     var title = document.createElement('font');
     var subtitle = document.createElement('font');
 
-    tdBox.setAttribute("onmouseover", "showEditOptions(this)");
-    tdBox.setAttribute("onmouseout", "hideEditOptions(this)");
-
     tdBox.id = id;
     tdBox.className = "ib";
     options.className = "ib-options td-box-options";
@@ -184,25 +171,6 @@ function insertTd(id, titre, sujet, eno, res, cor) {
     subtitle.innerHTML += sujet;
 
     // OPTIONS D'EDITION
-    var edit = document.createElement('div');
-    var aEdit = document.createElement('a');
-    var aDel = document.createElement('a');
-    var iEdit = document.createElement('i');
-    var iDel = document.createElement('i');
-
-    aEdit.setAttribute('onclick', 'editInPlace(' + id + ')');
-    aEdit.setAttribute("href", "#");
-    aDel.setAttribute('onclick', 'deleteInPlace(' + id + ')');
-    aDel.setAttribute("href", "#");
-
-    edit.className = "ib-edit";
-    iEdit.className = "icon-modify"
-    iDel.className = "icon-delete"
-
-    aEdit.appendChild(iEdit);
-    aDel.appendChild(iDel);
-    edit.appendChild(aEdit);
-    edit.appendChild(aDel);
 
     // OPTIONS UTILISATEUR (Enoncé, Ressources, Correction)
     var iTitle = document.createElement('i');
@@ -247,7 +215,6 @@ function insertTd(id, titre, sujet, eno, res, cor) {
     tdBox.appendChild(title);
     tdBox.insertBefore(document.createElement('br'), tdBox.children[2]);
     tdBox.appendChild(subtitle);
-    tdBox.appendChild(edit);
     tdBox.appendChild(options);
 
     wrapper.appendChild(tdBox);
@@ -260,6 +227,7 @@ function insertNewTd() {
     insertTd(++maxTdId, "TD " + maxTdId, "Sujet du TD " + maxTdId, 0, 0, 0);
     setTimeout(insertAddTdItem, 100);
 }
+
 
 function insertAddTdItem() {
 
@@ -277,181 +245,6 @@ function insertAddTdItem() {
     addTdBox.appendChild(a);
     wrapper.appendChild(addTdBox);
     fireResize();
-}
-
-function editInPlace(id) {
-    var box = document.getElementById(id);
-    var title = box.children[1];
-    var subtitle = box.children[3];
-
-    var inputTitle = document.createElement('input');
-    inputTitle.type = "text";
-    inputTitle.value = title.innerHTML;
-    inputTitle.className = "ib-edit-title";
-    box.insertBefore(inputTitle, box.children[1]);
-    box.removeChild(title);
-
-    var inputSubtitle = document.createElement('input');
-    inputSubtitle.type = "text";
-    inputSubtitle.value = subtitle.innerHTML;
-    inputSubtitle.className = "ib-edit-subtitle";
-    box.insertBefore(inputSubtitle, box.children[3]);
-    box.removeChild(subtitle);
-
-    var editOptions = box.getElementsByClassName("ib-edit")[0];
-    editOptions.removeChild(editOptions.firstChild);
-    editOptions.firstChild.firstChild.className = "icon-save";
-    editOptions.firstChild.setAttribute("onclick", "saveInPlace(" + id + ")");
-
-    var userOptions = box.getElementsByClassName("ib-options")[0];
-    for (var i = 0 ; i < userOptions.children.length ; i++) {
-        var el = userOptions.children[i];
-        el.setAttribute("onclick", "return showPopUp(" + id + ", " + i + ")");
-    }
-}
-
-function showPopUp(id, i, text) {
-    var body = document.getElementsByTagName("body")[0];
-    try { body.removeChild(currentPopup); } catch (e) {}
-
-
-    var box = document.getElementById(id);
-    var userOptions = box.getElementsByClassName("ib-options")[0];
-    var el = userOptions.children[i];
-    var dim = el.getBoundingClientRect();
-
-    var popup = document.createElement('div');
-    var input = document.createElement('input');
-    var button = document.createElement('button');
-
-    button.className = "ib-pop-up-button"
-    button.setAttribute("onclick", "updateLink(" + id + ", " + i + ")");
-    input.type = "text";
-    var link = (text) ? text : el.href;
-    input.value = (link == document.URL.replace('#', '') + '#') ? '' : link;
-    popup.className = "ib-pop-up";
-    popup.id = "popup_" + id + "_" + i;
-
-    popup.appendChild(input);
-    button.appendChild(document.createElement('i'));
-    popup.appendChild(button);
-    body.appendChild(popup);
-    popup.style.top = (dim.top - popup.clientHeight - 5) + "px";
-    popup.style.left = dim.left - 0.5 * (popup.clientWidth + dim.left - dim.right) + "px";
-    currentPopup = popup;
-    return false;
-}
-
-function updateLink(id, i) {
-    var newLink = currentPopup.getElementsByTagName("input")[0].value;
-
-    var box = document.getElementById(id);
-    var userOptions = box.getElementsByClassName("ib-options")[0];
-    var el = userOptions.children[i]
-    el.setAttribute("href", (newLink == '') ? '#' : newLink);
-
-    if (newLink == '')
-        el.firstChild.className = el.firstChild.className.replace('green', 'red');
-    else
-        el.firstChild.className = el.firstChild.className.replace('red', 'green');
-
-    var body = document.getElementsByTagName("body")[0];
-    body.removeChild(currentPopup);
-}
-
-function relocatePopup() {
-    var body = document.getElementsByTagName("body")[0];
-    try {
-        var tmp = currentPopup.id.split('_');
-        var id = tmp[1];
-        var i = tmp[2];
-        body.removeChild(currentPopup);
-        showPopUp(id, i, currentPopup.getElementsByTagName("input")[0].value);
-    }
-    catch (e) {}
-}
-
-function saveInPlace(id) {
-    var box = document.getElementById(id);
-    var inputTitle = box.getElementsByClassName("ib-edit-title")[0];
-    var inputSubtitle = box.getElementsByClassName("ib-edit-subtitle")[0];
-
-    var data = new FormData();
-
-	data.append('id', id);
-	data.append('title', inputTitle.value);
-	data.append('subtitle', inputSubtitle.value);
-
-    var fields = ['eno', 'res', 'cor'] ;
-
-    var userOptions = box.getElementsByClassName("ib-options")[0];
-    for (var i = 0 ; i < userOptions.children.length ; i++) {
-        var el = userOptions.children[i];
-        data.append(fields[i], (el.href == document.URL.replace('#', '') + '#') ? '' : el.href);
-        el.removeAttribute("onclick");
-    }
-
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', 'db/proceed.php?td=modify', true);
-	xhr.onload = function () {
-        if (this.responseText == "ERROR") {
-            insertBox("Impossible de mettre le TD à jour", "error");
-        }
-        else {return 0;}
-	};
-    xhr.send(data);
-
-    var title = document.createElement('font');
-    title.innerHTML = inputTitle.value;
-    title.className = (inputTitle.value.length < 10) ? "ib-title-short" : "ib-title-long";
-    box.insertBefore(title, box.children[1]);
-    box.removeChild(inputTitle);
-
-    var subtitle = document.createElement('font');
-    subtitle.innerHTML = inputSubtitle.value;
-    subtitle.className = "ib-subtitle";
-    box.insertBefore(subtitle, box.children[3]);
-    box.removeChild(inputSubtitle);
-
-    var editOptions = box.getElementsByClassName("ib-edit")[0];
-    var aDel = document.createElement('a');
-    var iDel = document.createElement('i');
-    aDel.setAttribute('onclick', 'deleteInPlace(' + id + ')');
-    aDel.setAttribute('href', '#');
-    iDel.className = "icon-delete";
-    aDel.appendChild(iDel);
-    editOptions.innerHTML = editOptions.innerHTML.replace('<br></br>', '');
-    editOptions.appendChild(aDel);
-    editOptions.firstChild.firstChild.className = "icon-modify";
-    editOptions.firstChild.setAttribute("onclick", "editInPlace(" + id + ")");
-    editOptions.firstChild.setAttribute('href', '#');
-
-
-    var body = document.getElementsByTagName("body")[0];
-    try { body.removeChild(currentPopup); } catch (e) {}
-}
-
-function deleteInPlace(id) {
-    var data = new FormData();
-    data.append('id', id);
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'db/proceed.php?td=delete', true);
-    xhr.onload = function () {
-        if (this.responseText == "ERROR") {
-            insertBox(++maxInfoBoxID, "Impossible de supprimer le TD", "error");
-        }
-        else {return 0;}
-    };
-
-    var wrap = document.getElementsByClassName("item-zone-wrapper")[0];
-    var box = document.getElementById(id);
-
-    if (confirm("Êtes vous sur de vouloir supprimer \"" +
-    box.children[1].innerHTML + "\" ?")) {
-        xhr.send(data);
-        wrap.removeChild(box);
-    }
 }
 
 /*
@@ -542,4 +335,62 @@ function insertSearchResult(result) {
 function toggleDocDetails(id) {
     var b = document.getElementById(id);
     b.style.height = (b.style.height == "280px") ? "130px" : "280px";
+}
+
+
+/*
+ * Spécifique groupes élèves
+ */
+function insertGroup(json) {
+    var group = JSON.parse(json);
+
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
+    var groupBox = document.createElement('div');
+    var options = document.createElement('div');
+    var title = document.createElement('font');
+    var subtitle = document.createElement('font');
+    groupBox.className = "ib";
+    groupBox.id = "group-" + group.id;
+    options.className = "ib-options";
+    title.className = (group.name.length < 10) ? "ib-title-short" : "ib-title-long";
+    subtitle.className = "ib-subtitle";
+
+    subtitle.innerHTML += group.members;
+    title.innerHTML += group.name + "<br/>";
+
+    // OPTIONS DU DAARRT (console, webcam, ...)
+
+    var iTitle = document.createElement('i');
+    var iChoose = document.createElement('i');
+    var iDelete = document.createElement('i');
+
+    iTitle.className = "ib-title-icon group-box-title-icon";
+    iChoose.className = "group-box-icon-check";
+    iDelete.className = "group-box-icon-del";
+
+    var aView = document.createElement('a');
+    var aChoose = document.createElement('a');
+    var aDelete = document.createElement('a');
+
+    aView.setAttribute('href', 'daarrt/view.php?id=' + group.id);
+    aChoose.setAttribute('href', 'daarrt/shell.php?id=' + group.id);
+    aDelete.setAttribute('href', 'javascript:deleteGroup(' + group.id_ori + ')');
+
+    // Assemblage des éléments de la box
+    aChoose.appendChild(iChoose);
+    aChoose.innerHTML += " Choisir";
+    aDelete.appendChild(iDelete);
+    aDelete.innerHTML += " Supprimer";
+
+    options.appendChild(aChoose);
+    options.innerHTML += " | ";
+    options.appendChild(aDelete);
+
+    groupBox.appendChild(iTitle);
+    groupBox.appendChild(title);
+    groupBox.appendChild(subtitle);
+    groupBox.appendChild(options);
+
+    wrapper.appendChild(groupBox);
+    fireResize();
 }

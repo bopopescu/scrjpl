@@ -71,7 +71,7 @@
 
             $query = $db->query("SELECT id, title, subtitle, type, tags, path
                 FROM documents WHERE MATCH(title, subtitle, tags, raw_data)
-                AGAINST(\"{$search}\") {$searchOptions};");
+                AGAINST(\"{$search}\" IN BOOLEAN MODE) {$searchOptions};");
             $result = array();
 
             while ($row = $query->fetch_assoc()) {

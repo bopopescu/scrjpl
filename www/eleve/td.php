@@ -1,7 +1,7 @@
-<?php
-    session_start();
-    if (!$_SESSION['isRegistered']) {header("location: login.php");}
- ?>
+<!-- <?php
+    // session_start();
+    // if (!$_SESSION['isRegistered']) {header("location: login.php");}
+ ?> -->
 <!doctype html>
 <html lang="fr">
 <head>
@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="res/css/td.css">
     <script language="javascript" src="res/js/infobox.js"></script>
     <script language="javascript" src="res/js/itemBox.js"></script>
-    <script language="javascript" src="res/js/konami.js"></script>
 </head>
 
 <body onload="setBoxWrapperSize()" onresize="setBoxWrapperSize()">
@@ -48,7 +47,7 @@
     </div>
 
 </body>
-<!-- Début de la partie de test -->
+
 <script language="javascript">
     <?php
         include 'db/connect.php';
@@ -57,7 +56,7 @@
         $res = $db->query("SELECT * FROM td ORDER BY id ASC");
         $db->close();
 
-        $elem = 0;
+        $elem = 1;
         while ($row = $res->fetch_assoc()) {
             echo "setTimeout(function () {
                 insertTd(".$row['id'].", \"".$row['title']."\",
@@ -70,5 +69,4 @@
         echo "setTimeout(insertAddTdItem, {$elem}*100);";
     ?>
 </script>
-<!-- Fin de la partie de test -->
 </html>

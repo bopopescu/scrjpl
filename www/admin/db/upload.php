@@ -8,16 +8,16 @@
 
         $md5 = md5_file($_FILES['document']['tmp_name']);
         $name = "{$md5}_".$_FILES['document']['name'];
-        $path = str_replace($db->real_escape_string("documentation/{$name}"), " ", "\ ");
+        $path = str_replace(" ", "\ ", $db->real_escape_string("documentation/{$name}"));
 
         move_uploaded_file($_FILES['document']['tmp_name'], "../documentation/{$name}");
-        $text = shell_exec("./\"../scripts/file2txt.py\" ".getcwd()."\\..\\".$path);
+        $text = shell_exec("./../scripts/file2txt.py ".getcwd()."/../".$path);
 
         $title = $db->real_escape_string($_POST['title']);
         $subtitle = $db->real_escape_string($_POST['subtitle']);
         $type = $db->real_escape_string($_POST['type']);
         $tags = $db->real_escape_string($_POST['tags']);
-        $path = 'http://'.$_SERVER['SERVER_NAME']."".dirname(dirname($_SERVER["REQUEST_URI"]))."/".$path;
+        $path = 'http://'.$_SERVER['SERVER_NAME'].dirname(dirname($_SERVER["REQUEST_URI"])).$path;
         $text = $db->real_escape_string($text);
 
         $db->query("SET NAMES UTF8");
