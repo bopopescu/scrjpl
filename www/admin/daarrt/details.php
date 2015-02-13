@@ -24,9 +24,7 @@
 
 <body>
 	<nav class="topbar">
-		<div class="topbar-title">DAARRT Manager
-
-		</div>
+		<div class="topbar-title">DAARRT Manager</div>
 	</nav>
 
 	<ul class="navbar">

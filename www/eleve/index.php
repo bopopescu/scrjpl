@@ -1,3 +1,5 @@
+
+<?php session_start(); ?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -24,24 +26,26 @@
             <a href="index.php"><i class="navbar-icon navbar-icon-groups"></i>Groupes</a>
         </li>
         <li>
+            <a href="groups/manage.php"><i class="navbar-icon navbar-icon-manage-grp"></i>Gérer le groupe</a>
+        </li>
+        <li>
             <a href="manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
         </li>
         <li>
-            <a href="td.php"><i class="navbar-icon navbar-icon-td"></i>Gestion des TD</a>
+            <a href="td.php"><i class="navbar-icon navbar-icon-td"></i>Liste des TD</a>
         </li>
         <li>
             <a href="documentation.php"><i class="navbar-icon navbar-icon-doc"></i>Documentation</a>
-        </li>
-        <li>
-            <a href="logout.php"><i class="navbar-icon navbar-icon-logout"></i>Déconnexion</a>
         </li>
     </ul>
     <div class="wrapper">
         <div id="infobox-zone"></div>
 
         <div class="new-group">
-            <i class="new-group-icon"></i>
-            <br>Nouveau Groupe
+            <a href="groups/new.php">
+                <i class="new-group-icon"></i>
+                <br>Nouveau Groupe
+            </a>
         </div>
 
         <div class="search-group">
@@ -62,7 +66,7 @@
         include 'db/connect.php';
         $db = connect();
 
-        $res = $db->query("SELECT id, id_ori, name, members, daarrt, date from groups g, (SELECT MAX(date) as maxi FROM `groups` GROUP BY id_ori) t WHERE g.date=t.maxi ORDER BY g.name");
+        $res = $db->query("SELECT id, id_ori, name, members, daarrt, date from groups g, (SELECT MAX(id) as maxi FROM `groups` GROUP BY id_ori) t WHERE g.id=t.maxi ORDER BY g.name");
 
 
         $elem = 0;
@@ -70,9 +74,15 @@
             echo "setTimeout(function () {
                 insertGroup('".$db->real_escape_string(json_encode($row))."');
             }, ({$elem}) * 100);\n";
+            if ($row['id_ori'] == @$_SESSION['group']) {echo "setTimeout(function () {toggleGroup(".$_SESSION['group'].");}, ({$elem}) * 100);\n";}
             $elem++;
         }
         $db->close();
+
+        if (isset($_GET['error'])) {
+            if (@$_GET['error'] == "createGroup")
+                echo "insertBox(\"Impossible de créer le groupe ".$_GET['name']."\", \"error\");";
+        }
     ?>
 </script>
 </html>

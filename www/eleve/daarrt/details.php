@@ -1,13 +1,13 @@
 <?php
 	session_start();
-	if (!$_SESSION['isRegistered']) {header("location: ../login.php");}
-	else {
-		include '../db/connect.php';
-
-		$db = connect();
-		$daarrt = $db->query("SELECT * FROM active WHERE id=".$_GET['id'])->fetch_assoc();
-		$db->close();
-	}
+	// if (!$_SESSION['isRegistered']) {header("location: ../login.php");}
+	// else {
+	// 	include '../db/connect.php';
+	//
+	// 	$db = connect();
+	// 	$daarrt = $db->query("SELECT * FROM active WHERE id=".$_GET['id'])->fetch_assoc();
+	// 	$db->close();
+	// }
 ?>
 <!doctype html>
 <html lang="fr">
@@ -19,14 +19,11 @@
 	<meta name="author" content="Brian">
 
 	<link rel="stylesheet" href="../res/css/styles.css">
-	<script language="javascript" src="res/js/konami.js"></script>
 </head>
 
 <body>
 	<nav class="topbar">
-		<div class="topbar-title">DAARRT Manager
-
-		</div>
+		<div class="topbar-title">DAARRT Manager</div>
 	</nav>
 
 	<ul class="navbar">

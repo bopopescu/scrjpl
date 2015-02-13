@@ -12,6 +12,10 @@
     position: relative;
 }
 
+.new-group>a {
+    color: #373737;
+}
+
 .new-group-icon::before {
     font-size: 160px;
     content: "\f234";
@@ -25,7 +29,6 @@
     font-size: 30px;
     text-align: center;
     margin: 20px auto;
-    /*padding: 15px;*/
     height: 40px;
     width: 500px;
     position: relative;
@@ -41,7 +44,7 @@
 #search_input {
     box-sizing: border-box;
     float: right;
-    font-size: 25px;
+    font-size: 23px;
     height: 100%;
     width: 450px;
 }

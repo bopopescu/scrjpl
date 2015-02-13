@@ -50,6 +50,7 @@ p.section-title {
 	color: #2a2b2c;
 	font-size: 30px;
 	margin: 20px;
+	text-align: left;
 }
 
 .wrapper {
@@ -126,7 +127,7 @@ p.section-title {
 .navbar-icon-network::before {content: "\f121"}
 .navbar-icon-td::before {content: "\f19d"}
 .navbar-icon-doc::before {content: "\f0f6"}
-.navbar-icon-logout::before {content: "\f011"}
+.navbar-icon-manage-grp::before {content: "\f0ad"}
 
 
 /*
@@ -308,6 +309,10 @@ p.section-title {
 	-webkit-animation: element_insert 300ms forwards;
 }
 
+.ib:hover {
+	background-color: #eaeaea;
+}
+
 .ib-title-short {
 	font-size: 35px;
 	line-height: 40px;
@@ -388,5 +393,6 @@ i.daarrt-box-icon-ssh::before {content: "\f108";}
 i.daarrt-box-icon-detail::before {content: "\f205";}
 
 i.group-box-title-icon::before { content: "\f0c0"; }
-i.group-box-icon-check::before {content: "\f058";}
+i.group-box-icon-select::before {content: "\f05d";}
+i.group-box-icon-selected::before {content: "\f058";}
 i.group-box-icon-del::before {content: "\f1f8";}

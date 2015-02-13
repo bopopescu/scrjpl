@@ -1,6 +1,6 @@
 <?php
-    session_start();
-    if (!$_SESSION['isRegistered']) {header("location: login.php");}
+    // session_start();
+    // if (!$_SESSION['isRegistered']) {header("location: login.php");}
  ?>
 <!doctype html>
 <html lang="fr">
@@ -23,19 +23,19 @@
     </nav>
     <ul class="navbar">
         <li>
-            <a href="index.php"><i class="navbar-icon navbar-icon-dashboard"></i>Dashboard</a>
+            <a href="index.php"><i class="navbar-icon navbar-icon-groups"></i>Groupes</a>
+        </li>
+        <li>
+            <a href="groups/manage.php"><i class="navbar-icon navbar-icon-manage-grp"></i>Gérer le groupe</a>
         </li>
         <li>
             <a href="manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
         </li>
         <li>
-            <a href="td.php"><i class="navbar-icon navbar-icon-td"></i>Gestion des TD</a>
+            <a href="td.php"><i class="navbar-icon navbar-icon-td"></i>Liste des TD</a>
         </li>
         <li>
             <a href="documentation.php"><i class="navbar-icon navbar-icon-doc"></i>Documentation</a>
-        </li>
-        <li>
-            <a href="logout.php"><i class="navbar-icon navbar-icon-logout"></i>Déconnexion</a>
         </li>
     </ul>
     <div class="wrapper">

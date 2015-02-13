@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="res/css/styles.css">
     <link rel="stylesheet" href="res/css/search.css">
-    <script language="javascript" src="res/js/konami.js"></script>
     <script language="JavaScript" src="res/js/infobox.js"></script>
     <script language="JavaScript" src="res/js/itemBox.js"></script>
     <script language="JavaScript" src="res/js/search.js"></script>
@@ -21,19 +20,19 @@
     </nav>
     <ul class="navbar">
         <li>
-            <a href="index.php"><i class="navbar-icon navbar-icon-dashboard"></i>Dashboard</a>
+            <a href="index.php"><i class="navbar-icon navbar-icon-groups"></i>Groupes</a>
+        </li>
+        <li>
+            <a href="groups/manage.php"><i class="navbar-icon navbar-icon-manage-grp"></i>Gérer le groupe</a>
         </li>
         <li>
             <a href="manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
         </li>
         <li>
-            <a href="td.php"><i class="navbar-icon navbar-icon-td"></i>Gestion des TD</a>
+            <a href="td.php"><i class="navbar-icon navbar-icon-td"></i>Liste des TD</a>
         </li>
         <li>
             <a href="documentation.php"><i class="navbar-icon navbar-icon-doc"></i>Documentation</a>
-        </li>
-        <li>
-            <a href="logout.php"><i class="navbar-icon navbar-icon-logout"></i>Déconnexion</a>
         </li>
     </ul>
     <div class="wrapper">
@@ -63,6 +62,40 @@
                             Inclure les tutoriels
                         </label>
                     </td>
+                </tr>
+            </table>
+
+            <p id="search-syntax-title" class="section-title">Synthaxe de recherche :</p>
+            <table id="search-syntax-help">
+                <tr>
+                    <td>
+                        <dd><b>+ :</b> un plus placé devant un mot indique que celui-ci doit être présent dans chaque résultat retourné.</dd>
+                    </td>
+                    <td>
+                        <dd><b>- :</b> un moins placé devant un mot indique que celui-ci doit être présent dans aucun des résultats retournés.</dd>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <dd><b>< > :</b> change la contribution d'un mot à la pertinence du résultat final. L'opérateur > accroît la contribution et l'opérateur < la diminue.</dd>
+                    </td>
+                    <td>
+                        <dd><b>( ) :</b> les parenthèses permettent de regrouper des mots en sous-expressions. Les groupes de parenthèses peuvent être imbriquées.</dd>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <dd><b>~ :</b> le tilde, placé devant un mot, est un opérateur de négation permettant de diminuer la pertinence (et donc le classement) d'un résultat contenant ce mot.</dd>
+                    </td>
+                    <td>
+                        <dd><b>* :</b> opérateur de troncature. Placé à la fin d'un mot il permet de chercher tous les mots ayant le même préfix.</dd>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <dd><b>" :</b> le tilde, placé devant un mot, est un opérateur de négation permettant de diminuer la pertinence (et donc le classement) d'un résultat contenant ce mot.</dd>
+                    </td>
+                    <td></td>
                 </tr>
             </table>
         </div>

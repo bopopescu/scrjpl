@@ -1,17 +1,17 @@
 <?php
 	session_start();
-	if (!$_SESSION['isRegistered']) {header("location: ../login.php");}
-	else {
-		include '../db/connect.php';
-
-		$db = connect();
-		$daarrt = $db->query("SELECT * FROM active WHERE id=".$_GET['id'])->fetch_assoc();
-		$db->close();
-
-		$alive = json_decode(shell_exec("../scripts/daarrt.py ".$daarrt['id']), true);
-		$alive = $alive[$daarrt['id']];
-		if ($alive == "offline") header("location: ../manage.php?offline=true&origin=shell&name=".$daarrt['name']);
-	}
+	// if (!$_SESSION['isRegistered']) {header("location: ../login.php");}
+	// else {
+	// 	include '../db/connect.php';
+	//
+	// 	$db = connect();
+	// 	$daarrt = $db->query("SELECT * FROM active WHERE id=".$_GET['id'])->fetch_assoc();
+	// 	$db->close();
+	//
+	// 	$alive = json_decode(shell_exec("../scripts/daarrt.py ".$daarrt['id']), true);
+	// 	$alive = $alive[$daarrt['id']];
+	// 	if ($alive == "offline") header("location: ../manage.php?offline=true&origin=shell&name=".$daarrt['name']);
+	// }
 ?>
 <!doctype html>
 <html lang="fr">
@@ -32,14 +32,11 @@
 			document.location = "../manage.php";
 		}
 	</script>
-	<script language="javascript" src="res/js/konami.js"></script>
 </head>
 
 <body>
 	<nav class="topbar">
-		<div class="topbar-title">DAARRT Manager
-
-		</div>
+		<div class="topbar-title">DAARRT Manager</div>
 	</nav>
 	<a href="javascript:exportShell('http://
 	<?php echo $daarrt['address']; ?>/shell','shell_<?php echo $daarrt['id']; ?>

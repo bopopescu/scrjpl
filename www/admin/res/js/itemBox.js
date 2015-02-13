@@ -63,7 +63,7 @@ function insertDaarrt(json) {
     daarrtBox.className = "ib";
     daarrtBox.id = "daarrt-" + daarrt.id;
     options.className = "ib-options";
-    title.className = "ib-title-short";
+    title.className = (daarrt.name.length < 10) ? "ib-title-short" : "ib-title-long";
     subtitle.className = "ib-subtitle";
 
     subtitle.innerHTML += daarrt.groups + ((daarrt.groups <= 1) ? " groupe" : " groupes");

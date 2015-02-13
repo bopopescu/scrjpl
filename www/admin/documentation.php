@@ -101,8 +101,7 @@
                     </td>
                     <td></td>
                 </tr>
-            </tr>
-        </table>
+            </table>
         </div>
         <hr />
         <div id="infobox-zone"></div>

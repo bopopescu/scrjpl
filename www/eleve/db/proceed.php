@@ -37,20 +37,58 @@
 
         echo json_encode($result);
     }
-
-    elseif (@$_GET["groupSearch"] != "") {
+    elseif (isset($_GET["group"]) && @$_GET["action"] == "search") {
         // On échappe les caractères de la requête
-        $search = $db->real_escape_string($_GET["groupSearch"]);
+        $search = $db->real_escape_string($_GET["group"]);
 
-        $query = $db->query("SELECT id, id_ori, name, members, daarrt, date from groups g, (SELECT MAX(date) as maxi FROM `groups` GROUP BY id_ori) t WHERE g.date=t.maxi AND (g.name LIKE \"%{$search}%\" OR g.members LIKE \"%{$search}%\") ORDER BY g.name");
-            $result = array();
+        $query = $db->query("SELECT id, id_ori, name, members, daarrt, date from groups g, (SELECT MAX(id) as maxi FROM `groups` GROUP BY id_ori) t WHERE g.id=t.maxi AND (g.name LIKE \"%{$search}%\" OR g.members LIKE \"%{$search}%\") ORDER BY g.name");
+        $result = array();
 
-            while ($row = $query->fetch_assoc()) {
-                array_push($result, $row);
-            }
-
-            echo json_encode($result);
+        while ($row = $query->fetch_assoc()) {
+            array_push($result, $row);
         }
+
+        echo json_encode($result);
+    }
+    elseif (isset($_GET["group"]) && @$_GET["action"] == "select") {
+        $_SESSION['group'] = $_GET["group"];
+    }
+    elseif (isset($_GET["group"]) && @$_GET["action"] == "unselect") {
+        $_SESSION['group'] = NULL;
+    }
+    elseif (@$_GET["group"] != "" && @$_GET["action"] == "delete") {
+        // On échappe les caractères de la requête
+        $search = $db->real_escape_string($_GET["group"]);
+
+        $query = $db->query("DELETE FROM groups WHERE id_ori=".$_GET['group']);
+
+        if (!$query) {echo "ERROR";}
+    }
+    elseif (@$_GET["group"] == "new" && @$_GET["action"] == "create") {
+        // On échappe les caractères de la requête
+        $name = $db->real_escape_string($_POST["name"]);
+        $daarrt = $db->real_escape_string($_POST["daarrt_list"]);
+        $members = "";
+
+        foreach ($_POST as $field => $value) {
+            if (substr($field, 0, 5) == "user_" && $value !="") {
+                if ($members == "") $members .= $db->real_escape_string($value);
+                else $members .= ",".$db->real_escape_string($value);
+            }
+        }
+
+        $error = 0;
+        $query = $db->query("INSERT INTO groups (name, members, daarrt, date) VALUES (\"{$name}\", \"{$members}\", \"{$daarrt}\", NOW());");
+        if (!$query) {$error++;}
+        $query = $db->query("SELECT id FROM groups WHERE name=\"{$name}\" AND members=\"{$members}\" AND daarrt=\"{$daarrt}\" LIMIT 1;");
+        if (!$query) {$error++;}
+        $row = $query->fetch_assoc();
+        $query = $db->query("UPDATE groups SET id_ori=".$row['id']." WHERE name=\"{$name}\" AND members=\"{$members}\" AND daarrt=\"{$daarrt}\" LIMIT 1;");
+        if (!$query) {$error++;}
+
+        if ($error == 0) header("location:/index.php");
+        else header("location:/index.php?error=createGroup&name={$name}");
+    }
     elseif (@$_GET['daarrts'] == "update") {
         $daarrts = json_decode($_POST['daarrts']);
         $query = $db->query("SELECT * FROM active");

@@ -53,11 +53,11 @@ function insertDaarrt(json) {
     daarrtBox.className = "ib";
     daarrtBox.id = "daarrt-" + daarrt.id;
     options.className = "ib-options";
-    title.className = (titre.length < 10) ? "ib-title-short" : "ib-title-long";
+    title.className = (daarrt.name.length < 10) ? "ib-title-short" : "ib-title-long";
     subtitle.className = "ib-subtitle";
 
     subtitle.innerHTML += daarrt.groups + ((daarrt.groups <= 1) ? " groupe" : " groupes");
-    title.innerHTML += daarrt.name + "<br/>";
+    title.innerHTML += daarrt.name;
 
     // OPTIONS DU DAARRT (console, webcam, ...)
 
@@ -96,6 +96,7 @@ function insertDaarrt(json) {
 
     daarrtBox.appendChild(iTitle);
     daarrtBox.appendChild(title);
+    daarrtBox.appendChild(document.createElement('br'));
     daarrtBox.appendChild(subtitle);
     daarrtBox.appendChild(options);
 
@@ -106,17 +107,20 @@ function insertDaarrt(json) {
 
 // Ajoute une box DAARRT et création d'un message d'info signalant le nouveau DAARRT.
 function insertNewDaarrt(name, el) {
-    insertDaarrt(el);
+    if (window.location.pathname == '/groups/new.php')
+        insertSelectableDaarrt(el);
+    else
+        insertDaarrt(el);
     insertBox(name + " vient de se connecter", "info");
 }
 
 function checkNewDaarrt() {
     var data = new FormData();
-
     data.append('daarrts', JSON.stringify(daarrtList));
 
+    var url = (window.location.pathname.split('/').length == 2) ? 'db/proceed.php?daarrts=update' : '../db/proceed.php?daarrts=update';
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'db/proceed.php?daarrts=update', true);
+    xhr.open('POST', '/db/proceed.php?daarrts=update', true);
     xhr.onload = function () {
         if (this.responseText == "ERROR") {
             insertBox("Impossible de mettre à jour la liste des DAARRT", "error");
@@ -350,13 +354,13 @@ function insertGroup(json) {
     var title = document.createElement('font');
     var subtitle = document.createElement('font');
     groupBox.className = "ib";
-    groupBox.id = "group-" + group.id;
+    groupBox.id = "group-" + group.id_ori;
     options.className = "ib-options";
     title.className = (group.name.length < 10) ? "ib-title-short" : "ib-title-long";
     subtitle.className = "ib-subtitle";
 
     subtitle.innerHTML += group.members;
-    title.innerHTML += group.name + "<br/>";
+    title.innerHTML += group.name + "<br>";
 
     // OPTIONS DU DAARRT (console, webcam, ...)
 
@@ -365,15 +369,14 @@ function insertGroup(json) {
     var iDelete = document.createElement('i');
 
     iTitle.className = "ib-title-icon group-box-title-icon";
-    iChoose.className = "group-box-icon-check";
+    iChoose.className = "group-box-icon-select";
     iDelete.className = "group-box-icon-del";
 
     var aView = document.createElement('a');
     var aChoose = document.createElement('a');
     var aDelete = document.createElement('a');
 
-    aView.setAttribute('href', 'daarrt/view.php?id=' + group.id);
-    aChoose.setAttribute('href', 'daarrt/shell.php?id=' + group.id);
+    aChoose.setAttribute('href', 'javascript:toggleGroup(' + group.id_ori + ')');
     aDelete.setAttribute('href', 'javascript:deleteGroup(' + group.id_ori + ')');
 
     // Assemblage des éléments de la box
