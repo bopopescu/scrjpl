@@ -8,6 +8,7 @@
 #	daarrt.conf à rajouter / modifier
 #	conf apache
 #	conf réseau (ip fixe, ...)
+#	conf VNC
 
 
 # Mise à jour

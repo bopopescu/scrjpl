@@ -90,7 +90,7 @@
         }
         elseif (@$_GET['daarrts'] == "update") {
             $daarrts = json_decode($_POST['daarrts']);
-            $query = $db->query("SELECT * FROM active");
+            $query = $db->query("SELECT * FROM online");
 
             $global = array();
             $toAdd = array();

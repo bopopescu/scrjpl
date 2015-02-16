@@ -5,7 +5,7 @@
 		include '../db/connect.php';
 
 		$db = connect();
-		$daarrt = $db->query("SELECT * FROM active WHERE id=".$_GET['id'])->fetch_assoc();
+		$daarrt = $db->query("SELECT * FROM online WHERE id=".$_GET['id'])->fetch_assoc();
 		$db->close();
 	}
 ?>
@@ -33,6 +33,9 @@
 		</li>
 		<li>
 			<a href="../manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
+		</li>
+		<li>
+			<a href="../groups.php"><i class="navbar-icon navbar-icon-groups"></i>Groupes</a>
 		</li>
 		<li>
 			<a href="../td.php"><i class="navbar-icon navbar-icon-td"></i>Gestion des TD</a>

@@ -1,12 +1,17 @@
 var user_count = 2;
 
-function addMemberInput() {
+function addMemberInput(cnt) {
+    if (cnt) {
+        user_count = cnt;
+        document.getElementsByClassName('add-icon')[0].setAttribute('onclick', 'javascript:addMemberInput()');
+    }
     var last_user = document.getElementById('user_' + user_count);
     var next_user = last_user.cloneNode();
 
     user_count++;
     next_user.id = "user_" + user_count;
     next_user.name = "user_" + user_count;
+    next_user.value = "";
     next_user.placeholder = "Nom du " + user_count + "eme membre";
 
     last_user.parentNode.insertBefore(next_user, last_user.nextSibling);
@@ -52,7 +57,7 @@ function toggleDaarrt(e) {
 
     var daarrtName = e.children[1].innerHTML + " (" + e.id.split('-')[1] + ")";
 
-    if (e.style.backgroundColor == "#ace265" || e.style.backgroundColor == "rgb(172, 226, 101)") {
+    if (e.style.backgroundColor == "rgb(212, 230, 189)") {
         e.style.backgroundColor = "#f0f0f0";
 
         idInput.value = idInput.value.replace(',' + e.id.split('-')[1], '');
@@ -70,7 +75,7 @@ function toggleDaarrt(e) {
         }
     }
     else {
-        e.style.backgroundColor = "#ace265";
+        e.style.backgroundColor = "rgb(212, 230, 189)";
         nameInput.value += (nameInput.value == "") ? daarrtName : ", " + daarrtName;
         idInput.value += (idInput.value == "") ? e.id.split('-')[1] : "," + e.id.split('-')[1];
     }

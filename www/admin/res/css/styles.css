@@ -135,6 +135,7 @@ p.section-title {
 
 .navbar-icon-dashboard::before {content: "\f0e4"}
 .navbar-icon-network::before {content: "\f121"}
+.navbar-icon-groups::before {content: "\f0c0"}
 .navbar-icon-td::before {content: "\f19d"}
 .navbar-icon-doc::before {content: "\f0f6"}
 .navbar-icon-logout::before {content: "\f011"}
@@ -317,6 +318,10 @@ p.section-title {
 	-ms-animation: element_insert 300ms forwards;
 	-moz-animation: element_insert 300ms forwards;
 	-webkit-animation: element_insert 300ms forwards;
+}
+
+.ib:hover {
+	background-color: #fdfdfd;
 }
 
 .ib-title-short {

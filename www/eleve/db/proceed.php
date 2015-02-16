@@ -1,6 +1,4 @@
 <?php
-    session_start();
-
     include 'connect.php';
     $db = connect();
     if (@$_GET["search"] != "") {
@@ -50,12 +48,6 @@
 
         echo json_encode($result);
     }
-    elseif (isset($_GET["group"]) && @$_GET["action"] == "select") {
-        $_SESSION['group'] = $_GET["group"];
-    }
-    elseif (isset($_GET["group"]) && @$_GET["action"] == "unselect") {
-        $_SESSION['group'] = NULL;
-    }
     elseif (@$_GET["group"] != "" && @$_GET["action"] == "delete") {
         // On échappe les caractères de la requête
         $search = $db->real_escape_string($_GET["group"]);
@@ -86,12 +78,45 @@
         $query = $db->query("UPDATE groups SET id_ori=".$row['id']." WHERE name=\"{$name}\" AND members=\"{$members}\" AND daarrt=\"{$daarrt}\" LIMIT 1;");
         if (!$query) {$error++;}
 
+        $daarrts = explode(',', $daarrt);
+        foreach ($daarrts as $id) {
+            $db->query("UPDATE online SET groups=groups+1 WHERE id={$id} LIMIT 1;");
+        }
+
         if ($error == 0) header("location:/index.php");
         else header("location:/index.php?error=createGroup&name={$name}");
     }
+    elseif (@$_GET["group"] == $_COOKIE['group'] && @$_GET["action"] == "modify") {
+        // On échappe les caractères de la requête
+        $ori = $db->query("SELECT * FROM groups WHERE id_ori=".$_COOKIE['group']." ORDER BY id DESC LIMIT 1;");
+        $ori = $ori->fetch_assoc();
+
+        $name = $db->real_escape_string($_POST["name"]);
+        $daarrts = $db->real_escape_string($_POST["daarrt_list"]);
+
+        if ($ori['daarrt'] != $daarrts) {
+            $db->query("UPDATE online SET groups=groups-1 WHERE id IN (".$ori['daarrt'].")");
+            $db->query("UPDATE online SET groups=groups+1 WHERE id IN ({$daarrts})");
+        }
+
+        $members = "";
+
+        foreach ($_POST as $field => $value) {
+            if (substr($field, 0, 5) == "user_" && $value !="") {
+                if ($members == "") $members .= $db->real_escape_string($value);
+                else $members .= ",".$db->real_escape_string($value);
+            }
+        }
+
+        if ($ori['name'] != $name || $ori['daarrt'] != $daarrts || $ori['members'] != $members)
+            $query = $db->query("INSERT INTO groups (id_ori, name, members, daarrt, date) VALUES (".$ori['id_ori'].", \"{$name}\", \"{$members}\", \"{$daarrts}\", NOW());");
+
+        if ($query) header("location:/index.php");
+        else header("location:/index.php?error=modifyGroup&id=".$ori['id_ori']);
+    }
     elseif (@$_GET['daarrts'] == "update") {
         $daarrts = json_decode($_POST['daarrts']);
-        $query = $db->query("SELECT * FROM active");
+        $query = $db->query("SELECT * FROM online");
 
         $global = array();
         $toAdd = array();

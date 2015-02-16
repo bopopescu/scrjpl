@@ -1,10 +1,18 @@
+<?php
+    if (!isset($_COOKIE['group'])) header('location: ../index.php?error=selectGroup');
+
+    include '../db/connect.php';
+    $db = connect();
+    $res = $db->query("SELECT * FROM groups WHERE id_ori=".$_COOKIE['group']." ORDER BY date DESC;");
+    $main = $res->fetch_assoc()
+?>
 <!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
 
-    <title>Création d'un groupe</title>
-    <meta name="description" content="Création d'un groupe de travail.">
+    <title>Modification d'un groupe</title>
+    <meta name="description" content="Modification d'un groupe de travail.">
     <meta name="author" content="Brian">
 
     <link rel="stylesheet" href="/res/css/styles.css">
@@ -40,16 +48,27 @@
         <table class="two-columns">
             <tr>
                 <td class="left-column">
-                    <form method="post" action="../db/proceed.php?group=new&action=create">
+                    <form method="post" action="../db/proceed.php?group=<?php echo $_COOKIE['group']; ?>&action=modify">
                         <label for="name">
                             <p class="section-title">Nom du groupe :</p>
-                            <input id="name" name="name" type="text" placeholder="Entrez le nom du groupe" required/>
+                            <input id="name" name="name" type="text" placeholder="Entrez le nom du groupe" value="<?php echo $main['name']; ?>" required/>
                         </label>
 
                         <p class="section-title">Membres :</p>
-                        <input id="user_1" name="user_1" type="text" placeholder="Nom du 1er membre" required/><br>
-                        <input id="user_2" name="user_2" type="text" placeholder="Nom du 2eme membre"/><br>
-                        <i class="add-icon" onclick="javascript:addMemberInput()"></i>
+                        <?php
+                            $members = explode(',', $main['members']);
+                            $i = 1;
+                            foreach ($members as $m) {
+                                echo "<input id=\"user_{$i}\" name=\"user_{$i}\" type=\"text\" placeholder=\"Nom du {$i}";
+                                if ($i == 1)  echo "er";
+                                else echo "eme";
+                                echo " membre\" value=\"{$m}\"required/><br>";
+                                $i++;
+                            }
+                        ?>
+                        <!-- <input id="user_1" name="user_1" type="text" placeholder="Nom du 1er membre" value="<?php echo $main['members']; ?>"required/><br>
+                        <input id="user_2" name="user_2" type="text" placeholder="Nom du 2eme membre"/><br> -->
+                        <i class="add-icon" onclick="javascript:addMemberInput(<?php echo --$i; ?>)"></i>
 
                         <p class="section-title">DAARRT utilisé(s) :</p>
                         <input id="daarrt_names" name="daarrt_names" type="text" placeholder="Cliquez sur les DAARRT à droite" disabled/>
@@ -73,8 +92,6 @@
 
 <script language="javascript">
     <?php
-    include '../db/connect.php';
-    $db = connect();
 
     $res = $db->query("SELECT * FROM online ORDER BY id ASC");
     $db->close();
@@ -87,6 +104,11 @@
         $elem++;
     }
     echo "setTimeout(checkNewDaarrt, {$elem} * 100);";
+
+    $daarrts = explode(',', $main['daarrt']);
+    foreach ($daarrts as $id) {
+        echo "setTimeout(function () {toggleDaarrt(document.getElementById('daarrt-{$id}'))}, {$elem} * 100);";
+    }
     ?>
 </script>
 </html>

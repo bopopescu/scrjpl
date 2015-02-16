@@ -46,7 +46,10 @@ function deleteGroup(id) {
         if (this.responseText == "ERROR") {
             insertBox(++maxInfoBoxID, "Impossible de supprimer le TD", "error");
         }
-        else {return 0;}
+        else {
+            var cookie = docCookies.getItem('group');
+            if (cookie == id) docCookies.removeItem('group');
+        }
     };
 
     var wrap = document.getElementsByClassName("item-zone-wrapper")[0];
@@ -64,26 +67,18 @@ function toggleGroup(id) {
     if (selected_group != id) {
         if (selected_group != null) toggleGroup(selected_group);
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'db/proceed.php?group=' + id + '&action=select', true);
-        xhr.onload = function () {
+
             icon = document.getElementById('group-' + id).getElementsByClassName('group-box-icon-select')[0];
             icon.className = 'group-box-icon-selected';
             icon.parentNode.innerHTML = icon.parentNode.innerHTML.replace('Choisir', 'Choisit');
-        }
-        xhr.send();
-
-        selected_group = id;
+            selected_group = id;
+            docCookies.setItem('group', id, 5 * 3600);
     }
     else {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'db/proceed.php?group=' + id + '&action=unselect', true);
-        xhr.onload = function () {
-            icon = document.getElementById('group-' + id).getElementsByClassName('group-box-icon-selected')[0];
-            icon.className = 'group-box-icon-select';
-            icon.parentNode.innerHTML = icon.parentNode.innerHTML.replace('Choisit', 'Choisir');
-        }
-        xhr.send();
+        icon = document.getElementById('group-' + id).getElementsByClassName('group-box-icon-selected')[0];
+        icon.className = 'group-box-icon-select';
+        icon.parentNode.innerHTML = icon.parentNode.innerHTML.replace('Choisit', 'Choisir');
         selected_group = null;
+        docCookies.removeItem('group');
     }
 }

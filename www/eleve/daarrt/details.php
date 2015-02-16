@@ -5,7 +5,7 @@
 	// 	include '../db/connect.php';
 	//
 	// 	$db = connect();
-	// 	$daarrt = $db->query("SELECT * FROM active WHERE id=".$_GET['id'])->fetch_assoc();
+	// 	$daarrt = $db->query("SELECT * FROM online WHERE id=".$_GET['id'])->fetch_assoc();
 	// 	$db->close();
 	// }
 ?>

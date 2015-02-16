@@ -1,5 +1,5 @@
 
-<?php session_start(); ?>
+<?php /*session_start();*/ ?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="res/css/td.css">
     <script language="JavaScript" src="res/js/infobox.js"></script>
     <script language="JavaScript" src="res/js/itemBox.js"></script>
+    <script language="JavaScript" src="res/js/cookies.js"></script>
     <script language="JavaScript" src="res/js/home.js"></script>
 </head>
 
@@ -74,14 +75,16 @@
             echo "setTimeout(function () {
                 insertGroup('".$db->real_escape_string(json_encode($row))."');
             }, ({$elem}) * 100);\n";
-            if ($row['id_ori'] == @$_SESSION['group']) {echo "setTimeout(function () {toggleGroup(".$_SESSION['group'].");}, ({$elem}) * 100);\n";}
+            if ($row['id_ori'] == @$_COOKIE['group']) {echo "setTimeout(function () {toggleGroup(".$_COOKIE['group'].");}, ({$elem}) * 100);\n";}
             $elem++;
         }
         $db->close();
 
         if (isset($_GET['error'])) {
             if (@$_GET['error'] == "createGroup")
-                echo "insertBox(\"Impossible de créer le groupe ".$_GET['name']."\", \"error\");";
+                echo "insertBox(\"Impossible de créer le groupe ".$_GET['name'].".\", \"error\");";
+            if (@$_GET['error'] == "selectGroup" && !isset($_COOKIE['group']))
+                echo "insertBox(\"Veuillez choisir un groupe pour accéder à cette page.\", \"warning\");";
         }
     ?>
 </script>

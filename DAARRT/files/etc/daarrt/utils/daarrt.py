@@ -100,5 +100,5 @@ class Daarrt():
 
 
 
-if __name__ == "__main__":
-    Daarrt()
+# if __name__ == "__main__":
+#     Daarrt()

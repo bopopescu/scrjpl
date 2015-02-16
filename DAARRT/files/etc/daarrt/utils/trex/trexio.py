@@ -112,7 +112,6 @@ class TrexIO():
         	'i2c_address' : 7,                     # I2C slave address
         	'i2c_clock' : 0                       # I2C clock frequency
         }
-
         self.__map()
 
     def __map(self):

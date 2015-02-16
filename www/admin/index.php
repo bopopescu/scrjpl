@@ -7,8 +7,8 @@
 
         $db = connect();
         $docs = $db->query("SELECT COUNT(*) FROM documents;")->fetch_assoc();
-        $daarrt = $db->query("SELECT COUNT(*) FROM active;")->fetch_assoc();
-        $groups = $db->query("SELECT IFNULL(SUM(groups), 0) AS SUM FROM active;")->fetch_assoc();
+        $daarrt = $db->query("SELECT COUNT(*) FROM online;")->fetch_assoc();
+        $groups = $db->query("SELECT IFNULL(SUM(groups), 0) AS SUM FROM online;")->fetch_assoc();
         $db->close();
     }
 ?>
@@ -36,6 +36,9 @@
         </li>
         <li>
             <a href="manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
+        </li>
+        <li>
+            <a href="groups.php"><i class="navbar-icon navbar-icon-groups"></i>Groupes</a>
         </li>
         <li>
             <a href="td.php"><i class="navbar-icon navbar-icon-td"></i>Gestion des TD</a>
