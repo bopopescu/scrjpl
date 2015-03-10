@@ -39,15 +39,21 @@ class Daarrt():
             print "Real DAARRT creation"
 
             # Import modules
-            from trex.trexio import TrexIO
+            from sensors.trexio import TrexIO
+            from sensors.razorio import RazorIO
 
             self.trex = TrexIO(0x07)
-            print self.status()
+            self.razor = RazorIO()
         else :
             print "Create virtual DAARRT"
 
             # Import modules
             # from trex.trexio import vTrexIO
+
+
+    ###########################
+    ##          T-REX        ##
+    ###########################
 
     def status(self):
         '''
@@ -98,6 +104,30 @@ class Daarrt():
         self.trex.package['servo_' + servo + '_low_byte'] = low_byte(position)
         self.trex.i2cWrite()
 
+
+    ###########################
+    ##    Razor 9-DOF IMU    ##
+    ###########################
+
+    def getAngles(self):
+        '''
+        Return angles measured by the Razor (calculated automatically from the 9-axis data).
+        '''
+        return struct.unpack('fff', self.razor.getAngles())
+
+    def getSensorData(self):
+        """
+            Output SENSOR data of all 9 axes in text format.
+            One frame consist of three 3x3 float values = 36 bytes. Order is: acc x/y/z, mag x/y/z, gyr x/y/z.
+        """
+        return struct.unpack('fffffffff', self.razor.getRawSensorData())
+
+    def getCalibratedSensorData(self):
+        """
+            Output CALIBRATED SENSOR data of all 9 axes in text format.
+            One frame consist of three 3x3 float values = 36 bytes. Order is: acc x/y/z, mag x/y/z, gyr x/y/z.
+        """
+        return struct.unpack('fffffffff', self.razor.getCalibratedSensorData())
 
 
 # if __name__ == "__main__":

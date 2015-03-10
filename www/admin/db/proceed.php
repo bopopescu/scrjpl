@@ -88,6 +88,34 @@
                 echo "ERROR";
             }
         }
+        elseif (isset($_GET["group"]) && @$_GET["action"] == "modify") {
+            // On échappe les caractères de la requête
+            $ori = $db->query("SELECT * FROM groups WHERE id_ori=".$_GET['group']." ORDER BY id DESC LIMIT 1;");
+            $ori = $ori->fetch_assoc();
+
+            $name = $db->real_escape_string($_POST["name"]);
+            $daarrts = $db->real_escape_string($_POST["daarrt_list"]);
+
+            if ($ori['daarrt'] != $daarrts) {
+                $db->query("UPDATE online SET groups=groups-1 WHERE id IN (".$ori['daarrt'].")");
+                $db->query("UPDATE online SET groups=groups+1 WHERE id IN ({$daarrts})");
+            }
+
+            $members = "";
+
+            foreach ($_POST as $field => $value) {
+                if (substr($field, 0, 5) == "user_" && $value !="") {
+                    if ($members == "") $members .= $db->real_escape_string($value);
+                    else $members .= ",".$db->real_escape_string($value);
+                }
+            }
+
+            if ($ori['name'] != $name || $ori['daarrt'] != $daarrts || $ori['members'] != $members)
+            $query = $db->query("INSERT INTO groups (id_ori, name, members, daarrt, date) VALUES (".$ori['id_ori'].", \"{$name}\", \"{$members}\", \"{$daarrts}\", NOW());");
+
+            if ($query) header("location:/index.php");
+            else header("location:/index.php?error=modifyGroup&id=".$ori['id_ori']);
+        }
         elseif (@$_GET['daarrts'] == "update") {
             $daarrts = json_decode($_POST['daarrts']);
             $query = $db->query("SELECT * FROM online");

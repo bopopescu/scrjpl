@@ -8,7 +8,7 @@
         $db = connect();
         $docs = $db->query("SELECT COUNT(*) FROM documents;")->fetch_assoc();
         $daarrt = $db->query("SELECT COUNT(*) FROM online;")->fetch_assoc();
-        $groups = $db->query("SELECT IFNULL(SUM(groups), 0) AS SUM FROM online;")->fetch_assoc();
+        $groups = $db->query("SELECT COUNT(DISTINCT id_ori) AS count FROM groups")->fetch_assoc();
         $db->close();
     }
 ?>
@@ -71,7 +71,7 @@
                 <div class="panel-top">
                     <i class="panel-top-icon"></i>
                     <div class="panel-title-number">
-                        <?php echo $groups['SUM']; ?>
+                        <?php echo $groups['count']; ?>
                     </div>
                     <span class="panel-title-text">Groupes travaillent actuellement</span>
                 </div>

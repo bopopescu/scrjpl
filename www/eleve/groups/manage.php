@@ -81,6 +81,30 @@
                 <td class="right-column">
                     <div class="item-zone">
                         <div class="item-zone-wrapper"></div>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div class="history-zone">
+                        <p class="section-title">Historique :</p>
+                        <?php
+                        $res = $db->query("SELECT * FROM groups WHERE id_ori=".$_COOKIE['group']." ORDER BY id");
+                        $row = $res->fetch_assoc();
+                        $last_name = $row['name'];
+                        $last_members = $row['members'];
+                        $last_daarrts = $row['daarrt'];
+
+                        while ($row = $res->fetch_assoc()) {
+                            $start = "<p><b>".$row['date']." : </b> ";
+                            $end = "</b></p>";
+
+                            if ($row['name'] != $last_name) echo $start." le nom a changé de <b>".$last_name."</b> à <b>".$row['name'].$end;
+                            elseif ($row['members'] != $last_members) echo $start." les membres ont changé de <b>".$last_members."</b> pour <b>".$row['members'].$end;
+                            elseif ($row['daarrt'] != $last_daarrts) echo $start." changement de la liste des DAARRT de <b>".$last_daarrts."</b> à <b>".$row['daarrt'].$end;
+                            
+                            $last_name = $row['name'];
+                            $last_members = $row['members'];
+                            $last_daarrts = $row['daarrt'];
+                        }
+                        ?>
                     </div>
                 </td>
             </tr>

@@ -10,12 +10,11 @@
     <meta name="author" content="Brian">
 
     <link rel="stylesheet" href="res/css/styles.css">
-    <link rel="stylesheet" href="res/css/home.css">
-    <link rel="stylesheet" href="res/css/td.css">
+    <link rel="stylesheet" href="res/css/groups.css">
     <script language="JavaScript" src="res/js/infobox.js"></script>
     <script language="JavaScript" src="res/js/itemBox.js"></script>
     <script language="JavaScript" src="res/js/cookies.js"></script>
-    <script language="JavaScript" src="res/js/home.js"></script>
+    <script language="JavaScript" src="res/js/groups.js"></script>
 </head>
 
 <body onload="setBoxWrapperSize()" onresize="setBoxWrapperSize()">

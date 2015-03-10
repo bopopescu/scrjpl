@@ -402,3 +402,7 @@ i.daarrt-box-title-icon::before { content: "\f17c"; }
 i.daarrt-box-icon-view::before {content: "\f030";}
 i.daarrt-box-icon-ssh::before {content: "\f108";}
 i.daarrt-box-icon-detail::before {content: "\f205";}
+
+i.group-box-title-icon::before { content: "\f0c0"; }
+i.group-box-icon-select::before {content: "\f05a";}
+i.group-box-icon-del::before {content: "\f1f8";}

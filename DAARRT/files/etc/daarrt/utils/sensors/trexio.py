@@ -64,8 +64,8 @@ import ConfigParser
 
 # If the python3 packages not is in path (quick2wire)
 sys.path.append("/usr/lib/python3/dist-packages")
-import trex.quick2wire.i2c as i2c
-from trex.quick2wire.i2c import I2CMaster, writing_bytes, reading
+import quick2wire.i2c as i2c
+from quick2wire.i2c import I2CMaster, writing_bytes, reading
 
 class TrexIO():
     def __init__(self, addr = 0x07):

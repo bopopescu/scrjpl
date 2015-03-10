@@ -1,17 +1,16 @@
 <?php
-	session_start();
-	// if (!$_SESSION['isRegistered']) {header("location: ../login.php");}
-	// else {
-	// 	include '../db/connect.php';
-	//
-	// 	$db = connect();
-	// 	$daarrt = $db->query("SELECT * FROM online WHERE id=".$_GET['id'])->fetch_assoc();
-	// 	$db->close();
-	//
-	// 	$alive = json_decode(shell_exec("../scripts/daarrt.py ".$daarrt['id']), true);
-	// 	$alive = $alive[$daarrt['id']];
-	// 	if ($alive == "offline") header("location: ../manage.php?offline=true&origin=shell&name=".$daarrt['name']);
-	// }
+	if (!isset($_COOKIE['group'])) {header("location: ../index.php");}
+	else {
+		include '../db/connect.php';
+
+		$db = connect();
+		$daarrt = $db->query("SELECT * FROM online WHERE id=".$_GET['id'])->fetch_assoc();
+		$db->close();
+
+		$alive = json_decode(shell_exec("../scripts/daarrt.py ".$daarrt['id']), true);
+		$alive = $alive[$daarrt['id']];
+		if ($alive == "offline") header("location: ../manage.php?offline=true&origin=shell&name=".$daarrt['name']);
+	}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -44,19 +43,19 @@
 
 	<ul class="navbar">
 		<li>
-			<a href="../index.php"><i class="navbar-icon navbar-icon-dashboard"></i>Dashboard</a>
+			<a href="../index.php"><i class="navbar-icon navbar-icon-groups"></i>Groupes</a>
+		</li>
+		<li>
+			<a href="manage.php"><i class="navbar-icon navbar-icon-manage-grp"></i>Gérer le groupe</a>
 		</li>
 		<li>
 			<a href="../manage.php"><i class="navbar-icon navbar-icon-network"></i>Manager</a>
 		</li>
 		<li>
-			<a href="../td.php"><i class="navbar-icon navbar-icon-td"></i>Gestion des TD</a>
+			<a href="../td.php"><i class="navbar-icon navbar-icon-td"></i>Liste des TD</a>
 		</li>
 		<li>
 			<a href="../documentation.php"><i class="navbar-icon navbar-icon-doc"></i>Documentation</a>
-		</li>
-		<li>
-			<a href="../logout.php"><i class="navbar-icon navbar-icon-logout"></i>Déconnexion</a>
 		</li>
 	</ul>
 	<div class="console">

@@ -3,7 +3,8 @@ i.add-icon::before {
     font-size: 25px;
 }
 
-.two-columns {
+table.two-columns {
+    height: 100%;
     width: 100%;
 }
 
@@ -19,6 +20,7 @@ table.two-columns>tbody>tr>td.left-column input {
 }
 
 table.two-columns>tbody>tr>td.right-column {
+    position: relative;
     vertical-align: top;
     width: 70%;
 }
@@ -36,4 +38,63 @@ button.submit-button {
 
 button.submit-button:hover {
     background-color: #76a631;
+}
+
+.new-group {
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    box-shadow: 0px 0px 5px 3px #c7c7c7;
+    color: #373737;
+    font-size: 30px;
+    text-align: center;
+    margin: 30px auto;
+    padding: 15px;
+    height: 250px;
+    width: 500px;
+    position: relative;
+}
+
+.new-group>a {
+    color: #373737;
+}
+
+.new-group-icon::before {
+    font-size: 160px;
+    content: "\f234";
+}
+
+.search-group {
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    box-shadow: 0px 0px 5px 3px #c7c7c7;
+    color: #373737;
+    font-size: 30px;
+    text-align: center;
+    margin: 20px auto;
+    height: 40px;
+    width: 500px;
+    position: relative;
+}
+
+.search-icon::before {
+    margin: 5px 10px;
+    float: left;
+    font-size: 30px;
+    content: "\f002";
+}
+
+#search_input {
+    box-sizing: border-box;
+    float: right;
+    font-size: 23px;
+    height: 100%;
+    width: 450px;
+}
+
+.item-zone {
+    height: 50%;
+}
+
+.history-zone {
+    width: 100%;
 }

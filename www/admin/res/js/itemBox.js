@@ -126,7 +126,7 @@ function checkNewDaarrt() {
     data.append('daarrts', JSON.stringify(daarrtList));
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'db/proceed.php?daarrts=update', true);
+    xhr.open('POST', '/db/proceed.php?daarrts=update', true);
     xhr.onload = function () {
         if (this.responseText == "ERROR") {
             insertBox("Impossible de mettre à jour la liste des DAARRT", "error");
@@ -542,4 +542,61 @@ function insertSearchResult(result) {
 function toggleDocDetails(id) {
     var b = document.getElementById(id);
     b.style.height = (b.style.height == "280px") ? "130px" : "280px";
+}
+
+
+/*
+* Spécifique groupes élèves
+*/
+function insertGroup(json) {
+    var group = JSON.parse(json);
+
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
+    var groupBox = document.createElement('div');
+    var options = document.createElement('div');
+    var title = document.createElement('font');
+    var subtitle = document.createElement('font');
+    groupBox.className = "ib";
+    groupBox.id = "group-" + group.id_ori;
+    options.className = "ib-options";
+    title.className = (group.name.length < 10) ? "ib-title-short" : "ib-title-long";
+    subtitle.className = "ib-subtitle";
+
+    subtitle.innerHTML += group.members;
+    title.innerHTML += group.name + "<br>";
+
+    // OPTIONS DU DAARRT (console, webcam, ...)
+
+    var iTitle = document.createElement('i');
+    var iChoose = document.createElement('i');
+    var iDelete = document.createElement('i');
+
+    iTitle.className = "ib-title-icon group-box-title-icon";
+    iChoose.className = "group-box-icon-select";
+    iDelete.className = "group-box-icon-del";
+
+    var aView = document.createElement('a');
+    var aChoose = document.createElement('a');
+    var aDelete = document.createElement('a');
+
+    aChoose.setAttribute('href', 'groups/details.php?id=' + group.id_ori);
+    aDelete.setAttribute('href', 'javascript:deleteGroup(' + group.id_ori + ')');
+
+    // Assemblage des éléments de la box
+    aChoose.appendChild(iChoose);
+    aChoose.innerHTML += " Détails";
+    aDelete.appendChild(iDelete);
+    aDelete.innerHTML += " Supprimer";
+
+    options.appendChild(aChoose);
+    options.innerHTML += " | ";
+    options.appendChild(aDelete);
+
+    groupBox.appendChild(iTitle);
+    groupBox.appendChild(title);
+    groupBox.appendChild(subtitle);
+    groupBox.appendChild(options);
+
+    wrapper.appendChild(groupBox);
+    fireResize();
 }

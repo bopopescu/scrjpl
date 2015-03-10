@@ -2,7 +2,7 @@
 
 import sys
 import time
-from trexio import TrexIO
+from sensors.trexio import TrexIO
 
 def printb(string):
     '''
@@ -112,7 +112,7 @@ class Trex():
         self.package['lm_speed_low_byte'] = low_byte(left)
         self.package['rm_speed_high_byte'] = high_byte(right)
         self.package['rm_speed_low_byte'] = low_byte(right)
-        self.trex_bus.i2cWrite(self.package)
+        self.trex_bus.i2cWrite()
 
 
     def servo(self, servo, position):
@@ -125,7 +125,7 @@ class Trex():
         position = int(position)
         self.package['servo_' + servo + '_high_byte'] = high_byte(position)
         self.package['servo_' + servo + '_low_byte'] = low_byte(position)
-        self.trex_bus.i2cWrite(self.package)
+        self.trex_bus.i2cWrite()
 
     def voltage_fix(self, value):
         '''

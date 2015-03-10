@@ -19,7 +19,7 @@
 	<meta name="author" content="Brian">
 
 	<link rel="stylesheet" href="../res/css/styles.css">
-	<script language="javascript" src="res/js/konami.js"></script>
+	<script language="javascript" src="../res/js/konami.js"></script>
 </head>
 
 <body>

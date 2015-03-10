@@ -3,7 +3,7 @@ import sys
 from contextlib import closing
 import posix
 from fcntl import ioctl
-from trex.quick2wire.i2c_ctypes import *
+from i2c_ctypes import *
 from ctypes import create_string_buffer, sizeof, c_int, byref, pointer, addressof, string_at
 # from quick2wire.board_revision import revision
 

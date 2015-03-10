@@ -1,3 +1,45 @@
+i.add-icon::before {
+    content: "\f234";
+    font-size: 25px;
+}
+
+table.two-columns {
+    height: 100%;
+    width: 100%;
+}
+
+table.two-columns>tbody>tr>td.left-column {
+    border-right: solid 1px #a5a5a5;
+    text-align: center;
+    width: 30%;
+}
+
+table.two-columns>tbody>tr>td.left-column input {
+    margin: 5px auto;
+    width: 250px;
+}
+
+table.two-columns>tbody>tr>td.right-column {
+    position: relative;
+    vertical-align: top;
+    width: 70%;
+}
+
+button.submit-button {
+    background-color: #373737;
+    border: none;
+    border-radius: 3px;
+    color: #f0f0f0;
+    font-size: 18px;
+    height: 40px;
+    margin: 20px;
+    width: 120px;
+}
+
+button.submit-button:hover {
+    background-color: #76a631;
+}
+
 .new-group {
     box-sizing: border-box;
     background-color: #f0f0f0;
@@ -47,4 +89,12 @@
     font-size: 23px;
     height: 100%;
     width: 450px;
+}
+
+.item-zone {
+    height: 50%;
+}
+
+.history-zone {
+    width: 100%;
 }
