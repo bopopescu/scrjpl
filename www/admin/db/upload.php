@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if (!$_SESSION['isRegistered']) {header("location: login.php");}
+    if (!$_SESSION['isRegistered']) {header("location: ../login.php");}
 
     if ($_FILES['document']['error'] == 0) {
         include 'connect.php';

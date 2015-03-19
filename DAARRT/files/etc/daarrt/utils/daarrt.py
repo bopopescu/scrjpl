@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import os
+import time
 import struct
 # import sys
 
@@ -39,8 +40,9 @@ class Daarrt():
             print "Real DAARRT creation"
 
             # Import modules
-            from sensors.trexio import TrexIO
-            from sensors.razorio import RazorIO
+            from drivers.trex import TrexIO
+            from drivers.razor import RazorIO
+            from drivers.hcsr04 import SonarIO
 
             self.trex = TrexIO(0x07)
             self.razor = RazorIO()
@@ -130,5 +132,5 @@ class Daarrt():
         return struct.unpack('fffffffff', self.razor.getCalibratedSensorData())
 
 
-# if __name__ == "__main__":
-#     Daarrt()
+if __name__ == "__main__":
+    Daarrt()

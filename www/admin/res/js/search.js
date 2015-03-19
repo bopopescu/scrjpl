@@ -8,7 +8,7 @@ function showSearchOptions() {
     var p2 = document.getElementById("search-syntax-title");
     var table2 = document.getElementById("search-syntax-help");
 
-    if (wrapper.style.height == "40px" || wrapper.style.height == "") {
+    if (wrapper.style.height === "40px" || wrapper.style.height === "") {
         wrapper.style.height = 128 + p1.clientHeight + table1.clientHeight + p2.clientHeight + table2.clientHeight + "px";}
     else
         wrapper.style.height = "40px";
@@ -18,16 +18,16 @@ function search() {
     var query = document.getElementById("search_input").value;
     var wrap = document.getElementsByClassName("item-zone-wrapper")[0];
     // Nettoyage de la recherche précédente
-    while (wrap.firstChild) { wrap.removeChild(wrap.firstChild) };
+    while (wrap.firstChild) { wrap.removeChild(wrap.firstChild); }
 
     // On cache la boite de dialogue d'ajout de document
     try {
-        var mainWrapper = document.getElementsByClassName('wrapper')[0]
+        var mainWrapper = document.getElementsByClassName('wrapper')[0];
         var addDoc = document.getElementById("add_document_box");
         mainWrapper.removeChild(addDoc);
     } catch (e) {}
 
-    if (query.length == "") {
+    if (query.length === "") {
         insertNewDocButton();
     }
     else if (query.length < 3) {
@@ -56,16 +56,16 @@ function search() {
         icon.className = "search-icon-spinner search-icon-spinner-top";
 
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'db/proceed.php?search=' + query
-                + "&datasheet=" + searchDatasheet
-                + "&wiki=" + searchWiki
-                + "&tuto=" + searchTuto, true);
+        xhr.open('GET', 'db/proceed.php?search=' + query +
+                "&datasheet=" + searchDatasheet +
+                "&wiki=" + searchWiki +
+                "&tuto=" + searchTuto, true);
         xhr.onload = function () {
             var result = JSON.parse(this.responseText);
             for (var i = 0 ; i < result.length ; i++) {
                 fireTimeout(result[i], i);
             }
-            if (result.length == 0) {
+            if (result.length === 0) {
                 body.removeAttribute("onresize");
                 var p = document.createElement('p');
                 p.innerHTML = "Aucun résultat !";
@@ -94,7 +94,7 @@ function toggleLock() {
 function sendNewDocument() {
     var wrap = document.getElementById('add_document_box');
     // Nettoyage ddu contenu du node
-    while (wrap.firstChild) { wrap.removeChild(wrap.firstChild) };
+    while (wrap.firstChild) { wrap.removeChild(wrap.firstChild); }
 
     var processIcon = document.createElement('i');
     processIcon.className = "search-icon-spinner search-big-icon";
@@ -114,14 +114,14 @@ function insertNewDocForm(e) {
     var wrapper = document.getElementsByClassName("wrapper")[0];
     var wrap = document.getElementById("add_document_box");
     // Nettoyage ddu contenu du node
-    while (wrap.firstChild) { wrap.removeChild(wrap.firstChild) };
+    while (wrap.firstChild) { wrap.removeChild(wrap.firstChild); }
     wrap.style.textAlign = "";
 
     var form = document.createElement('form');
-    form.setAttribute("action", "db/upload.php");
+    form.setAttribute("action", "/db/upload.php");
     form.setAttribute("method", "POST");
     form.setAttribute("enctype", "multipart/form-data");
-    form.setAttribute("onsubmit", "return sendNewDocument();");
+    // form.setAttribute("onsubmit", "return sendNewDocument();");
 
     // Champs du titre
     var fieldTitle = createInput("title", "text", "Titre : ", true, 16);
@@ -139,10 +139,14 @@ function insertNewDocForm(e) {
 
     var datasheet = document.createElement('option');
     datasheet.innerHTML = "Datasheet";
+    datasheet.value = "Datasheet";
+    datasheet.setAttribute("selected", "selected");
     var tuto = document.createElement('option');
     tuto.innerHTML = "Tutoriel";
+    tuto.value = "Tutoriel";
     var wiki = document.createElement('option');
     wiki.innerHTML = "Wiki";
+    wiki.value = "Wiki";
 
     inputType.appendChild(datasheet);
     inputType.appendChild(tuto);
@@ -162,6 +166,7 @@ function insertNewDocForm(e) {
     button.className = "submit_button";
     button.value = "submit";
     button.innerHTML = "Envoyer";
+    button.setAttribute("onsubmit", "return sendNewDocument();");
 
     // Assemblage
     form.appendChild(fieldTitle);
