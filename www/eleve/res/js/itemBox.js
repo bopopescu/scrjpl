@@ -15,7 +15,7 @@ function setBoxWrapperSize() {
 // Adapte les box en fonction de la taille de la fenêtre
 function fireResize() {
     var container = document.getElementsByClassName("item-zone")[0];
-    var wrap = document.getElementsByClassName("item-zone-wrapper")[0];;
+    var wrap = document.getElementsByClassName("item-zone-wrapper")[0];
     var boxes = document.getElementsByClassName("ib");
     var box = window.getComputedStyle(boxes[0]);
 
@@ -31,8 +31,8 @@ function fireResize() {
     else if (container.clientWidth < 1000) { n = 2; p = 0.47; }
     else { n = 3; p = 0.31; }
 
-    wrap.style.width = n * (p * container.clientWidth
-            + 2 * parseInt(box.getPropertyValue('margin-right')));
+    wrap.style.width = n * (p * container.clientWidth +
+        2 * parseInt(box.getPropertyValue('margin-right')));
 
     for (var i = 0 ; i < boxes.length ; i++) {
         boxes[i].style.width = p * 100 + "%";
@@ -137,8 +137,7 @@ function checkNewDaarrt() {
                 var index = daarrtList.indexOf(remove[i]);
                 if (index > -1) daarrtList.splice(index, 1);
             }
-
-            for (var i = 0 ; i < add.length ; i++) {
+            for ( i = 0 ; i < add.length ; i++) {
                 setNewDaarrtDelay(add[i], i * 100);
             }
 
@@ -159,7 +158,7 @@ function setNewDaarrtDelay(el, time) {
 function insertTd(id, titre, sujet, eno, res, cor) {
     maxTdId = Math.max(id, maxTdId);
 
-    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];;
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
     var tdBox = document.createElement('div');
     var options = document.createElement('div');
     var title = document.createElement('font');
@@ -222,32 +221,6 @@ function insertTd(id, titre, sujet, eno, res, cor) {
     tdBox.appendChild(options);
 
     wrapper.appendChild(tdBox);
-    fireResize();
-}
-
-function insertNewTd() {
-    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
-    wrapper.removeChild(wrapper.lastChild);
-    insertTd(++maxTdId, "TD " + maxTdId, "Sujet du TD " + maxTdId, 0, 0, 0);
-    setTimeout(insertAddTdItem, 100);
-}
-
-
-function insertAddTdItem() {
-
-    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
-    var addTdBox = document.createElement('div');
-    var a = document.createElement('a');
-    var i = document.createElement('i');
-
-    a.setAttribute("href", "javascript:insertNewTd()");
-
-    addTdBox.id = "add-td-box";
-    addTdBox.className = "ib";
-
-    a.appendChild(i);
-    addTdBox.appendChild(a);
-    wrapper.appendChild(addTdBox);
     fireResize();
 }
 
@@ -317,7 +290,7 @@ function insertSearchResult(result) {
     d.className = "search-result-detail";
 
     // TODO : a améliorer
-    var pathSplit = result.path.split('.')
+    var pathSplit = result.path.split('.');
     d.innerHTML = "<b>Tags : </b>" + result.tags;
     d.appendChild(document.createElement('br'));
     d.appendChild(document.createElement('br'));

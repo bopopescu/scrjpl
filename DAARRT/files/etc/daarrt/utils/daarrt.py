@@ -24,13 +24,6 @@ def low_byte(integer):
     '''
     return integer & 0xFF
 
-
-def high_low_int(high_byte, low_byte):
-    '''
-    Convert low and low and high byte to int
-    '''
-    return (high_byte << 8) + low_byte
-
 class Daarrt():
     def __init__(self, ):
 
@@ -46,11 +39,29 @@ class Daarrt():
 
             self.trex = TrexIO(0x07)
             self.razor = RazorIO()
+            # Sonar [Arriere, Avant, Gauche, Droite]
+            self.sonar = [SonarIO(1, 3, 2), SonarIO(2, 5, 4), SonarIO(3, 7, 6), SonarIO(4, 9, 8)]
         else :
             print "Create virtual DAARRT"
 
-            # Import modules
-            # from trex.trexio import vTrexIO
+            from multiprocessing import Process,Manager
+            import vDaarrt.simulation as simulation
+            import vDaarrt.modules.vTrex as vTrex
+            import vDaarrt.modules.vSonar as vSonar
+            import vDaarrt.modules.vRazor as vRazor
+
+            global simuProc
+
+            manager = Manager()
+            self.ns = manager.Namespace()
+            self.trex = vTrex.vTrex()
+            self.razor = vRazor.vRazorIO()
+            self.sonar = vSonar.vSonar()
+            self.ns.isAlive = True
+            simuProc = Process(target = simulation.simulate,args = (self.ns,self.trex.package,self.trex.changeData,self.razor.changeSonar))
+            simuProc.start()
+
+            print "Running Simulation"
 
 
     ###########################
@@ -130,6 +141,16 @@ class Daarrt():
             One frame consist of three 3x3 float values = 36 bytes. Order is: acc x/y/z, mag x/y/z, gyr x/y/z.
         """
         return struct.unpack('fffffffff', self.razor.getCalibratedSensorData())
+
+    ###########################
+    ##     Sonar HC-SR04     ##
+    ###########################
+
+    def getSonars(self):
+        '''
+        Return angles measured by the Razor (calculated automatically from the 9-axis data).
+        '''
+        return [s.getValue() for s in self.sonar]
 
 
 if __name__ == "__main__":

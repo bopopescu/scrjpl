@@ -5,7 +5,7 @@ void Shutdown()
   lmspeed=0;      // set left  motor speed to 0 (off)
   rmspeed=0;      // set right motor speed to 0 (off)
   Motors();       // update H bridges
-  Serial.print("Shutdown");
+  // Serial.println("Shutdown");
   servopos[0]=0;  // ensure servo 0 is detached
   servopos[1]=0;  // ensure servo 1 is detached
   servopos[2]=0;  // ensure servo 2 is detached
@@ -14,3 +14,4 @@ void Shutdown()
   servopos[5]=0;  // ensure servo 5 is detached
   Servos();       // update servo pins
 }
+

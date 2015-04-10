@@ -7,10 +7,6 @@
 		$db = connect();
 		$daarrt = $db->query("SELECT * FROM online WHERE id=".$_GET['id'])->fetch_assoc();
 		$db->close();
-
-		$alive = json_decode(shell_exec("../scripts/daarrt.py ".$daarrt['id']), true);
-		$alive = $alive[$daarrt['id']];
-		if ($alive == "offline") header("location: ../manage.php?offline=true&origin=shell&name=".$daarrt['name']);
 	}
 ?>
 <!doctype html>
@@ -18,8 +14,8 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Console de <?php echo $daarrt['name']; ?></title>
-	<meta name="description" content="Interface de gestion des DAARRT">
+	<title>Webcam de <?php echo $daarrt['name']; ?></title>
+	<meta name="description" content="Base de donnée d'information sur les DAARRT">
 	<meta name="author" content="Brian">
 
 	<link rel="stylesheet" href="../res/css/styles.css">
@@ -30,13 +26,10 @@
 
 <body>
 	<nav class="topbar">
-		<div class="topbar-title">DAARRT Manager
-
-		</div>
+		<div class="topbar-title">DAARRT Manager</div>
 	</nav>
-	<a href="javascript:exportShell('http://
-	<?php echo $daarrt['address']; ?>/shell','shell_<?php echo $daarrt['id']; ?>
-	', 900, 400);"><i class="export-icon"></i></a>
+	<a href="javascript:exportShell('stream.php?id=<?php echo $daarrt['id']; ?>','webcam_<?php echo $daarrt['id']; ?>
+	', 600, 600);"><i class="export-icon"></i></a>
 
 	<ul class="navbar">
 		<li>
@@ -58,8 +51,8 @@
 			<a href="../logout.php"><i class="navbar-icon navbar-icon-logout"></i>Déconnexion</a>
 		</li>
 	</ul>
-	<div class="console">
-		<iframe src="http://<?php echo $daarrt['address']; ?>/shell" width="100%" height="100%"></iframe>
+	<div class="wrapper">
+		<iframe src="stream.php?id=<?php echo @$_GET['id']; ?>" width="100%" height="100%"></iframe>
 	</div>
 </body>
 </html>

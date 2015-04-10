@@ -108,7 +108,7 @@ class TrexIO():
         	'impact_sensitivity_high_byte' : 0,    # Impact sensitivity high byte
         	'impact_sensitivity_low_byte' : 50,    # Impact sensitivity low byte
         	'battery_high_byte' : 0,               # Battery voltage high byte
-        	'battery_low_byte' : 50,               # Battery voltage low byte
+        	'battery_low_byte' : 126,               # Battery voltage low byte
         	'i2c_address' : 7,                     # I2C slave address
         	'i2c_clock' : 0                       # I2C clock frequency
         }
@@ -116,6 +116,8 @@ class TrexIO():
 
     def __map(self):
         self.start_byte = self.package['start_byte']
+        # self.__byte_package = self.package.values()[1:]
+
         self.__byte_package[0] = self.package['pwm_freq']
         self.__byte_package[1] = self.package['lm_speed_high_byte']
         self.__byte_package[2] = self.package['lm_speed_low_byte']
@@ -182,7 +184,6 @@ class TrexIO():
         '''
         Write I2C data to T-Rex
         '''
-
         self.__map()
         self.lock.acquire()
         try:

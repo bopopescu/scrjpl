@@ -66,7 +66,6 @@
             }, ({$elem}) * 100);\n";
             $elem++;
         }
-        echo "setTimeout(insertAddTdItem, {$elem}*100);";
     ?>
 </script>
 </html>

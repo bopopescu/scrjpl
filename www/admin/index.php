@@ -61,7 +61,7 @@
                     </div>
                     <span class="panel-title-text">DAARRT en cours d'utilisation</span>
                 </div>
-                <a href="detail.php">
+                <a href="manage.php">
                     <div class="panel-bottom">Voir détails<i class="panel-detail-icon"></i></div>
                 </a>
             </div>
@@ -75,7 +75,7 @@
                     </div>
                     <span class="panel-title-text">Groupes travaillent actuellement</span>
                 </div>
-                <a href="detail.php">
+                <a href="groups.php">
                     <div class="panel-bottom">Voir détails<i class="panel-detail-icon"></i></div>
                 </a>
             </div>

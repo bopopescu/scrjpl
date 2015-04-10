@@ -7,15 +7,15 @@ import time
 import ConfigParser
 
 ## For simplicity's sake, we'll create a string for our paths.
-GPIO_MODE_PATH= os.path.normpath('/sys/devices/virtual/misc/gpio/mode/')
-GPIO_PIN_PATH=os.path.normpath('/sys/devices/virtual/misc/gpio/pin/')
-GPIO_FILENAME="gpio"
+GPIO_MODE_PATH = os.path.normpath('/sys/devices/virtual/misc/gpio/mode/')
+GPIO_PIN_PATH  = os.path.normpath('/sys/devices/virtual/misc/gpio/pin/')
+GPIO_FILENAME  = "gpio"
 
 ## Create a few strings for file I/O equivalence
-HIGH = "1"
-LOW =  "0"
-INPUT = "0"
-OUTPUT = "1"
+HIGH    = "1"
+LOW     = "0"
+INPUT   = "0"
+OUTPUT  = "1"
 
 class SonarIO():
     def __init__(self, id, GPIO_ECHO, GPIO_TRIGGER):
@@ -26,39 +26,57 @@ class SonarIO():
         self.GPIO_ECHO.set(INPUT)
         self.GPIO_TRIGGER.set(OUTPUT)
 
-    def getValue(self):
+        #self.GPIO_TRIGGER.set(HIGH)
+        self.GPIO_TRIGGER.set(LOW)
+
         # Allow module to settle
         time.sleep(0.5)
 
+    def getValue(self):
+        self.GPIO_TRIGGER.clean()
+        self.GPIO_TRIGGER.set(OUTPUT)
+
         # Send 10us pulse to trigger
-        GPIO_TRIGGER.set(HIGH)
+        self.GPIO_TRIGGER.set(HIGH)
         time.sleep(0.00001)
-        GPIO_TRIGGER.set(LOW)
+        self.GPIO_TRIGGER.set(LOW)
 
         start = time.time()
-        while GPIO_ECHO.read()[0] == LOW:
-            start = time.time()
+        #while self.GPIO_ECHO.read() == LOW:
+        #    start = time.time()
 
-        while GPIO_ECHO.read()[0] == HIGH:
+        while self.GPIO_ECHO.read() == HIGH :
             stop = time.time()
+            if (stop - start > .29) : break
 
-        # Calculate pulse length
-        elapsed = stop-start
+        try :
+            # Calculate pulse length
+            elapsed = stop-start
 
-        # Distance pulse travelled in that time is time
-        # multiplied by the speed of sound (cm/s)
-        distance = elapsed * 34000
+            # Distance pulse travelled in that time is time
+            # multiplied by the speed of sound (cm/s)
+            distance = elapsed * 34000
 
-        # That was the distance there and back so halve the value
-        distance = distance / 2
+            # That was the distance there and back so halve the value
+            distance = distance / 2
 
-        print "Distance : %.1f" % distance
+            self.__update(distance)
+            print "Distance : %.1f" % distance
 
-    def __update(self, raw_data):
+            return distance
+
+        except UnboundLocalError :
+            self.__update("<= 5")
+            print "Sonar " + str(self.id) + " : range <= 5 cm"
+            return -1
+
+    def __update(self, value):
 
         conf = ConfigParser.ConfigParser()
         conf.read("/var/www/daarrt.conf")
-        if not conf.has_section("sonar") : conf.add_section("razor")
+        if not conf.has_section("sonar") : conf.add_section("sonar")
+
+        conf.set("sonar", "sonar_" + str(self.id), str(value) + " cm")
 
         fd = open("/var/www/daarrt.conf", 'w')
         conf.write(fd)
@@ -67,29 +85,22 @@ class SonarIO():
 class GPIO():
     def __init__(self, i) :
         self.__mode = os.path.join(GPIO_MODE_PATH, 'gpio'+str(i))
-        self.__data = os.path.join(GPIO_DATA_PATH, 'gpio'+str(i))
+        self.__data = os.path.join(GPIO_PIN_PATH, 'gpio'+str(i))
 
         self.clean()
 
     def set(self, state) :
-        file = open(self.__mode, 'r+')
-        file.write(state)      ## set the mode of the pin
-        file.close()
+        with open(self.__mode, 'w+') as f:
+            f.write(state)
 
     def read(self) :
-        file = open(self.__data, 'r')
-        return file.read()       ## fetch the pin state
+        with open(self.__data, 'r') as f:
+            return f.read(1)
 
     def write(self, state) :
-        file = open(self.__data, 'r+')
-        file.write(state)
-        file.close()
+        with open(self.__data, 'w') as f:
+            f.write(state)
 
     def clean(self) :
-        file = open(self.__mode, 'r+')  ## open the file in r/w mode
-        file.write(OUTPUT)
-        file.close()
-
-        file = open(self.__data, 'r+')
-        file.write(LOW)
-        file.close()
+        self.set(OUTPUT)
+        self.write(LOW)

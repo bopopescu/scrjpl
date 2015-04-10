@@ -22,8 +22,8 @@
 #define startbyte 0x0F                                 // for serial communications each datapacket must start with this byte
 
 // define global variables here
-byte mode=0;                                           // mode=0: I2C / mode=1: Radio Control / mode=2: Bluetooth / mode=3: Shutdown
-int  lowbat=50;                                       // default low battery voltage is 5.5V
+byte mode = 0;                                         // mode=0: I2C / mode=1: Radio Control / mode=2: Bluetooth / mode=3: Shutdown
+int  lowbat = 50;                                      // default low battery voltage is 5.5V
 byte errorflag;                                        // non zero if bad data packet received
 byte pwmfreq;                                          // value from 1-7
 byte i2cfreq;                                          // I2C clock frequency can be 100kHz(default) or 400kHz
@@ -34,12 +34,12 @@ int lmcur,rmcur;                                       // left and right motor c
 int lmenc,rmenc;                                       // left and right encoder values
 int volts;                                             // battery voltage*10 (accurate to 1 decimal place)
 int xaxis,yaxis,zaxis;                                 // X, Y, Z accelerometer readings
-int deltx,delty,deltz;                                 // X, Y, Z impact readings 
+int deltx,delty,deltz;                                 // X, Y, Z impact readings
 int magnitude;                                         // impact magnitude
-byte devibrate=50;                                     // number of 2mS intervals to wait after an impact has occured before a new impact can be recognized
-int sensitivity=50;                                    // minimum magnitude required to register as an impact
+byte devibrate = 50;                                   // number of 2mS intervals to wait after an impact has occured before a new impact can be recognized
+int sensitivity = 50;                                  // minimum magnitude required to register as an impact
 
-byte RCdeadband=35;                                    // RCsignal can vary this much from 1500uS without controller responding
+byte RCdeadband = 35;                                  // RCsignal can vary this much from 1500uS without controller responding
 unsigned long time;                                    // timer used to monitor accelerometer and encoders
 
 byte servopin[6]={7,8,12,13,5,6};                      // array stores IO pin for each servo
@@ -72,40 +72,23 @@ void setup()
   pinMode(lmpwmpin,OUTPUT);                            // configure left  motor PWM       pin for output
   pinMode(lmdirpin,OUTPUT);                            // configure left  motor direction pin for output
   pinMode(lmbrkpin,OUTPUT);                            // configure left  motor brake     pin for output
-  
+
   pinMode(rmpwmpin,OUTPUT);                            // configure right motor PWM       pin for output
   pinMode(rmdirpin,OUTPUT);                            // configure right motor direction pin for output
   pinMode(rmbrkpin,OUTPUT);                            // configure right motor brake     pin for output
-  
-  //----------------------------------------------------- Test for RC inputs ------------------------------------------------------------
-/*
-  digitalWrite(RCspeedpin,1);                          // enable weak pullup resistor on input to prevent false triggering                   
-  digitalWrite(RCsteerpin,1);                          // enable weak pullup resistor on input to prevent false triggering
-  delay(100);
-  int t1=int(pulseIn(RCspeedpin,HIGH,30000));          // read throttle/left stick
-  int t2=int(pulseIn(RCsteerpin,HIGH,30000));          // read steering/right stick
-  if(t1>1000 && t1<2000 && t2>1000 && t2<2000)         // RC signals detected - go to RC mode
-  {
-    mode=1;                                            // set mode to RC
-    MotorBeep(3);                                      // generate 3 beeps from the motors to indicate RC mode enabled
-  }
-  */
-  //----------------------------------------------------- Test for Bluetooth module ------------------------------------------------------
-  /*if(mode==0)                                          // no RC signals detected
-  {
-    BluetoothConfig();                                 // attempts to configure bluetooth module - changes to mode 2 if successful
-    if(mode==2) MotorBeep(2);                          // generate 2 beeps from the motors to indicate bluetooth mode enabled
-  }
-  */
+
+
   //----------------------------------------------------- Configure for I²C control ------------------------------------------------------
   if(mode==0)                                          // no RC signal or bluetooth module detected
   {
     Serial.println("Configuring I2C bus");
     MotorBeep(1);                                      // generate 1 beep from the motors to indicate I²C mode enabled
-    byte i=EEPROM.read(0);                             // check EEPROM to see if I²C address has been previously stored
+    byte i=0;EEPROM.read(0);                             // check EEPROM to see if I²C address has been previously stored
+    
     if(i==0x55)                                        // B01010101 is written to the first byte of EEPROM memory to indicate that an I2C address has been previously stored
     {
       I2Caddress=EEPROM.read(1);                       // read I²C address from EEPROM
+      Serial.println(I2Caddress, DEC);
     }
     else                                               // EEPROM has not previously been used by this program
     {
@@ -113,10 +96,11 @@ void setup()
       EEPROM.write(1,0x07);                            // store default I²C address
       I2Caddress=0x07;                                 // set I²C address to default
     }
-    
+
     Wire.begin(I2Caddress);                            // join I²C bus as a slave at I2Caddress
     Wire.onReceive(I2Ccommand);                        // specify ISR for data received
     Wire.onRequest(I2Cstatus);                         // specify ISR for data to be sent
+    Servos();
   }
 }
 
@@ -134,27 +118,10 @@ void loop()
     Shutdown();                                        // Shutdown motors and servos
     return;
   }
-  
-  //----------------------------------------------------- RC Mode -----------------------------------------------------------------------
-  /*if(mode==1)                                           
-  {
-    RCmode();                                          // monitor signal from RC receiver and control motors
-    return;                                            // I²C, Bluetooth and accelerometer are ignored
-  }*/
-  
-  //----------------------------------------------------- Bluetooth mode ----------------------------------------------------------------
-  /*if(mode==2)
-  {
-    Bluetooth();                                       // control using Android phone and sample app
-    return;
-  }*/
-  
-  //----------------------------------------------------- I²C mode ----------------------------------------------------------------------
-  
 
   //===================================================== Programmer's Notes ============================================================
   //                                    Detecting impacts requires reasonably accurate timing.                                         //
-  //                  As all timers are in use this code uses the micros() function to simulate a timer interrupt.                     // 
+  //                  As all timers are in use this code uses the micros() function to simulate a timer interrupt.                     //
   //                                                                                                                                   //
   //                      Reading an analog input takes 260uS so reading 3 analog inputs can take about 800uS.                         //
   //                 This code alternates between reading accelerometer data and voltage / current readings every 1mS.                 //
@@ -163,40 +130,30 @@ void loop()
 
 
   static byte alternate;                               // variable used to alternate between reading accelerometer and power analog inputs
-  
-  
-  
-  //----------------------------------------------------- Perform these functions every 1mS ---------------------------------------------- 
-  if(micros()-time>999)                       
+
+
+
+  //----------------------------------------------------- Perform these functions every 1mS ----------------------------------------------
+  if(micros()-time>999)
   {
     time=micros();                                     // reset timer
     alternate=alternate^1;                             // toggle alternate between 0 and 1
     Encoders();                                        // check encoder status every 1mS
 
-    //--------------------------------------------------- These functions must alternate as they both take in excess of 780uS ------------    
+    //--------------------------------------------------- These functions must alternate as they both take in excess of 780uS ------------
     if(alternate)
     {
-      Accelerometer();                                 // monitor accelerometer every second millisecond                            
+      Accelerometer();                                 // monitor accelerometer every second millisecond
     }
-    else 
+    else
     {
       lmcur=(analogRead(lmcurpin)-511)*48.83;          // read  left motor current sensor and convert reading to mA
       rmcur=(analogRead(rmcurpin)-511)*48.83;          // read right motor current sensor and convert reading to mA
       volts=analogRead(voltspin)*10/3.357;             // read battery level and convert to volts with 2 decimal places (eg. 1007 = 10.07 V)
-      if(volts<lowbat) mode=3;                         // change to shutdown mode if battery voltage too low
+      if(volts<lowbat) {
+        Serial.println(volts, DEC);
+        mode=3;                         // change to shutdown mode if battery voltage too low
+      }
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

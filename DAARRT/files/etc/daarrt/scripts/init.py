@@ -14,10 +14,10 @@ DB = "daarrt"
 CONFIG = "/var/www/daarrt.conf"
 
 def get_ip():
-	try : 
+	try :
 		ip = ([(s.connect((HOST, 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1])
-		return ip 
-	except : 
+		return ip
+	except :
 		time.sleep(2)
 		return get_ip()
 
@@ -34,18 +34,18 @@ if __name__ == "__main__":
 	grp = conf.get('global', 'groups')
 
 	db = _mysql.connect(host=HOST, user=USR, passwd=PASS, db=DB)
-	
+
 	if sys.argv[1] == "start" :
 		while True :
 			try :
-				db.query("INSERT INTO active (id, name, address, groups) VALUES (" + id + ", \"" + name + "\", \"" + ip + "\", " + grp + ");")
+				db.query("INSERT INTO online (id, name, address, groups) VALUES (" + id + ", \"" + name + "\", \"" + ip + "\", " + grp + ");")
 				break
 			except Exception, e :
-				if str(e) == "(1062, \"Duplicate entry '1' for key 'id'\")" : break
+				if str(e) == "(1062, \"Duplicate entry '" + id + "' for key 'id'\")" : break
 				time.sleep(2)
 				continue
 	elif sys.argv[1] == "stop":
-        	db.query("DELETE FROM active WHERE id=" + id + ";")
+        	db.query("DELETE FROM online WHERE id=" + id + ";")
 
         db.close()
 	sys.exit(0)
