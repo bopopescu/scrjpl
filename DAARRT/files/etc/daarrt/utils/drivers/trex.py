@@ -107,7 +107,7 @@ class TrexIO():
         	'devibrate' : 50,                      # Devibrate
         	'impact_sensitivity_high_byte' : 0,    # Impact sensitivity high byte
         	'impact_sensitivity_low_byte' : 50,    # Impact sensitivity low byte
-        	'battery_high_byte' : 0,               # Battery voltage high byte
+        	'battery_high_byte' : 4,               # Battery voltage high byte
         	'battery_low_byte' : 126,               # Battery voltage low byte
         	'i2c_address' : 7,                     # I2C slave address
         	'i2c_clock' : 0                       # I2C clock frequency

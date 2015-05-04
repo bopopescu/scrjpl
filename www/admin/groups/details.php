@@ -134,10 +134,7 @@
         }
         echo "setTimeout(checkNewDaarrt, {$elem} * 100);";
 
-        $daarrts = explode(',', $main['daarrt']);
-        foreach ($daarrts as $id) {
-            echo "setTimeout(function () {toggleDaarrt(document.getElementById('daarrt-{$id}'))}, {$elem} * 100);";
-        }
+        echo "online = ".json_encode(explode(',', $main['daarrt'])).";";
         ?>
     </script>
     </html>

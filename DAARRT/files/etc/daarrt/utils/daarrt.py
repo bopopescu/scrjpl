@@ -25,7 +25,7 @@ def low_byte(integer):
     return integer & 0xFF
 
 class Daarrt():
-    def __init__(self, ):
+    def __init__(self):
 
         self.motor_last_change = 0
 
@@ -39,8 +39,8 @@ class Daarrt():
 
             self.trex = TrexIO(0x07)
             self.razor = RazorIO()
-            # Sonar [Arriere, Avant, Gauche, Droite]
-            self.sonar = [SonarIO(1, 3, 2), SonarIO(2, 5, 4), SonarIO(3, 7, 6), SonarIO(4, 9, 8)]
+            # Sonar [Arriere, Droite, Avant, Gauche]
+            self.sonar = [SonarIO(2, 3), SonarIO(4, 5), SonarIO(6, 7), SonarIO(8, 9)]
         else :
             print "Create virtual DAARRT"
 
@@ -124,7 +124,7 @@ class Daarrt():
 
     def getAngles(self):
         '''
-        Return angles measured by the Razor (calculated automatically from the 9-axis data).
+        Return angles measured by the Razor (yaw/pitch/roll calculated automatically from the 9-axis data).
         '''
         return struct.unpack('fff', self.razor.getAngles())
 
@@ -150,8 +150,26 @@ class Daarrt():
         '''
         Return angles measured by the Razor (calculated automatically from the 9-axis data).
         '''
-        return [s.getValue() for s in self.sonar]
+        dist = [s.getValue() for s in self.sonar]
+        for name, val in zip(["Sonar " + i + " : " for i in ["arriere", "droite", "avant", "gauche"]], dist) :
+            if val == -1 : print name + "range <= 5 cm"
+            else : print name + "%.1f" % val
+        return dist
 
 
 if __name__ == "__main__":
-    Daarrt()
+    SPEED = 200
+    K = 1
+    TIME = 20
+
+    d = Daarrt()
+    REFERENCE = d.getAngles()[0]
+    END = time.time() + TIME
+
+    d.motor(SPEED, SPEED)
+    while time.time() < END :
+        err = d.getAngles()[0] - REFERENCE
+        d.motor(SPEED + K * err, SPEED - K * err)
+        time.sleep(0.5)
+
+    d.motor(0, 0)

@@ -3,6 +3,7 @@
 
 import ConfigParser
 import serial
+import struct
 import os
 
 VALID_STATES = ["#o0", "#o1", "#ob", "#ot", "#oc", "#on", "#osct", "#osrt", "#osbt", "#oscb", "#osrb", "#osbb", "#oe0", "#oe1", "#f", "#s<xy>"]

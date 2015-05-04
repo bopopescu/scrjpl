@@ -7,6 +7,7 @@ case $1 in
 	;;
 	stop)
 		python /etc/daarrt/scripts/init.py stop
+		sudo service shellinabox stop
 		killall vlc
 	;;
 	reload|restart)

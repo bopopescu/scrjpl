@@ -145,17 +145,31 @@ function checkNewDaarrt() {
             }
 
             for (var i = 0 ; i < add.length ; i++) {
-                setNewDaarrtDelay(add[i], i * 100);
+                var p = location.pathname.split('/');
+                switch (p[p.length - 1].split('.')[0]) {
+                    case "manage" :
+                        setNewDaarrtDelay(add[i], i * 100);
+                        break;
+                    case "details" :
+                        setNewSelectableDaarrtDelay(add[i], i * 100);
+                        break;
+                }
             }
 
         }
         setTimeout(checkNewDaarrt, REFRESH_RATE);
+
+
     };
     xhr.send(data);
 }
 
 function setNewDaarrtDelay(el, time) {
     setTimeout(function () {insertNewDaarrt(el.name, JSON.stringify(el));}, time);
+}
+
+function setNewSelectableDaarrtDelay(el, time) {
+    setTimeout(function () {insertSelectableDaarrt(JSON.stringify(el));}, time);
 }
 
 /*
@@ -165,7 +179,7 @@ function setNewDaarrtDelay(el, time) {
 function insertTd(id, titre, sujet, eno, res, cor) {
     maxTdId = Math.max(id, maxTdId);
 
-    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];;
+    var wrapper = document.getElementsByClassName("item-zone-wrapper")[0];
     var tdBox = document.createElement('div');
     var options = document.createElement('div');
     var title = document.createElement('font');
@@ -196,8 +210,8 @@ function insertTd(id, titre, sujet, eno, res, cor) {
     aDel.setAttribute("href", "#");
 
     edit.className = "ib-edit";
-    iEdit.className = "icon-modify"
-    iDel.className = "icon-delete"
+    iEdit.className = "icon-modify";
+    iDel.className = "icon-delete";
 
     aEdit.appendChild(iEdit);
     aDel.appendChild(iDel);
@@ -324,7 +338,7 @@ function showPopUp(id, i, text) {
     var input = document.createElement('input');
     var button = document.createElement('button');
 
-    button.className = "ib-pop-up-button"
+    button.className = "ib-pop-up-button";
     button.setAttribute("onclick", "updateLink(" + id + ", " + i + ")");
     input.type = "text";
     var link = (text) ? text : el.href;
@@ -347,10 +361,10 @@ function updateLink(id, i) {
 
     var box = document.getElementById(id);
     var userOptions = box.getElementsByClassName("ib-options")[0];
-    var el = userOptions.children[i]
-    el.setAttribute("href", (newLink == '') ? '#' : newLink);
+    var el = userOptions.children[i];
+    el.setAttribute("href", (newLink === '') ? '#' : newLink);
 
-    if (newLink == '')
+    if (newLink === '')
         el.firstChild.className = el.firstChild.className.replace('green', 'red');
     else
         el.firstChild.className = el.firstChild.className.replace('red', 'green');

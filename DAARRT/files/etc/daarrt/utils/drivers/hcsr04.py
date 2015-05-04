@@ -17,9 +17,12 @@ LOW     = "0"
 INPUT   = "0"
 OUTPUT  = "1"
 
+PIN_MAP = {(2,3):"arrière", (4,5):"droite", (6,7):"avant", (8,9):"gauche"}
+
 class SonarIO():
-    def __init__(self, id, GPIO_ECHO, GPIO_TRIGGER):
-        self.id = id
+    def __init__(self, GPIO_ECHO, GPIO_TRIGGER):
+        self.id = PIN_MAP[(GPIO_ECHO, GPIO_TRIGGER)]
+
         self.GPIO_ECHO = GPIO(GPIO_ECHO)
         self.GPIO_TRIGGER = GPIO(GPIO_TRIGGER)
 
@@ -32,7 +35,7 @@ class SonarIO():
         # Allow module to settle
         time.sleep(0.5)
 
-    def getValue(self):
+    def getValue(self, iteration = 0) :
         self.GPIO_TRIGGER.clean()
         self.GPIO_TRIGGER.set(OUTPUT)
 
@@ -42,8 +45,13 @@ class SonarIO():
         self.GPIO_TRIGGER.set(LOW)
 
         start = time.time()
-        #while self.GPIO_ECHO.read() == LOW:
-        #    start = time.time()
+        while self.GPIO_ECHO.read() == LOW:
+            if (time.time() - start) > 1 :
+                if (iteration > 5) :
+                    self.__update("<= 5")
+                    return -1
+                else : return self.getValue(iteration + 1)
+        start = time.time()
 
         while self.GPIO_ECHO.read() == HIGH :
             stop = time.time()
@@ -61,13 +69,12 @@ class SonarIO():
             distance = distance / 2
 
             self.__update(distance)
-            print "Distance : %.1f" % distance
+            # print "Distance : %.1f" % distance
 
             return distance
 
         except UnboundLocalError :
             self.__update("<= 5")
-            print "Sonar " + str(self.id) + " : range <= 5 cm"
             return -1
 
     def __update(self, value):

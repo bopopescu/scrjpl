@@ -73,5 +73,6 @@
         echo "setTimeout(insertAddTdItem, {$elem}*100);";
     ?>
 </script>
+</script>
 <!-- Fin de la partie de test -->
 </html>

@@ -45,7 +45,7 @@ def file2text(file_path):
         return data
 
     else :
-        "Error : format non supportée"
+        return ""
 
 if __name__ == "__main__":
     if (len(sys.argv) == 2) :

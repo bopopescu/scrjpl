@@ -1,4 +1,5 @@
 var selected_group = null;
+var online;
 
 function searchGroup(group_name) {
     var wrap = document.getElementsByClassName("item-zone-wrapper")[0];
@@ -34,7 +35,7 @@ function searchGroup(group_name) {
 
 function fireTimeout(r, i) {
     setTimeout(function () {insertGroup(JSON.stringify(r));}, (i*100));
-};
+}
 
 function deleteGroup(id) {
     var data = new FormData();
@@ -92,6 +93,7 @@ function insertSelectableDaarrt(json) {
     wrapper.appendChild(daarrtBox);
     daarrtList.push(daarrt.id);
     fireResize();
+    if (online.indexOf(daarrt.id) != -1) toggleDaarrt(document.getElementById(daarrtBox.id));
 }
 
 function toggleDaarrt(e) {
