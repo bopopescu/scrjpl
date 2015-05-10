@@ -17,7 +17,7 @@ function searchGroup(group_name) {
         for (var i = 0 ; i < result.length ; i++) {
             fireTimeout(result[i], i);
         }
-        if (result.length == 0) {
+        if (result.length === 0) {
             // body.removeAttribute("onresize");
             var p = document.createElement('p');
             p.innerHTML = "Aucun résultat !";
@@ -121,7 +121,7 @@ function toggleDaarrt(e) {
     }
     else {
         e.style.backgroundColor = "rgb(212, 230, 189)";
-        nameInput.value += (nameInput.value == "") ? daarrtName : ", " + daarrtName;
-        idInput.value += (idInput.value == "") ? e.id.split('-')[1] : "," + e.id.split('-')[1];
+        nameInput.value += (nameInput.value === "") ? daarrtName : ", " + daarrtName;
+        idInput.value += (idInput.value === "") ? e.id.split('-')[1] : "," + e.id.split('-')[1];
     }
 }

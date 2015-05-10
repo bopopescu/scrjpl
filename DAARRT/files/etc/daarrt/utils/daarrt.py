@@ -2,6 +2,7 @@
 
 import os
 import time
+import math
 import struct
 # import sys
 
@@ -76,7 +77,7 @@ class Daarrt():
         # answer = self.trex.i2c_read()
         # return map(ord, answer)
         raw_status = self.trex.i2cRead()
-        return struct.unpack(">cchhhhhhhhhhh", raw_status)[2:]
+        return struct.unpack(">cchhHhHhhhhhh", raw_status)[2:]
 
 
     def reset(self):
@@ -96,6 +97,12 @@ class Daarrt():
         255 = Full speed ahead
         '''
         self.motor_last_change = time.time()*1000
+
+        lsign = left / abs(left)
+        rsign = right / abs(right)
+
+        left, right = lsign * min(left, 255), rsign * min(right, 255)
+
         left = int(left)
         right = int(right)
         self.trex.package['lm_speed_high_byte'] = high_byte(left)
@@ -158,9 +165,9 @@ class Daarrt():
 
 
 if __name__ == "__main__":
-    SPEED = 200
-    K = 1
-    TIME = 20
+    SPEED = 50
+    K = 2
+    TIME = 10
 
     d = Daarrt()
     REFERENCE = d.getAngles()[0]
@@ -168,8 +175,10 @@ if __name__ == "__main__":
 
     d.motor(SPEED, SPEED)
     while time.time() < END :
-        err = d.getAngles()[0] - REFERENCE
+        time.sleep(0.01)
+        errBrut = d.getAngles()[0] - REFERENCE
+        err = 2 * math.atan(math.tan(errBrut)/2)
         d.motor(SPEED + K * err, SPEED - K * err)
-        time.sleep(0.5)
+        print time.time(), d.status(), d.getAngles(), err
 
     d.motor(0, 0)

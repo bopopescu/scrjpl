@@ -110,7 +110,7 @@ class TrexIO():
         	'battery_high_byte' : 4,               # Battery voltage high byte
         	'battery_low_byte' : 126,               # Battery voltage low byte
         	'i2c_address' : 7,                     # I2C slave address
-        	'i2c_clock' : 0                       # I2C clock frequency
+        	'i2c_clock' : 1                       # I2C clock frequency
         }
         self.__map()
 
@@ -149,7 +149,7 @@ class TrexIO():
         conf = ConfigParser.ConfigParser()
         conf.read("/var/www/daarrt.conf")
 
-        status = struct.unpack(">cchhhhhhhhhhh", raw_status)
+        status = struct.unpack(">cchhHhHhhhhhh", raw_status)
 
         if not conf.has_section("trex") : conf.add_section("trex")
 
