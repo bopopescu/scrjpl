@@ -1,6 +1,6 @@
 
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
+# -*- coding: utf8 -*-
 
 import os
 import time

@@ -6,7 +6,7 @@ void Encoders()
   lencnew=digitalRead(servopin[4]);                                    // read new left  encoder value
   rencnew=digitalRead(servopin[5]);                                    // read new right encoder value
   if (lencold!=lencnew) lmenc+=lmspeed/abs(lmspeed);                // if old does not equal new then add or subtract 1 depending on motor direction
-  if (rencold!=rencnew) rmenc+=lmspeed/abs(lmspeed);                // if old does not equal new then add or subtract 1 depending on motor direction
+  if (rencold!=rencnew) rmenc+=rmspeed/abs(rmspeed);                // if old does not equal new then add or subtract 1 depending on motor direction
 }
 
 

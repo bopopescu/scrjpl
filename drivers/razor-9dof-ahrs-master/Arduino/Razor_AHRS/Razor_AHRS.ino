@@ -158,10 +158,10 @@
 /*****************************************************************/
 // Select your hardware here by uncommenting one line!
 //#define HW__VERSION_CODE 10125 // SparkFun "9DOF Razor IMU" version "SEN-10125" (HMC5843 magnetometer)
-//#define HW__VERSION_CODE 10736 // SparkFun "9DOF Razor IMU" version "SEN-10736" (HMC5883L magnetometer)
+#define HW__VERSION_CODE 10736 // SparkFun "9DOF Razor IMU" version "SEN-10736" (HMC5883L magnetometer)
 //#define HW__VERSION_CODE 10183 // SparkFun "9DOF Sensor Stick" version "SEN-10183" (HMC5843 magnetometer)
 //#define HW__VERSION_CODE 10321 // SparkFun "9DOF Sensor Stick" version "SEN-10321" (HMC5843 magnetometer)
-#define HW__VERSION_CODE 10724 // SparkFun "9DOF Sensor Stick" version "SEN-10724" (HMC5883L magnetometer)
+//#define HW__VERSION_CODE 10724 // SparkFun "9DOF Sensor Stick" version "SEN-10724" (HMC5883L magnetometer)
 
 
 // OUTPUT OPTIONS
@@ -231,9 +231,9 @@ boolean output_errors = false;  // true or false
 
 // Magnetometer (extended calibration mode)
 // Uncommend to use extended magnetometer calibration (compensates hard & soft iron errors)
-//#define CALIBRATION__MAGN_USE_EXTENDED true
-//const float magn_ellipsoid_center[3] = {0, 0, 0};
-//const float magn_ellipsoid_transform[3][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+#define CALIBRATION__MAGN_USE_EXTENDED true
+const float magn_ellipsoid_center[3] = {100.747, 8.78295, 15.5982};
+const float magn_ellipsoid_transform[3][3] = {{0.955571, 0.00250245, -0.00193117}, {0.00250245, 0.925461, 0.0207922}, {-0.00193117, 0.0207922, 0.994166}};
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
@@ -649,5 +649,5 @@ void loop()
     Serial.println("waiting...");
   }
   #endif
-}
+
 }

@@ -53,7 +53,7 @@ class RazorIO():
         if self.state != '#osrb': self.__setState('#osrb')
         self.bus.write("#f")
         output = self.bus.read(36)
-        self.__update('r', output)
+        self.__update(output)
 
         return output
 
@@ -67,7 +67,7 @@ class RazorIO():
         if self.state != '#oscb': self.__setState('#oscb')
         self.bus.write("#f")
         output = self.bus.read(36)
-        self.__update('c', output)
+        self.__update(output)
 
         return output
 

@@ -33,11 +33,12 @@ class Daarrt():
         if os.access("/var/www/daarrt.conf", os.F_OK) :
             print "Real DAARRT creation"
 
+
             # Import modules
             from drivers.trex import TrexIO
             from drivers.razor import RazorIO
             from drivers.hcsr04 import SonarIO
-
+            self.ns.isAlive = True
             self.trex = TrexIO(0x07)
             self.razor = RazorIO()
             # Sonar [Arriere, Droite, Avant, Gauche]
@@ -57,9 +58,13 @@ class Daarrt():
             self.ns = manager.Namespace()
             self.trex = vTrex.vTrex()
             self.razor = vRazor.vRazorIO()
-            self.sonar = vSonar.vSonar()
+            self.sonarLeft = vSonar.vSonar(1,0,0)
+            self.sonarRight = vSonar.vSonar(2,0,0)
+            self.sonarFront = vSonar.vSonar (3,0,0)
+            self.sonarBack = vSonar.vSonar(4,0,0)
+            self.sonar = [self.sonarBack,self.sonarRight,self.sonarFront,self.sonarLeft]
             self.ns.isAlive = True
-            simuProc = Process(target = simulation.simulate,args = (self.ns,self.trex.package,self.trex.changeData,self.razor.changeSonar))
+            simuProc = Process(target = simulation.simulate,args = (self.ns,self.trex.package,self.trex.changeData,self.trex.changeDataEnco,self.sonarLeft.changeSonarLeft,self.sonarRight.changeSonarRight,self.sonarFront.changeSonarFront,self.sonarBack.changeSonarBack,self.razor.changeCap))
             simuProc.start()
 
             print "Running Simulation"
@@ -98,10 +103,13 @@ class Daarrt():
         '''
         self.motor_last_change = time.time()*1000
 
-        lsign = left / abs(left)
-        rsign = right / abs(right)
+        try : lsign = left / abs(left)
+        except ZeroDivisionError, e : lsign = 1
 
-        left, right = lsign * min(left, 255), rsign * min(right, 255)
+        try : rsign = right / abs(right)
+        except ZeroDivisionError, e : rsign = 1
+
+        left, right = lsign * min(abs(left), 255), rsign * min(abs(right), 255)
 
         left = int(left)
         right = int(right)
@@ -174,11 +182,11 @@ if __name__ == "__main__":
     END = time.time() + TIME
 
     d.motor(SPEED, SPEED)
-    while time.time() < END :
+    while time.time() < END and ns.isAlive :
         time.sleep(0.01)
         errBrut = d.getAngles()[0] - REFERENCE
-        err = 2 * math.atan(math.tan(errBrut)/2)
-        d.motor(SPEED + K * err, SPEED - K * err)
+        err = 2 * math.atan(math.tan(math.radians(errBrut))/2)
+        d.motor(SPEED - K * err, SPEED + K * err)
         print time.time(), d.status(), d.getAngles(), err
 
     d.motor(0, 0)

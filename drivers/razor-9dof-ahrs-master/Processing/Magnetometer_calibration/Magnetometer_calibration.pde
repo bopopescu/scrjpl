@@ -40,7 +40,7 @@ import org.ejml.ops.*;
 // 1. Have a look at the Processing console output of this sketch.
 // 2. Look for the serial port list and find the port you need (it's the same as in Arduino).
 // 3. Set your port number here:
-final static int SERIAL_PORT_NUM = 0;
+final static int SERIAL_PORT_NUM = 4;
 // 4. Try again.
 
 
@@ -49,7 +49,7 @@ import processing.opengl.*;
 import processing.serial.*;
 import java.io.*;
 
-final static int SERIAL_PORT_BAUD_RATE = 57600;
+final static int SERIAL_PORT_BAUD_RATE = 9600;
 
 final static int NUM_MAGN_SAMPLES = 10000;
 float magnetom[][] = new float[NUM_MAGN_SAMPLES][3];
