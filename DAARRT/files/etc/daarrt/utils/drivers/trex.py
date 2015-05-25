@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 '''
 Controll the Trex robot controller
@@ -77,7 +77,7 @@ class TrexIO():
         self.lock = threading.Lock()
         self.package = {}
         self.__byte_package = [None] * 26
-        self.reset()
+        return self.reset()
 
     def __trex_reset(self):
         '''
@@ -174,10 +174,13 @@ class TrexIO():
         Read status from trex
         Return as a byte array
         '''
-        status = self.i2c_read_bus.transaction(i2c.reading(self.ADDRESS, 24))[0]
-        self.__updateStatus(status)
+        try :
+            status = self.i2c_read_bus.transaction(i2c.reading(self.ADDRESS, 24))[0]
+            self.__updateStatus(status)
+            return status
+        except :
+            return -1
 
-        return status
 
 
     def i2cWrite(self):
@@ -202,7 +205,10 @@ class TrexIO():
         try:
             self.__trex_reset()
             self.i2c_write_bus.write_i2c_block_data(self.ADDRESS, self.start_byte, self.__byte_package)
+            rc = 0
         except:
             print "Erreur d'accès au bus I2C"
+            rc = -1
         finally:
             self.lock.release()
+            return rc

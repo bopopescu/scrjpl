@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-from subprocess import Popen, PIPE
-# from docx import opendocx, getdocumenttext
+from subprocess import Popen, PIP
 
 import os
 import sys

@@ -83,8 +83,8 @@ void setup()
   {
     Serial.println("Configuring I2C bus");
     MotorBeep(1);                                      // generate 1 beep from the motors to indicate I²C mode enabled
-    byte i=0;EEPROM.read(0);                             // check EEPROM to see if I²C address has been previously stored
-
+    byte i=0;EEPROM.read(0);                           
+    
     if(i==0x55)                                        // B01010101 is written to the first byte of EEPROM memory to indicate that an I2C address has been previously stored
     {
       I2Caddress=EEPROM.read(1);                       // read I²C address from EEPROM

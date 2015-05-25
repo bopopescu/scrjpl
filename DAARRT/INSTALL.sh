@@ -25,7 +25,6 @@ echo "Le temps d'installation des mises à jours la premiere fois peut atteindre
 echo ""
 echo ""
 
-
 re_int='^[0-9]{1,2}$'
 re_ans='^[OoYyNn]{1}$'
 
@@ -101,7 +100,12 @@ case $system in
 		sed -i '/^assert sys.version_info.major/d' /etc/daarrt/utils/drivers/quick2wire/i2c.py
 		sed -i 's/SHELLINABOX_ARGS="--no-beep"/SHELLINABOX_ARGS="--no-beep --disable-ssl"/g' /etc/default/shellinabox
 
+		# Chargement de la config audio
+		echo "Configuration d'alsamixer (audio)..."
+		alsactl restore
+
 		# Installation des scripts de démarrage et d'arrêt
+		echo "Installation du daemon pour l'interface web..."
 		chmod +x /etc/daarrt/daarrt-service
 		ln -s /etc/daarrt/daarrt-service /etc/init.d/daarrt
 		update-rc.d daarrt start 95 2 3 4 5 . stop 01 0 1 6 .
@@ -149,9 +153,10 @@ id=$id
 name=$name
 groups=0
 EOL
+		chmod 777 /var/www/daarrt.conf
 
 		# Configuration apache
-		a2enmod proxy
+		a2enmod proxy proxy_http
 		echo "Configuration d'Apache"
 		cat >> /etc/apache2/apache2.conf <<EOL
 
@@ -162,7 +167,7 @@ EOL
 	Allow from all
 </Location>
 EOL
-		mkdir /var/log/apache2
+		mkdir /var/log/apache2/
 
 		service apache2 restart
 		service shellinabox restart

@@ -33,16 +33,14 @@ class Daarrt():
         if os.access("/var/www/daarrt.conf", os.F_OK) :
             print "Real DAARRT creation"
 
-
             # Import modules
             from drivers.trex import TrexIO
             from drivers.razor import RazorIO
             from drivers.hcsr04 import SonarIO
-            self.ns.isAlive = True
             self.trex = TrexIO(0x07)
             self.razor = RazorIO()
-            # Sonar [Arriere, Droite, Avant, Gauche]
-            self.sonar = [SonarIO(2, 3), SonarIO(4, 5), SonarIO(6, 7), SonarIO(8, 9)]
+            self.sonar = [SonarIO(2, 3), SonarIO(4, 5), SonarIO(6, 7), SonarIO(8, 9)] # [Arriere, Droite, Avant, Gauche]
+
         else :
             print "Create virtual DAARRT"
 
@@ -182,7 +180,7 @@ if __name__ == "__main__":
     END = time.time() + TIME
 
     d.motor(SPEED, SPEED)
-    while time.time() < END and ns.isAlive :
+    while time.time() < END :
         time.sleep(0.01)
         errBrut = d.getAngles()[0] - REFERENCE
         err = 2 * math.atan(math.tan(math.radians(errBrut))/2)
