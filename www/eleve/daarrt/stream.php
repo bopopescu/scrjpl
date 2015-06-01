@@ -1,12 +1,15 @@
 <?php
-	session_start();
-	if (!$_SESSION['isRegistered']) {header("location: ../login.php");}
-    else {
+	if (!isset($_COOKIE['group'])) {header("location: ../index.php");}
+	else {
 		include '../db/connect.php';
 
 		$db = connect();
 		$daarrt = $db->query("SELECT * FROM online WHERE id=".$_GET['id'])->fetch_assoc();
 		$db->close();
+
+		$alive = json_decode(shell_exec("../scripts/daarrt.py ".$daarrt['id']), true);
+		$alive = $alive[$daarrt['id']];
+		if ($alive == "offline") header("location: ../manage.php?offline=true&origin=shell&name=".$daarrt['name']);
 	}
 ?>
 <!doctype html>
@@ -15,7 +18,7 @@
 	<meta charset="utf-8">
 
 	<title>Webcam de <?php echo $daarrt['name']; ?></title>
-	<meta name="description" content="Interface de gestion des DAARRT">
+	<meta name="description" content="Base de donnée d'information sur les DAARRT">
 	<meta name="author" content="Brian">
 
 	<link rel="stylesheet" href="../res/css/styles.css">

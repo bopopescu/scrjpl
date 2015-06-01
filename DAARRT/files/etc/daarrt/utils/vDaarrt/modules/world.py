@@ -64,7 +64,7 @@ class World :
                 num_line += 1
 
             self.structure = structure_monde
-            num_line -= 2
+            #num_line -= 2
 
         self.numberCase = num_case
         self.numberLine = num_line
@@ -108,6 +108,11 @@ class World :
 
                         self.obstacle.append(geo.createObstacle(self,x,y))
 
+                elif element == 'D' :
+                    daarrtpos=[x,y]
                 num_case += 1
 
             num_line += 1
+        try :
+            return daarrtpos
+        except : return [250.0,250.0]

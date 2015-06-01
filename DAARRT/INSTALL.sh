@@ -4,10 +4,11 @@
 # DAARRT installer script #
 ###########################
 
-# ATTENTION ! DOIT ETRE EXECUTE EN TANT QUE root
+# ATTENTION ! DOIT ETRE EXECUTE AVEC LES DROITS ROOT
 
 ## TODO :
 #	conf VNC
+#	conf passwd
 
 ssid="DAARRT"
 psk="josbidboksautsowtud9"
@@ -19,7 +20,7 @@ fi
 
 
 echo "Début de la configuration du DAARRT..."
-echo "Cette utilitaire aura besoin de l'utilisateur lors de la configuration du clavier (pour selectionner le layout) et lors des questions initiales."
+echo "Cet utilitaire aura besoin de l'utilisateur lors de la configuration du clavier, afin de selectionner le layout (il s'agit de la première étape de l'installateur)."
 echo ""
 echo "Le temps d'installation des mises à jours la premiere fois peut atteindre 2h voir 3h. Il est donc conseillé de prévoir de quoi s'occuper en attendant."
 echo ""
@@ -40,19 +41,15 @@ read -p "Quel est le nom du DAARRT ? " name
 
 while ! [[ $sysUpdate =~ $re_ans ]]
 do
-	read -p "Voulez vous faire la mise à jour du système (très long la premiere fois) ? (O/n) " sysUpdate
-done
-while ! [[ $nano =~ $re_ans ]]
-do
-	read -p "Installer nano ? (O/n) " nano
+	read -p "Voulez vous faire la mise à jour du système (très long la premiere fois) ? (O/N) " sysUpdate
 done
 while ! [[ $minimal =~ $re_ans ]]
 do
-	read -p "Installer les paquets nécessaires au DAARRT ? (O/n) " minimal
+	read -p "Installer les paquets nécessaires au DAARRT ? (O/N) " minimal
 done
 while ! [[ $system =~ $re_ans ]]
 do
-	read -p "Installer et configurer les composants du DAARRT (drivers, service et réseau) ? (O/n) " system
+	read -p "Installer et configurer les composants du DAARRT (drivers, service et réseau) ? (O/N) " system
 done
 
 
@@ -68,21 +65,13 @@ case $sysUpdate in
 	;;
 esac
 
-case $nano in
-	[YyOo]* )
-		apt-get install nano
-	;;
-esac
-
 case $minimal in
 	[YyOo]* )
-		apt-get install apache2 shellinabox python3 python-mysqldb python-smbus i2c-tools python-serial vlc
-		apt-get -f install
-		apt-get install apache2 shellinabox python3 python-mysqldb python-smbus i2c-tools python-serial vlc
+		apt-get install nano apache2 shellinabox python3 python-mysqldb python-smbus i2c-tools python-serial libv4l-dev libjpeg8-dev subversion imagemagick # vlc
+		dpkg -i shellinabox_2.14-1_armhf.deb
 
 		# On fixe les problèmes de dépendence
 		apt-get -f install
-
 		dpkg -i shellinabox_2.14-1_armhf.deb
 	;;
 	[Nn]* )
@@ -104,8 +93,23 @@ case $system in
 		echo "Configuration d'alsamixer (audio)..."
 		alsactl restore
 
+		# Configuration du serveur de streaming
+		echo "Configuration du serveur de streaming (mjpg-streamer) :"
+		echo "Recuperation de mjpg-streamer..."
+		svn co https://svn.code.sf.net/p/mjpg-streamer/code/ mjpg-streamer &> /dev/null
+
+		echo "Installation de mjpg-streamer..."
+		cd mjpg-streamer/mjpg-streamer
+		make USE_LIBV4L2=true clean all &> /dev/null
+		make DESTDIR=/usr install &> /dev/null
+
+		echo "Nettoyage de l'installation de mjpg-streamer..."
+		cd ../..
+		rm -rf mjpg-streamer/
+		apt-get purge subversion
+
 		# Installation des scripts de démarrage et d'arrêt
-		echo "Installation du daemon pour l'interface web..."
+		echo "Installation du daemon communicant avec l'interface web..."
 		chmod +x /etc/daarrt/daarrt-service
 		ln -s /etc/daarrt/daarrt-service /etc/init.d/daarrt
 		update-rc.d daarrt start 95 2 3 4 5 . stop 01 0 1 6 .
@@ -123,6 +127,8 @@ case $system in
 		echo "Configuration IP ($ip)"
 
 		echo "Edition des interfaces réseaux"
+		service networking stop
+		service network-manager stop
 		cat > /etc/network/interfaces <<EOL
 # interfaces(5) file used by ifup(8) and ifdown(8)
 auto lo
@@ -169,6 +175,7 @@ EOL
 EOL
 		mkdir /var/log/apache2/
 
+		service networking start
 		service apache2 restart
 		service shellinabox restart
 	;;

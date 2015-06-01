@@ -23,7 +23,7 @@
 
 // define global variables here
 byte mode = 0;                                         // mode=0: I2C / mode=1: Radio Control / mode=2: Bluetooth / mode=3: Shutdown
-int  lowbat = 50;                                     // default low battery voltage is 5.5V
+int  lowbat = 1180;                                     // default low battery voltage is 5.5V
 byte errorflag;                                        // non zero if bad data packet received
 byte pwmfreq;                                          // value from 1-7
 byte i2cfreq;                                          // I2C clock frequency can be 100kHz(default) or 400kHz
@@ -83,8 +83,8 @@ void setup()
   {
     Serial.println("Configuring I2C bus");
     MotorBeep(1);                                      // generate 1 beep from the motors to indicate I²C mode enabled
-    byte i=0;EEPROM.read(0);                           
-    
+    byte i=0;EEPROM.read(0);
+
     if(i==0x55)                                        // B01010101 is written to the first byte of EEPROM memory to indicate that an I2C address has been previously stored
     {
       I2Caddress=EEPROM.read(1);                       // read I²C address from EEPROM
@@ -150,10 +150,7 @@ void loop()
       lmcur=(analogRead(lmcurpin)-511)*48.83;          // read  left motor current sensor and convert reading to mA
       rmcur=(analogRead(rmcurpin)-511)*48.83;          // read right motor current sensor and convert reading to mA
       volts=analogRead(voltspin)*10/3.357;             // read battery level and convert to volts with 2 decimal places (eg. 1007 = 10.07 V)
-      if(volts<lowbat) {
-        Serial.println(volts, DEC);
-        mode=3;                         // change to shutdown mode if battery voltage too low
-      }
+      if(volts<lowbat && lmspeed == 0 && rmspeed == 0) mode=3;                         // change to shutdown mode if battery voltage too low
     }
   }
 }

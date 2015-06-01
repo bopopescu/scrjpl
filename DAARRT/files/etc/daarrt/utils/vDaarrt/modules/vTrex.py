@@ -1,28 +1,58 @@
 from multiprocessing import Process,Manager
 import struct
 
+def high_byte(integer):
+    '''
+    Get the high byte from a int
+    '''
+    return integer >> 8
+
+
+def low_byte(integer):
+    '''
+    Get the low byte from a int
+    '''
+    return integer & 0xFF
+
+
 class vTrex():
 
     def __init__(self):
         manager=Manager()
         self.package=manager.dict()
         self.changeData=manager.list()
+        self.changeDataEnco=manager.list()
         self.initPackage()
+        self.leftEnco=0
+        self.rightEnco=0
 
-    def i2cWrite(self,data):
-        for key in data :
-            if data[key] != self.oldPackage[key]:
-                self.oldPackage[key]=data[key]
+    def i2cWrite(self):
+
+
+        '''while len(self.changeData)>2 :
+            try :
+                self.changeData.pop()
+            except : pass'''
+
+        for key in self.package :
+            if self.package[key] != self.oldPackage[key]:
+                self.oldPackage[key]=self.package[key]
                 self.changeData.append([key,self.oldPackage[key]])
 
     def i2cRead(self):
-        return struct.pack(">BBhhhhhhhhhhh",self.package['start_byte']
+        try :
+            self.leftEnco = int(self.changeDataEnco[0][1])
+            self.rightEnco = int(self.changeDataEnco[1][1])
+        except :
+            pass
+        print high_byte(self.leftEnco)*256 + low_byte(self.leftEnco)
+        return struct.pack(">BBhhHhHhhhhhh",self.package['start_byte']
                                            ,0
                                            ,self.package['battery_high_byte']*256 + self.package['battery_low_byte']
                                            ,self.package['lm_speed_high_byte']*256 + self.package['lm_speed_low_byte']
-                                           ,0
+                                           ,int(high_byte(self.leftEnco)*256 + low_byte(self.leftEnco))
                                            ,self.package['rm_speed_high_byte']*256 + self.package['rm_speed_low_byte']
-                                           ,0
+                                           ,int(high_byte(self.rightEnco)*256 + low_byte(self.rightEnco))
                                            ,0
                                            ,0
                                            ,0

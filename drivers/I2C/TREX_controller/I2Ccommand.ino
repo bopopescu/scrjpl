@@ -15,7 +15,6 @@ void I2Ccommand(int recvflag)
 
   if(errorflag>0)                                                              // corrupt data received
   {
-    //Serial.println(recvflag, DEC);
     Shutdown();                                                                // shut down motors and servos
     return;                                                                    // wait for valid data packet
   }
@@ -66,7 +65,6 @@ void I2Ccommand(int recvflag)
     i=Wire.read()*256+Wire.read();                                        // read integer from I²C buffer
 
     if(abs(i)>2400) errorflag = errorflag | 8;                                 // incorrect servo position given
-    //if (j < 2) Serial.print(i);
     servopos[j]=i;
   }
 

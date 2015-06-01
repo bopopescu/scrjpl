@@ -61,7 +61,7 @@ def createSonar(daarrt):
 
     for i in range (daarrt.nRightSonar):
 
-        if daarrt.nLeftSonar>1 :
+        if daarrt.nRightSonar>1 :
             x0 = -daarrt.robotLenght/2 + daarrt.wheelLenght/2 +  (daarrt.robotLenght-daarrt.robotWidth)*i/(daarrt.nLeftSonar-1)
             y0 = daarrt.robotWidth/2 + 2
         else :

@@ -17,8 +17,9 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Console de <?php echo $daarrt['name']; ?></title>
-	<meta name="description" content="Base de donnée d'information sur les DAARRT">
+
+	<title>Webcam de <?php echo $daarrt['name']; ?></title>
+	<meta name="description" content="Interface de gestion des DAARRT">
 	<meta name="author" content="Brian">
 
 	<link rel="stylesheet" href="../res/css/styles.css">
@@ -30,9 +31,8 @@
 	<nav class="topbar">
 		<div class="topbar-title">DAARRT Manager</div>
 	</nav>
-	<a href="javascript:exportShell('http://
-	<?php echo $daarrt['address']; ?>/shell','shell_<?php echo $daarrt['id']; ?>
-	', 900, 400);"><i class="export-icon"></i></a>
+	<a href="javascript:exportShell('stream.php?id=<?php echo $daarrt['id']; ?>','webcam_<?php echo $daarrt['id']; ?>
+	', 600, 600);"><i class="export-icon"></i></a>
 
 	<ul class="navbar">
 		<li>
@@ -51,8 +51,8 @@
 			<a href="../documentation.php"><i class="navbar-icon navbar-icon-doc"></i>Documentation</a>
 		</li>
 	</ul>
-	<div class="console">
-		<iframe src="http://<?php echo $daarrt['address']; ?>/shell" width="100%" height="100%"></iframe>
+	<div class="wrapper">
+		<iframe class="mjpg-streamer" src="http://<?php echo $daarrt['address']; ?>:8090/?action=stream" width="650px" height="500px"></iframe>
 	</div>
 </body>
 </html>

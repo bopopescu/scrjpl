@@ -52,7 +52,7 @@
 		</li>
 	</ul>
 	<div class="wrapper">
-		<iframe src="stream.php?id=<?php echo @$_GET['id']; ?>" width="100%" height="100%"></iframe>
+		<iframe class="mjpg-streamer" src="http://<?php echo $daarrt['address']; ?>:8090/?action=stream" width="650px" height="500px"></iframe>
 	</div>
 </body>
 </html>

@@ -20,19 +20,20 @@ robotLenght = 23*scale
 robotWidth = 12*scale
 wheelLenght = 12.5*scale
 wheelWidth = 10*scale
-wheelRadius = 6,25*scale
+wheelRadius = 6.25*scale
 clawLenght = 10*scale
 clawWidthClosed = 2*scale
 clawWidthOpened = 2*scale
 clawBase = 10*scale
+nTicks = 600
 
 #Sizes for sonar
 sonarLenght = 400.0
 sonarAngle = 10.0 #in degrees
-nFrontSonar = 2#number
+nFrontSonar = 1#number
 nLeftSonar = 1
 nRightSonar = 1
-nBackSonar = 2
+nBackSonar = 1
 
 #Elements for the simulation
 speed=30

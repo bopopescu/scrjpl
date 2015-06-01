@@ -54,6 +54,7 @@ It is meant to be used inside the steelsquid daemon (see http://www.steelsquid.o
 @change: 2014-11-23 Created
 '''
 
+from time import sleep
 import os
 import sys
 import smbus
@@ -67,8 +68,12 @@ sys.path.append("/usr/lib/python3/dist-packages")
 import quick2wire.i2c as i2c
 from quick2wire.i2c import I2CMaster, writing_bytes, reading
 
+MAX_BATTERY = 1270.0
+MIN_BATTERY = 1180.0
+
 class TrexIO():
     def __init__(self, addr = 0x07):
+        self.battery = 0
         self.i2c_write_bus = smbus.SMBus(2)
         self.i2c_read_bus = i2c.I2CMaster(2)
 
@@ -77,7 +82,7 @@ class TrexIO():
         self.lock = threading.Lock()
         self.package = {}
         self.__byte_package = [None] * 26
-        return self.reset()
+        self.reset()
 
     def __trex_reset(self):
         '''
@@ -89,7 +94,7 @@ class TrexIO():
         	'lm_speed_high_byte' : 0,              # Left speed high byte
         	'lm_speed_low_byte' : 0,               # Left Speed low byte
         	'lm_brake' : 0,                        # Left brake
-        	'rm_speed_high_byte' : 0,                     # Right Speed high byte
+        	'rm_speed_high_byte' : 0,              # Right Speed high byte
         	'rm_speed_low_byte' : 0,               # Right Speed low byte
         	'rm_brake' : 0,                        # Right brake
         	'servo_1_high_byte' : 0,               # Servo 1 high byte
@@ -107,16 +112,15 @@ class TrexIO():
         	'devibrate' : 50,                      # Devibrate
         	'impact_sensitivity_high_byte' : 0,    # Impact sensitivity high byte
         	'impact_sensitivity_low_byte' : 50,    # Impact sensitivity low byte
-        	'battery_high_byte' : 4,               # Battery voltage high byte
-        	'battery_low_byte' : 126,               # Battery voltage low byte
+        	'battery_high_byte' : 4,               # Battery voltage high byte (when motors are off)
+        	'battery_low_byte' : 156,              # Battery voltage low byte (when motors are off)
         	'i2c_address' : 7,                     # I2C slave address
-        	'i2c_clock' : 1                       # I2C clock frequency
+        	'i2c_clock' : 1                        # I2C clock frequency
         }
         self.__map()
 
     def __map(self):
         self.start_byte = self.package['start_byte']
-        # self.__byte_package = self.package.values()[1:]
 
         self.__byte_package[0] = self.package['pwm_freq']
         self.__byte_package[1] = self.package['lm_speed_high_byte']
@@ -154,6 +158,8 @@ class TrexIO():
         if not conf.has_section("trex") : conf.add_section("trex")
 
         conf.set("trex", "battery", status[2])
+        self.battery = (int(status[2]) - MIN_BATTERY) / (MAX_BATTERY - MIN_BATTERY) * 100
+        conf.set("trex", "battery_level", self.battery)
 
         conf.set("trex", "left_motor", status[3])
         conf.set("trex", "left_encoder", status[4])
@@ -181,8 +187,6 @@ class TrexIO():
         except :
             return -1
 
-
-
     def i2cWrite(self):
         '''
         Write I2C data to T-Rex
@@ -196,6 +200,11 @@ class TrexIO():
         finally:
             self.lock.release()
 
+    def getBattery(self):
+        self.i2cRead()
+        print "Niveau de batterie : %.2f" % (self.battery) , "%"
+        return self.battery
+
     def reset(self):
         '''
         Reset the trex controller to default
@@ -205,10 +214,14 @@ class TrexIO():
         try:
             self.__trex_reset()
             self.i2c_write_bus.write_i2c_block_data(self.ADDRESS, self.start_byte, self.__byte_package)
-            rc = 0
-        except:
-            print "Erreur d'accès au bus I2C"
-            rc = -1
-        finally:
             self.lock.release()
-            return rc
+
+            sleep(.1)
+            self.i2cRead()
+            self.getBattery()
+            return 0
+        except:
+            self.lock.release()
+            print "Erreur d'accès au bus I2C"
+            print "Pensez à vérifier la charge de la batterie !"
+            return -1

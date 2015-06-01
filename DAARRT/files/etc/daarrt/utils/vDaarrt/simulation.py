@@ -15,11 +15,14 @@ from modules.world import *
 from modules.constantes import *
 from modules.info import *
 
+HIGH    = "1"
+LOW     = "0"
+INPUT   = "0"
+OUTPUT  = "1"
 
-def simulate(ns,package,changeData,changeSonar):
+def simulate(ns,package,changeData,changeDataEnco,changeSonarLeft,changeSonarRight, changeSonarFront , changeSonarBack , changeCap):
 
     #creation of objects required
-    daarrt2d=DAARRT2d()
     myWorld=World(worldName)
     worldLenght=myWorld.generer()
     pygame.init()
@@ -29,7 +32,9 @@ def simulate(ns,package,changeData,changeSonar):
     pygame.display.set_caption(titre)
 
     #first printing
-    myWorld.afficher(simu,True)
+    pos=myWorld.afficher(simu,True)
+    daarrt2d=DAARRT2d(pos)
+
 
     #simulation loop
     pygame.key.set_repeat(400, 30)
@@ -41,10 +46,12 @@ def simulate(ns,package,changeData,changeSonar):
         pygame.time.Clock().tick(speed)
         simu.blit(bg,(0,0))
         myWorld.afficher(simu,False)
-        package,changeData=cleanBus(package,changeData)
-        runSimu=daarrt2d.update(package,myWorld,changeSonar)
+
+        package,changeData=cleanBus(package,changeData,changeDataEnco,daarrt2d)
+        runSimu=daarrt2d.update(package,myWorld,changeCap)
         info.afficher(simu,daarrt2d,display)
         daarrt2d.draw(simu)
+        virtualSonar(daarrt2d,myWorld,changeSonarLeft,changeSonarRight,changeSonarFront,changeSonarBack)
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT :
@@ -67,7 +74,7 @@ def simulate(ns,package,changeData,changeSonar):
     pygame.quit()
     ns.isAlive=False
 
-def cleanBus(package,changeData):
+def cleanBus(package,changeData,changeDataEnco,daarrt):
     '''
     return the package updated and the element change Data cleaned
 
@@ -77,6 +84,46 @@ def cleanBus(package,changeData):
     '''
 
     while(len(changeData)>0):
-        package[changeData[-1][0]]=changeData[-1][1]
-        changeData.pop()
+        try :
+            package[changeData[-1][0]]=changeData[-1][1]
+            changeData.pop()
+        except : pass
+    while(len(changeDataEnco)>0):
+        try :
+            changeDataEnco.pop()
+        except : pass
+    changeDataEnco.append(["LeftEnco",daarrt.leftEnco])
+    changeDataEnco.append(["RightEnco",daarrt.rightEnco])
     return package,changeData
+
+def virtualSonar(daarrt2d,world,changeSonarLeft,changeSonarRight,changeSonarFront,changeSonarBack):
+    try :
+        if(len(changeSonarLeft)>1):
+            changeSonarLeft.pop()
+    except :  print "FailLeft"
+
+    changeSonarLeft.append(daarrt2d.sonarDist[2])
+
+    try :
+        if(len(changeSonarRight)>1):
+
+            changeSonarRight.pop()
+
+    except : print "FailRight"
+
+    changeSonarRight.append(daarrt2d.sonarDist[3])
+
+    try :
+        if(len(changeSonarFront)>1) :
+            changeSonarFront.pop()
+
+
+    except : print "FailFront"
+    changeSonarFront.append(daarrt2d.sonarDist[0])
+
+    try :
+        if(len (changeSonarBack)>1):
+            changeSonarBack.pop()
+
+    except : print "FailBack"
+    changeSonarBack.append(daarrt2d.sonarDist[1])

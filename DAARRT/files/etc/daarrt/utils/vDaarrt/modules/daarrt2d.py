@@ -8,6 +8,8 @@ import geometry as geo
 
 from constantes import *
 
+
+
 def high_low_signed_int(high_byte, low_byte):
     '''
     Convert low and low and high byte to signed int
@@ -18,11 +20,15 @@ def high_low_signed_int(high_byte, low_byte):
 
 class DAARRT2d:
 
-    def __init__(self):
+    def __init__(self,daarrtpos):
 
         #variable values
-        self.posX = 350.0
-        self.posY = 220.0
+        try :
+            self.posX = daarrtpos[0]
+            self.posY = daarrtpos[1]
+        except :
+            self.posX=250.0
+            self.posY = 250.0
         self.leftSpeed = 0.0
         self.rightSpeed = 0.0
         self.robotCap =0.0#angle between 0 and 360
@@ -48,6 +54,7 @@ class DAARRT2d:
 
         self.sonarAngle= sonarAngle
         self.sonarLenght = sonarLenght
+
         self.nFrontSonar = nFrontSonar
         self.nLeftSonar = nLeftSonar
         self.nRightSonar = nRightSonar
@@ -58,9 +65,16 @@ class DAARRT2d:
         self.daarrt = geo.createRobot(self)
         self.sonar = geo.createSonar(self)
 
+        self.sonarDist=[0.0,0.0,0.0,0.0]
+
+        self.leftEnco=0.0
+        self.rightEnco=0.0
+
     def sonarCollide(self,world):
-        dist=[]
+        finalDist=[]
+        j=0
         for beam in self.sonar:
+            dist=[]
             for obstacle in world.obstacle :
                 if not beam.collidepoly(obstacle) is False :
                     tmp=1000
@@ -76,29 +90,72 @@ class DAARRT2d:
                     ply=pylygon.Polygon([(x0,y0)])
                     tmp=ply.distance(obstacle)
                     dist.append(math.sqrt(tmp[0]*tmp[0] + tmp[1]*tmp[1]))
+            try :
+                finalDist.append(min(dist))
+                #finalDist.append(10*j)
+                #j+=1
+            except :
+                finalDist.append(1000)
+        self.sonarDist=finalDist
+        return finalDist
+
+    def updateOdo(self,package) :
+        motorLeftAngSpeed = 0
+        motorRightAngSpeed = 0
+
+        dAG=math.sqrt(self.robotWidth**2 + self.robotLenght**2)/2
+        dBG=dAG
+
+        dTime = 1.0
+        theta=self.robotCap*math.pi/180.0
+        thetaPrime = (self.leftSpeed-self.rightSpeed)/self.robotWidth
+        vGx =(((self.rightSpeed+self.leftSpeed)/self.robotWidth)*math.cos(theta))
+        vGy = (((self.rightSpeed+self.leftSpeed)/self.robotWidth)*math.sin(theta))
+
+        vAx = vGx + 0
+        vAy = vGy + dAG * math.cos(theta)* thetaPrime
+        vA=math.sqrt(vAx**2 + vAy**2)
+        dA = vA*dTime
+
+        vBx = vGx + 0
+        vBy = vGy - dBG * math.cos(theta)* thetaPrime
+        vB=math.sqrt(vBx**2 + vBy**2)
+        dB = vB*dTime
+
         try :
-            return min(dist)
+            self.leftEnco += ((nTicks*dB/(math.pi*wheelRadius*2))*(thetaPrime/abs(thetaPrime)))
+            self.rightEnco += ((nTicks*dA/(math.pi*wheelRadius*2))*(thetaPrime/abs(thetaPrime)))
         except :
-            return 0.0
+            self.leftEnco += (nTicks*dB/(math.pi*wheelRadius*2))
+            self.rightEnco += (nTicks*dA/(math.pi*wheelRadius*2))
+
+        self.leftEnco = int(self.leftEnco) % 65335
+        self.rightEnco = int(self.rightEnco) % 65335
 
 
-    def update(self , package , world,changeSonar):
+    def update(self , package , world,changeCap):
         dt = 1.0
         self.updateSpeed(package)
         self.updateClaw(package)
+        self.sonarCollide(world)
+        self.updateOdo(package)
         theta=self.robotCap*math.pi/180.0
         self.posX += (((self.rightSpeed+self.leftSpeed)/self.robotWidth)*math.cos(theta))*dt
         self.posY += (((self.rightSpeed+self.leftSpeed)/self.robotWidth)*math.sin(theta))*dt
         self.robotCap += (self.leftSpeed-self.rightSpeed)*dt/self.robotWidth
+        self.robotCap = self.robotCap %360
         self.daarrt = geo.createRobot(self)
         self.sonar=geo.createSonar(self)
 
-        changeSonar.append(self.robotCap)
+        while (len(changeCap)>0):
+            try:
+                changeCap.pop()
+            except : pass
+        changeCap.append(self.robotCap)
 
         if(self.collide(world)):
             print "Collision detectee"
             return False
-        print self.sonarCollide(world)
 
         return True
 
@@ -133,14 +190,14 @@ class DAARRT2d:
         rSpeed=high_low_signed_int(package['rm_speed_high_byte'],package['rm_speed_low_byte'])
         a=200.0/(255.0-80.0)
         b=-80.0*a
-        if(lSpeed < 80 and lSpeed>-80):
+        if(lSpeed < 40 and lSpeed>-40):
             self.leftSpeed = 0.0
         elif(lSpeed>=0) :
             self.leftSpeed = a*lSpeed + b
         else :
             self.leftSpeed= a*lSpeed -b
 
-        if(rSpeed < 80 and rSpeed>-80):
+        if(rSpeed < 40 and rSpeed>-40):
             self.rightSpeed=0.0
         elif(rSpeed>=0) :
             self.rightSpeed=a*rSpeed + b

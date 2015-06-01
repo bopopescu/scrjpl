@@ -31,8 +31,8 @@ void I2Cstatus()
   datapack[10]=highByte(rmenc);                  // right motor encoder  high byte 
   datapack[11]= lowByte(rmenc);                  // right motor encoder  low  byte 
     
-  Serial.print("Acceleromètre X-axis : ");
-  Serial.println(xaxis, DEC);
+  /*Serial.print("Acceleromètre X-axis : ");
+  Serial.println(xaxis, DEC);*/
   datapack[12]=highByte(xaxis);                  // accelerometer X-axis high byte
   datapack[13]= lowByte(xaxis);                  // accelerometer X-axis low  byte
     
