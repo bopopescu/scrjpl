@@ -42,6 +42,9 @@ Lister tous les nouveaux fichiers et les fichiers modifiés à commiter
 **git add [fichier]**  
 Ajouter un instantané du fichier, en préparation pour le suivi de version
 
+**git add -A**  
+Ajouter tous les fichiers, en préparation pour le suivi de version
+
 **git reset [fichier]**  
 Enlever le fichier de l'index, mais conserve son contenu
 

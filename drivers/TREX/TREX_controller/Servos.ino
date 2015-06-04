@@ -8,7 +8,6 @@ void Servos()
       servo[i].detach();                                                       // if servopos=0 and the servo is attached then detach the servo
       pinMode(servopin[i],INPUT);                                              // set unused servo pin as input
     }
-    //
     if(servopos[i]>0) servo[i].write(servopos[i]);
   }
 }

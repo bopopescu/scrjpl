@@ -35,7 +35,6 @@ void I2Ccommand(int recvflag)
   if(i>-256 && i<256)
   {
     lmspeed=i;                                                                 // read new speed for   left  motor
-    Serial.println(lmspeed);
   }
   else
   {
@@ -63,11 +62,11 @@ void I2Ccommand(int recvflag)
   for(byte j=0;j<6;j++)                                                        // read position information for 6 servos
   {
     i=Wire.read()*256+Wire.read();                                        // read integer from I²C buffer
+    servopos[j] = i;
 
-    if(abs(i)>2400) errorflag = errorflag | 8;                                 // incorrect servo position given
-    servopos[j]=i;
+    if(abs(i)>180) errorflag = errorflag | 8;                                 // incorrect servo position given
+    else servopos[j] = i;
   }
-
 
 
   devibrate=Wire.read();                                                       // update devibrate setting - default=50 (100mS)

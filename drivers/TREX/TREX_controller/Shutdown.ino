@@ -1,7 +1,6 @@
 void Shutdown()
 {
   //================ Shutdown motors and servos when battery is flat ==============
-  
   lmspeed=0;      // set left  motor speed to 0 (off)
   rmspeed=0;      // set right motor speed to 0 (off)
   Motors();       // update H bridges

@@ -18,7 +18,7 @@
 
 <body onload="resize()" onresize="fireResize()">
     <nav class="topbar">
-        <div class="topbar-title">DA²R²T Manager</div>
+        <div class="topbar-title">DAARRT Manager</div>
     </nav>
     <div id="login_wrapper">
         <div id="login_box">

@@ -33,8 +33,6 @@ Pour cela il suffit d'exécuter la commande suivate :
 
 `mysql -u [user] -p [password] < daarrt.sql`
 
-**TODO :** Fichier SQL de structure
-
 #### Configuration de la base :
 Il est nécéssaire de configurer la recherche *full-text* pour le moteur de recherche de documents. Pour cela ouvrir `/etc/mysql/my.cnf` avec un editeur comme nano ou gedit et insérer `ft_min_word_len = 3` dans la section `[mysqld]`.Cela permet d'effectuer la recherche sur les mot d'au moins 3 caractères.
 
