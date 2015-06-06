@@ -1,6 +1,8 @@
 <?php
     include 'connect.php';
     $db = connect();
+    $db->query("SET NAMES 'utf8'");
+    
     if (@$_GET["search"] != "") {
         // On échappe les caractères de la requête
         $search = $db->real_escape_string($_GET["search"]);

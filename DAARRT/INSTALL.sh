@@ -145,6 +145,8 @@ EOL
 		echo "Edition du fichier hosts"
 		sed -i 's/127.0.0.1\tlocalhost/127.0.0.1\tlocalhost.localdomain localhost ubuntu/g' /etc/hosts
 		sed -i 's/127.0.1.1/# 127.0.1.1/g' /etc/hosts
+
+		# On édite le fichier hosts du robot pour ajouter manuellement l'adresse de l'interface.
 		cat >> /etc/hosts <<EOL
 
 # Configuration de l'interface web du DAARRT

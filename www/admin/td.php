@@ -51,7 +51,7 @@
     </div>
 
 </body>
-<!-- Début de la partie de test -->
+
 <script language="javascript">
     <?php
         include 'db/connect.php';
@@ -73,6 +73,4 @@
         echo "setTimeout(insertAddTdItem, {$elem}*100);";
     ?>
 </script>
-</script>
-<!-- Fin de la partie de test -->
 </html>

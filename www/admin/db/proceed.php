@@ -3,6 +3,7 @@
 
     include 'connect.php';
     $db = connect();
+    $db->query("SET NAMES 'utf8'");
 
     if (isset($_POST['password']) && !isset($_SESSION['fail_start'])) {
         $pass = $db->query("SELECT value FROM config WHERE var=\"password\" LIMIT 1;")->fetch_assoc();
@@ -76,6 +77,9 @@
 
             while ($row = $query->fetch_assoc()) {
                 array_push($result, $row);
+                // foreach ($row as $key => $value) {
+                //     $result[$key] = utf8_decode($value);
+                // }
             }
 
             echo json_encode($result);
