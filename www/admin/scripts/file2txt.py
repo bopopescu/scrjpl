@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-from subprocess import Popen, PIP
+from subprocess import Popen, PIPE
 
 import os
 import sys

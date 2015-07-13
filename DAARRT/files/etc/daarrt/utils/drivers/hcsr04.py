@@ -43,6 +43,7 @@ class SonarIO():
         time.sleep(0.00001)
         self.GPIO_TRIGGER.set(LOW)
 
+        # Sometimes the answer is too fast so it isn't caught, sometimes the 10us pulse is not caught by the PCDuino (python not much precise with time.sleep())
         start = time.time()
         while self.GPIO_ECHO.read() == LOW:
             if (time.time() - start) > 1 :

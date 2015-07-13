@@ -38,12 +38,26 @@ Il est nécéssaire de configurer la recherche *full-text* pour le moteur de rec
 
 ### Configuration Apache :
 
+#### Emplacement des fichers :
+Les fichiers contenant le code du site peut être placé n'importe ou. L'ensemble du dossier doit cependant avoir les droits de lecture et d'éxécution pour tous les utilisateurs. Il est possible de faire un réglage plus fin par soucis de sécurité en faisant de l'utilisateur `www-data` (utilisé par apache) le proprietaire du dossier et en lui donnant les droits `rx`.
+
+Le code de la partie suivante considère néanmoins que le dossier contenant les sites de trouve dans `/var/www/`. Il suffit cependant d'y placer un lien symbolique renvoyant vers le dossier.
+
+A titre d'exemple, voici le résultat de la commande `ls -l /var/www/` pour que tout fonctionne bien (on remarquera que lors du développement, je ne m'étais pas embêté avec les droits, ce qui est mal) :
+
+    brian@debian:~$ ls -l /var/www/
+    total 4
+    lrwxrwxrwx 1 root root   37 janv. 13 15:51 admin_scrjpl -> /home/brian/dev/git/scrjpl/www/admin/
+    lrwxrwxrwx 1 root root   37 févr.  8 13:52 eleve_scrjpl -> /home/brian/dev/git/scrjpl/www/eleve/
+
+
 #### Fichiers de configuration
 
 ##### Fichier /etc/apache2/sites-avaible/admin_scrjpl.conf
 
-Ce fichier est la configuration apache du site admin.scrjpl.fr
+Ce fichier est la configuration apache du site `admin.scrjpl.fr`.
 
+`/etc/apache2/sites-available/admin_scrjpl.conf`
 
     <VirtualHost *:80>
     	ServerName admin.scrjpl.fr
@@ -73,7 +87,9 @@ Ce fichier est la configuration apache du site admin.scrjpl.fr
 
 ##### Fichier /etc/apache2/sites-avaible/eleve_scrjpl.conf
 
-Ce fichier est la configuration apache du site eleve.scrjpl.fr
+Ce fichier est la configuration apache du site `eleve.scrjpl.fr`.
+
+`/etc/apache2/sites-available/eleve_scrjpl.conf`
 
     <VirtualHost *:80>
     ServerName eleve.scrjpl.fr

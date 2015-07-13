@@ -5,6 +5,7 @@
     if ($_FILES['document']['error'] == 0) {
         include 'connect.php';
         $db = connect();
+        $db->query("SET NAMES 'utf8'");
 
         $md5 = md5_file($_FILES['document']['tmp_name']);
         $name = "{$md5}_".$_FILES['document']['name'];

@@ -100,7 +100,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <dd><b>" :</b> le tilde, placé devant un mot, est un opérateur de négation permettant de diminuer la pertinence (et donc le classement) d'un résultat contenant ce mot.</dd>
+                        <dd><b>" :</b> les guillemets permettent la recherche d'une phrase ou d'une séquence de mots précise. Les résultats ne contenant pas la séquence au sens strict ne sont pas affichés.</dd>
                     </td>
                     <td></td>
                 </tr>
