@@ -11,7 +11,7 @@ Pour ce faire, il faut copier le dossier sur la PCDuino (dans n'import quel rép
 
 ### La documentation
 
-Le **dossier doc contient** l'ensemble de la documentation. L'interface web est livrée "vide" donc il faudra rajouter ces fichiers manuellement à la base de donnée de l'interface (via le formulaire d'upload présent sur cette même interface).
+Le **dossier doc** contient l'ensemble de la documentation. L'interface web est livrée "vide" donc il faudra rajouter ces fichiers manuellement à la base de donnée de l'interface (via le formulaire d'upload présent sur cette même interface).
 
 ### Les codes Arduino
 
@@ -32,7 +32,7 @@ Le **dossier www** contient l'interface web. A sa racine se trouve un README dé
 
 ### Le service daarrt
 Une fois le script d'install exécuté et le robot redémarré, il y aura un service daarrt qui permet :
-* **au démarrage :** d'inscrire le DAARRT dans la base SQL de l'interface web, démarrer le serveur de streaming et apache2 (apache bug car le dossier contenant ses log est supprimé à chaque démarrage et il a besoin que ce dossier existe, on s'en occupe donc à la main)
+* **au démarrage :** d'inscrire le DAARRT dans la base SQL de l'interface web, démarrer le serveur de streaming et redémarrer apache2. En effet apache bug car le dossier contenant ses log est supprimé à chaque démarrage et il a besoin que ce dossier existe pour démarrer correctement. Ainsi le script crée ce dossier puis redémarre le service apache2.
 * **à l'arrêt :** désinscription auprès de l'interface et arrêt du serveur de streaming (et de apache2)
 
 Ce service s'utilise de la manière suivante :

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 
 import os
 import time
@@ -36,10 +37,11 @@ class Daarrt():
             # Import modules
             from drivers.trex import TrexIO
             from drivers.razor import RazorIO
-            from drivers.hcsr04 import SonarIO
-            self.trex = TrexIO(0x07)
-            self.razor = RazorIO()
-            self.sonar = [SonarIO(2, 3), SonarIO(4, 5), SonarIO(6, 7), SonarIO(8, 9)] # [Arriere, Droite, Avant, Gauche]
+            from drivers.hcsr04 import SonarIO, PIN_MAP
+            # self.trex = TrexIO(0x07)
+            # self.razor = RazorIO()
+            self.sonar = [SonarIO(i[0], i[1]) for i in PIN_MAP] # [Arriere, Droite, Avant, Gauche]
+            # self.sonar = [SonarIO(2, 3), SonarIO(4, 5), SonarIO(6, 7), SonarIO(8, 9)] # [Arriere, Droite, Avant, Gauche]
 
         else :
             print "Create virtual DAARRT"
@@ -161,8 +163,8 @@ class Daarrt():
         '''
         Return angles measured by the Razor (calculated automatically from the 9-axis data).
         '''
-        dist = [s.getValue() for s in self.sonar]
-        for name, val in zip(["Sonar " + i + " : " for i in ["arriere", "droite", "avant", "gauche"]], dist) :
+        dist = [(s.id, s.getValue()) for s in self.sonar]
+        for name, val in dist :
             if val == -1 : print name + "range <= 5 cm"
             else : print name + "%.1f" % val
         return dist

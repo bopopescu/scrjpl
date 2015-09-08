@@ -5,6 +5,7 @@
 ###########################
 
 # ATTENTION ! DOIT ETRE EXECUTE AVEC LES DROITS ROOT
+# @author: Brian
 
 ## TODO :
 #	conf VNC
@@ -12,6 +13,9 @@
 
 ssid="DAARRT"
 psk="josbidboksautsowtud9"
+
+netmask="255.255.255.0"
+gateway="192.168.0.50"
 
 if [[ $EUID -ne 0 ]]; then
 	echo "ATTENTION ! Ce script doit etre executé en tant que root !" 1>&2
@@ -72,7 +76,6 @@ case $minimal in
 
 		# On fixe les problèmes de dépendence
 		apt-get -f install
-		dpkg -i shellinabox_2.14-1_armhf.deb
 	;;
 	[Nn]* )
 		echo "Les composants minimum requis n'ont pas été installés !"
@@ -137,8 +140,8 @@ iface lo inet loopback
 auto wlan5
 iface wlan5 inet static
 	address $ip
-	netmask 255.255.255.0
-	gateway 192.168.0.50
+	netmask $netmask
+	gateway $gateway
 	wpa-conf /etc/wpa_supplicant/daarrt.conf
 EOL
 
@@ -164,8 +167,8 @@ EOL
 		chmod 777 /var/www/daarrt.conf
 
 		# Configuration apache
-		a2enmod proxy proxy_http
 		echo "Configuration d'Apache"
+		a2enmod proxy proxy_http
 		cat >> /etc/apache2/apache2.conf <<EOL
 
 # Redirect shellinabox for DAARRT web interface

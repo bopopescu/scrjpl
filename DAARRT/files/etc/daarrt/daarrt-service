@@ -24,6 +24,11 @@ case $1 in
 		echo "Checking DAARRT status..."
 		sudo service apache2 status
 		sudo service shellinabox status
+
+		# Partie non testee
+		echo "Checking mjpeg-streamer process..."
+		ps -A | grep mjpeg-streamer
+		# Fin partie non testee
 	;;
 	*)
 		log_success_msg "Usage: /etc/init.d/daarrt {start|stop|restart|reload|status}"
@@ -31,3 +36,4 @@ case $1 in
 	;;
 esac
 exit 0
+# 
