@@ -32,13 +32,16 @@ if __name__ == "__main__":
 	id = conf.get('global', 'id')
 	name = conf.get('global', 'name')
 	grp = conf.get('global', 'groups')
-
+	
 	db = _mysql.connect(host=HOST, user=USR, passwd=PASS, db=DB)
 
 	if sys.argv[1] == "start" :
 		while True :
 			try :
+				# Getting the number of groups using the DAARRT:
+				# SELECT * FROM (SELECT g.id, g.id_ori, g.name, g.daarrt from groups g, (SELECT MAX(id) as maxi FROM `groups` GROUP BY id_ori) t WHERE g.id=t.maxi ORDER BY g.name) unigroups WHERE daarrt LIKE '%0%'
 				db.query("INSERT INTO online (id, name, address, groups) VALUES (" + id + ", \"" + name + "\", \"" + ip + "\", " + grp + ");")
+
 				break
 			except Exception, e :
 				if str(e) == "(1062, \"Duplicate entry '" + id + "' for key 'id'\")" : break

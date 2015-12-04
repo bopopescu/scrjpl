@@ -99,7 +99,7 @@
                             if ($row['name'] != $last_name) echo $start." le nom a changé de <b>".$last_name."</b> à <b>".$row['name'].$end;
                             elseif ($row['members'] != $last_members) echo $start." les membres ont changé de <b>".$last_members."</b> pour <b>".$row['members'].$end;
                             elseif ($row['daarrt'] != $last_daarrts) echo $start." changement de la liste des DAARRT de <b>".$last_daarrts."</b> à <b>".$row['daarrt'].$end;
-                            
+
                             $last_name = $row['name'];
                             $last_members = $row['members'];
                             $last_daarrts = $row['daarrt'];
@@ -131,7 +131,7 @@
 
     $daarrts = explode(',', $main['daarrt']);
     foreach ($daarrts as $id) {
-        echo "setTimeout(function () {toggleDaarrt(document.getElementById('daarrt-{$id}'))}, {$elem} * 100);";
+        echo "setTimeout(function () {toggleDaarrt(document.getElementById('daarrt-{$id}'), null)}, {$elem} * 100);";
     }
     ?>
 </script>

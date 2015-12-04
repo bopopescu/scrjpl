@@ -36,7 +36,7 @@ re_ans='^[OoYyNn]{1}$'
 while ! [[ $id =~ $re_int ]]
 do
 	read -p "Quel est l'ID du DAARRT ? " id
-	if ! [[ $id =~ $re ]] ; then
+	if ! [[ $id =~ $re_int ]] ; then
 		echo "Merci de rentrer un nombre entre 0 et 99."
 	fi
 done
@@ -164,10 +164,11 @@ id=$id
 name=$name
 groups=0
 EOL
-		chmod 777 /var/www/daarrt.conf
+		chmod a+rw /var/www/daarrt.conf
 
 		# Configuration apache
 		echo "Configuration d'Apache"
+		echo "ShellInABox disponible sur http://$ip:4200"
 		a2enmod proxy proxy_http
 		cat >> /etc/apache2/apache2.conf <<EOL
 
@@ -183,5 +184,9 @@ EOL
 		service networking start
 		service apache2 restart
 		service shellinabox restart
-	;;
+
+		echo "Configuration du script web (pour la gestion des groupes)"
+		chmod a+rx /var/www/groups.php
+		chmod a+rx /var/www/groups.py
+;;
 esac

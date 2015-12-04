@@ -28,6 +28,7 @@ function insertSelectableDaarrt(json) {
     var subtitle = document.createElement('font');
     daarrtBox.className = "ib";
     daarrtBox.id = "daarrt-" + daarrt.id;
+    daarrtBox.setAttribute('ip', daarrt.address);
     options.className = "ib-options";
     title.className = (daarrt.name.length < 10) ? "ib-title-short" : "ib-title-long";
     subtitle.className = "ib-subtitle";
@@ -35,7 +36,7 @@ function insertSelectableDaarrt(json) {
     subtitle.innerHTML += daarrt.groups + ((daarrt.groups <= 1) ? " groupe" : " groupes");
     title.innerHTML += daarrt.name;
 
-    daarrtBox.setAttribute('onclick', 'toggleDaarrt(this)');
+    daarrtBox.setAttribute('onclick', 'toggleDaarrt(this, \'1\')');
 
     var iTitle = document.createElement('i');
     iTitle.className = "ib-title-icon daarrt-box-title-icon";
@@ -51,12 +52,14 @@ function insertSelectableDaarrt(json) {
     fireResize();
 }
 
-function toggleDaarrt(e) {
+function toggleDaarrt(e, action) {
     var nameInput = document.getElementById('daarrt_names');
     var idInput = document.getElementById('daarrt_list');
 
     var daarrtName = e.children[1].innerHTML + " (" + e.id.split('-')[1] + ")";
+    var xhr = new XMLHttpRequest();
 
+    // Si le DAARRT est séléctionné
     if (e.style.backgroundColor == "rgb(212, 230, 189)") {
         e.style.backgroundColor = "#f0f0f0";
 
@@ -73,12 +76,19 @@ function toggleDaarrt(e) {
         if (nameInput.value.substring(0, 2) == ', ') {
             nameInput.value = nameInput.value.substring(2);
         }
+        e.getAttribute('ip')
+        xhr.open('GET', 'http://' + e.getAttribute('ip') + '/groups.php?action=del', true);
     }
+    // Si le DAARRT n'est pas séléctionné
     else {
+        xhr.open('GET', 'http://' + e.getAttribute('ip') + '/groups.php?action=add', true);
         e.style.backgroundColor = "rgb(212, 230, 189)";
         nameInput.value += (nameInput.value == "") ? daarrtName : ", " + daarrtName;
         idInput.value += (idInput.value == "") ? e.id.split('-')[1] : "," + e.id.split('-')[1];
     }
+
+    xhr.onload = function () {};
+    if (action != null) {xhr.send()}
 }
 
 

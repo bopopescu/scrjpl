@@ -63,7 +63,7 @@
     include 'db/connect.php';
     $db = connect();
 
-    $res = $db->query("SELECT id, id_ori, name, members, daarrt, date from groups g, (SELECT MAX(id) as maxi FROM `groups` GROUP BY id_ori) t WHERE g.id=t.maxi ORDER BY g.name");
+    $res = $db->query("SELECT g.id, g.id_ori, g.name, g.members, g.daarrt, g.date from groups g, (SELECT MAX(id) as maxi FROM `groups` GROUP BY id_ori) t WHERE g.id=t.maxi ORDER BY g.name");
 
 
     $elem = 0;

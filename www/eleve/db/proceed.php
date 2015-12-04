@@ -2,7 +2,7 @@
     include 'connect.php';
     $db = connect();
     $db->query("SET NAMES 'utf8'");
-    
+
     if (@$_GET["search"] != "") {
         // On échappe les caractères de la requête
         $search = $db->real_escape_string($_GET["search"]);
@@ -81,9 +81,14 @@
         if (!$query) {$error++;}
 
         $daarrts = explode(',', $daarrt);
-        foreach ($daarrts as $id) {
-            $db->query("UPDATE online SET groups=groups+1 WHERE id={$id} LIMIT 1;");
-        }
+        $db->query("UPDATE online SET groups=groups+1 WHERE id IN ({$daarrts});");
+        // foreach ($daarrts as $id) {
+        //     $db->query("UPDATE online SET groups=groups+1 WHERE id={$id} LIMIT 1;");
+        //     // Indiquer ici au DAARRT (son fichier de conf) le nouveau groupe !!!!!!!!!!!!!!!!!!!!!!!!
+        //     $query = $db->query("SELECT ip FROM online WHERE id={$id} LIMIT 1");
+        //     $row = $query->fetch_assoc()
+        //     include $row["ip"].'/groups.php?';
+        // }
 
         if ($error == 0) header("location:/index.php");
         else header("location:/index.php?error=createGroup&name={$name}");

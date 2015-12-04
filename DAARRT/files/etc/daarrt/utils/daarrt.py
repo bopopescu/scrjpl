@@ -38,8 +38,9 @@ class Daarrt():
             from drivers.trex import TrexIO
             from drivers.razor import RazorIO
             from drivers.hcsr04 import SonarIO, PIN_MAP
-            # self.trex = TrexIO(0x07)
-            # self.razor = RazorIO()
+            
+            self.trex = TrexIO(0x07)
+            self.razor = RazorIO()
             self.sonar = [SonarIO(i[0], i[1]) for i in PIN_MAP] # [Arriere, Droite, Avant, Gauche]
             # self.sonar = [SonarIO(2, 3), SonarIO(4, 5), SonarIO(6, 7), SonarIO(8, 9)] # [Arriere, Droite, Avant, Gauche]
 

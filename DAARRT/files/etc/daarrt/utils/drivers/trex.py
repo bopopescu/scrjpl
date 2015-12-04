@@ -158,7 +158,7 @@ class TrexIO():
         if not conf.has_section("trex") : conf.add_section("trex")
 
         conf.set("trex", "battery", status[2])
-        self.battery = (int(status[2]) - MIN_BATTERY) / (MAX_BATTERY - MIN_BATTERY) * 100
+        self.battery = min([(int(status[2]) - MIN_BATTERY) / (MAX_BATTERY - MIN_BATTERY) * 100, 100.0])
         conf.set("trex", "battery_level", self.battery)
 
         conf.set("trex", "left_motor", status[3])
