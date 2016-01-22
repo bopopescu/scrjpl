@@ -7,7 +7,7 @@ Quelques petits conseils pour installer et utiliser la bête...
 ### Fichiers à mettre sur le robots
 
 Le **dossier DAARRT** contient l'intégralité des fichiers devant être installé sur chaque robot.
-Pour ce faire, il faut copier le dossier sur la PCDuino (dans n'import quel répertoire) puis lancer en mode root le script INSTALL.sh qui s'y trouve.
+Pour ce faire, il faut copier le dossier sur la PCDuino (dans n'importe quel répertoire) puis lancer en mode root le script INSTALL.sh qui s'y trouve.
 
 ### La documentation
 
