@@ -88,7 +88,7 @@ class vTrex():
         	'impact_sensitivity_low_byte' : 50,    # Impact sensitivity low byte
         	'battery_high_byte' : 0,               # Battery voltage high byte
         	'battery_low_byte' : 50,               # Battery voltage low byte
-        	'i2c_address' : 7,                     # I2C slave address
+        	'i2c_address' : 7,                     # I2C subordinate address
         	'i2c_clock' : 0                       # I2C clock frequency
         }
         self.oldPackage= {
@@ -117,6 +117,6 @@ class vTrex():
         	'impact_sensitivity_low_byte' : 50,    # Impact sensitivity low byte
         	'battery_high_byte' : 0,               # Battery voltage high byte
         	'battery_low_byte' : 50,               # Battery voltage low byte
-        	'i2c_address' : 7,                     # I2C slave address
+        	'i2c_address' : 7,                     # I2C subordinate address
         	'i2c_clock' : 0                       # I2C clock frequency
         }

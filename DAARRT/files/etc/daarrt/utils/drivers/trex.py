@@ -15,7 +15,7 @@ smbus to send command
 quick2wire to read status
 I can not get both functions operate on one of the librarys.
 Smbus can not read multipple bytes from the bus without sending a register command.
-And I did not get quick2wire to work when write to the slave.
+And I did not get quick2wire to work when write to the subordinate.
 
 Dependencies
 ------------
@@ -66,7 +66,7 @@ import ConfigParser
 # If the python3 packages not is in path (quick2wire)
 sys.path.append("/usr/lib/python3/dist-packages")
 import quick2wire.i2c as i2c
-from quick2wire.i2c import I2CMaster, writing_bytes, reading
+from quick2wire.i2c import I2CMain, writing_bytes, reading
 
 MAX_BATTERY = 1270.0
 MIN_BATTERY = 1180.0
@@ -75,7 +75,7 @@ class TrexIO():
     def __init__(self, addr = 0x07):
         self.battery = 0
         self.i2c_write_bus = smbus.SMBus(2)
-        self.i2c_read_bus = i2c.I2CMaster(2)
+        self.i2c_read_bus = i2c.I2CMain(2)
 
         self.ADDRESS = addr
 
@@ -114,7 +114,7 @@ class TrexIO():
         	'impact_sensitivity_low_byte' : 50,    # Impact sensitivity low byte
         	'battery_high_byte' : 4,               # Battery voltage high byte (when motors are off)
         	'battery_low_byte' : 156,              # Battery voltage low byte (when motors are off)
-        	'i2c_address' : 7,                     # I2C slave address
+        	'i2c_address' : 7,                     # I2C subordinate address
         	'i2c_clock' : 1                        # I2C clock frequency
         }
         self.__map()
